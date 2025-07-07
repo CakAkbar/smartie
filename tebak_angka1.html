@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tebak Angka - Belajar Seru</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #ff6b6b;
+            --success-color: #6bce75;
+            --light-color: #f8f9ff;
+            --dark-color: #2d3748;
+        }
+        
+        body {
+            font-family: 'Nunito', 'Comic Sans MS', cursive, sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .game-card {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            background-color: white;
+            overflow: hidden;
+        }
+        
+        .card-title {
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .answer-btn {
+            min-width: 80px;
+            height: 60px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 12px !important;
+            transition: all 0.3s ease;
+            border: 3px solid transparent !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .answer-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .answer-btn:active {
+            transform: scale(0.95);
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        .bounce {
+            animation: bounce 1s;
+        }
+        
+        .visualization {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+            min-height: 120px;
+        }
+        
+        .fruit-img {
+            width: 50px;
+            height: 50px;
+            font-size: 2.5rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .fruit-img:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+        
+        .operation-sign {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0 15px;
+            color: var(--primary-color);
+        }
+        
+        .nav-tabs .nav-link {
+            font-weight: 700;
+            color: var(--dark-color);
+            border: none;
+            padding: 12px 20px;
+            position: relative;
+        }
+        
+        .nav-tabs .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-tabs .nav-link:hover::after {
+            width: 50%;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: transparent;
+        }
+        
+        .nav-tabs .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .progress {
+            height: 12px;
+            border-radius: 10px;
+            background-color: #e9ecef;
+        }
+        
+        .progress-bar {
+            border-radius: 10px;
+            background-color: var(--success-color);
+            transition: width 0.5s ease;
+        }
+        
+        #new-question-btn {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 12px 24px;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        #new-question-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(74, 107, 255, 0.4);
+        }
+        
+        .feedback-correct {
+            color: var(--success-color) !important;
+            font-size: 1.5rem !important;
+        }
+        
+        .feedback-wrong {
+            color: var(--secondary-color) !important;
+            font-size: 1.5rem !important;
+        }
+        
+        footer {
+            background-color: var(--dark-color) !important;
+            margin-top: 3rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .card-title {
+                font-size: 1.8rem;
+            }
+            
+            .answer-btn {
+                min-width: 70px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+            
+            .fruit-img {
+                width: 40px;
+                height: 40px;
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold" href="index.html">
+                <i class="fas fa-arrow-left me-2"></i>Kembali
+            </a>
+            <span class="navbar-text text-white ms-auto">
+                Skor: <span id="score">0</span>/<span id="total-questions">0</span>
+            </span>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card game-card">
+                    <div class="card-body p-4 p-md-5">
+                        <h2 class="card-title text-center">Tebak Angka</h2>
+                        
+                        <ul class="nav nav-tabs mb-4 justify-content-center" id="operationTabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="penjumlahan-tab" data-bs-toggle="tab" href="#penjumlahan">
+                                    <i class="fas fa-plus me-2"></i>Penjumlahan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pengurangan-tab" data-bs-toggle="tab" href="#pengurangan">
+                                    <i class="fas fa-minus me-2"></i>Pengurangan
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="perkalian-tab" data-bs-toggle="tab" href="#perkalian">
+                                    <i class="fas fa-times me-2"></i>Perkalian
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pembagian-tab" data-bs-toggle="tab" href="#pembagian">
+                                    <i class="fas fa-divide me-2"></i>Pembagian
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="operationTabsContent">
+                            <!-- Penjumlahan -->
+                            <div class="tab-pane fade show active" id="penjumlahan">
+                                <div class="text-center">
+                                    <p id="game-question" class="fs-3 mb-4">Berapa hasil dari 3 + 2?</p>
+                                    <div id="visualization" class="visualization">
+                                        <!-- Visualisasi akan diisi oleh JavaScript -->
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+                                        <button class="btn btn-outline-primary answer-btn">3</button>
+                                        <button class="btn btn-outline-primary answer-btn">5</button>
+                                        <button class="btn btn-outline-primary answer-btn">7</button>
+                                    </div>
+                                    <p id="game-feedback" class="my-3"></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Pengurangan -->
+                            <div class="tab-pane fade" id="pengurangan">
+                                <div class="text-center">
+                                    <p id="game-question-sub" class="fs-3 mb-4">Berapa hasil dari 5 - 2?</p>
+                                    <div id="visualization-sub" class="visualization">
+                                        <!-- Visualisasi akan diisi oleh JavaScript -->
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+                                        <button class="btn btn-outline-primary answer-btn-sub">1</button>
+                                        <button class="btn btn-outline-primary answer-btn-sub">3</button>
+                                        <button class="btn btn-outline-primary answer-btn-sub">5</button>
+                                    </div>
+                                    <p id="game-feedback-sub" class="my-3"></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Perkalian -->
+                            <div class="tab-pane fade" id="perkalian">
+                                <div class="text-center">
+                                    <p id="game-question-mul" class="fs-3 mb-4">Berapa hasil dari 2 × 3?</p>
+                                    <div id="visualization-mul" class="visualization">
+                                        <!-- Visualisasi akan diisi oleh JavaScript -->
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+                                        <button class="btn btn-outline-primary answer-btn-mul">4</button>
+                                        <button class="btn btn-outline-primary answer-btn-mul">6</button>
+                                        <button class="btn btn-outline-primary answer-btn-mul">8</button>
+                                    </div>
+                                    <p id="game-feedback-mul" class="my-3"></p>
+                                </div>
+                            </div>
+                            
+                            <!-- Pembagian -->
+                            <div class="tab-pane fade" id="pembagian">
+                                <div class="text-center">
+                                    <p id="game-question-div" class="fs-3 mb-4">Berapa hasil dari 6 ÷ 2?</p>
+                                    <div id="visualization-div" class="visualization">
+                                        <!-- Visualisasi akan diisi oleh JavaScript -->
+                                    </div>
+                                    <div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+                                        <button class="btn btn-outline-primary answer-btn-div">2</button>
+                                        <button class="btn btn-outline-primary answer-btn-div">3</button>
+                                        <button class="btn btn-outline-primary answer-btn-div">4</button>
+                                    </div>
+                                    <p id="game-feedback-div" class="my-3"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress my-4">
+                            <div id="progress-bar" class="progress-bar progress-bar-striped" 
+                                role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <button id="new-question-btn" class="btn btn-primary btn-lg">
+                                Pertanyaan Baru <i class="fas fa-forward ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 SMARTIE </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Gambar untuk visualisasi -->
+    <script>
+        const fruits = [
+            '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🫐', '🍈',
+            '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦'
+        ];
+    </script>
+    
+    <script>
+        const mathGame = {
+            // Pertanyaan untuk setiap operasi
+            questions: {
+                penjumlahan: [
+                    { a: 1, b: 1, answer: 2 },
+                    { a: 2, b: 3, answer: 5 },
+                    { a: 3, b: 2, answer: 5 },
+                    { a: 4, b: 1, answer: 5 },
+                    { a: 2, b: 2, answer: 4 },
+                    { a: 3, b: 3, answer: 6 },
+                    { a: 4, b: 3, answer: 7 },
+                    { a: 5, b: 2, answer: 7 },
+                    { a: 1, b: 4, answer: 5 },
+                    { a: 2, b: 5, answer: 7 }
+                ],
+                pengurangan: [
+                    { a: 3, b: 1, answer: 2 },
+                    { a: 5, b: 2, answer: 3 },
+                    { a: 4, b: 3, answer: 1 },
+                    { a: 6, b: 2, answer: 4 },
+                    { a: 7, b: 3, answer: 4 },
+                    { a: 5, b: 1, answer: 4 },
+                    { a: 8, b: 4, answer: 4 },
+                    { a: 9, b: 5, answer: 4 },
+                    { a: 6, b: 3, answer: 3 },
+                    { a: 7, b: 2, answer: 5 }
+                ],
+                perkalian: [
+                    { a: 1, b: 2, answer: 2 },
+                    { a: 2, b: 2, answer: 4 },
+                    { a: 3, b: 2, answer: 6 },
+                    { a: 2, b: 3, answer: 6 },
+                    { a: 2, b: 4, answer: 8 },
+                    { a: 3, b: 3, answer: 9 },
+                    { a: 4, b: 2, answer: 8 },
+                    { a: 1, b: 5, answer: 5 },
+                    { a: 5, b: 2, answer: 10 },
+                    { a: 3, b: 4, answer: 12 }
+                ],
+                pembagian: [
+                    { a: 2, b: 1, answer: 2 },
+                    { a: 4, b: 2, answer: 2 },
+                    { a: 6, b: 2, answer: 3 },
+                    { a: 8, b: 2, answer: 4 },
+                    { a: 9, b: 3, answer: 3 },
+                    { a: 10, b: 2, answer: 5 },
+                    { a: 12, b: 3, answer: 4 },
+                    { a: 15, b: 3, answer: 5 },
+                    { a: 16, b: 4, answer: 4 },
+                    { a: 18, b: 3, answer: 6 }
+                ]
+            },
+            currentOperation: 'penjumlahan',
+            currentQuestion: {},
+            score: 0,
+            answeredQuestions: [],
+            
+            init: function() {
+                // Set total pertanyaan
+                const totalQuestions = Object.values(this.questions).reduce((acc, curr) => acc + curr.length, 0);
+                document.getElementById('total-questions').textContent = totalQuestions;
+                
+                // Inisialisasi tab
+                const tabEls = document.querySelectorAll('a[data-bs-toggle="tab"]');
+                tabEls.forEach(tabEl => {
+                    tabEl.addEventListener('shown.bs.tab', (event) => {
+                        this.currentOperation = event.target.getAttribute('href').substring(1);
+                        this.displayQuestion();
+                    });
+                });
+                
+                // Inisialisasi tombol jawaban untuk setiap operasi
+                document.querySelectorAll('.answer-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const selectedAnswer = parseInt(e.target.textContent);
+                        this.checkAnswer(selectedAnswer, 'penjumlahan');
+                    });
+                });
+                
+                document.querySelectorAll('.answer-btn-sub').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const selectedAnswer = parseInt(e.target.textContent);
+                        this.checkAnswer(selectedAnswer, 'pengurangan');
+                    });
+                });
+                
+                document.querySelectorAll('.answer-btn-mul').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const selectedAnswer = parseInt(e.target.textContent);
+                        this.checkAnswer(selectedAnswer, 'perkalian');
+                    });
+                });
+                
+                document.querySelectorAll('.answer-btn-div').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const selectedAnswer = parseInt(e.target.textContent);
+                        this.checkAnswer(selectedAnswer, 'pembagian');
+                    });
+                });
+                
+                // Tombol pertanyaan baru
+                document.getElementById('new-question-btn').addEventListener('click', () => {
+                    this.displayQuestion();
+                });
+                
+                // Tampilkan pertanyaan pertama
+                this.displayQuestion();
+            },
+            
+            getRandomQuestion: function(operation) {
+                const questions = this.questions[operation];
+                let availableQuestions = questions.filter((q, index) => 
+                    !this.answeredQuestions.some(aq => aq.operation === operation && aq.index === index)
+                );
+                
+                if (availableQuestions.length === 0) {
+                    availableQuestions = questions;
+                    // Reset answered questions untuk operasi ini
+                    this.answeredQuestions = this.answeredQuestions.filter(aq => aq.operation !== operation);
+                }
+                
+                const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+                const questionIndex = questions.indexOf(availableQuestions[randomIndex]);
+                
+                return {
+                    question: availableQuestions[randomIndex],
+                    index: questionIndex
+                };
+            },
+            
+            displayQuestion: function() {
+                const { question, index } = this.getRandomQuestion(this.currentOperation);
+                this.currentQuestion = { question, index, operation: this.currentOperation };
+                
+                // Update pertanyaan dan visualisasi berdasarkan operasi
+                switch(this.currentOperation) {
+                    case 'penjumlahan':
+                        document.getElementById('game-question').textContent = 
+                            `Berapa hasil dari ${question.a} + ${question.b}?`;
+                        this.createVisualization(question.a, question.b, '+', 'visualization');
+                        this.setAnswerOptions(question.answer, 'penjumlahan');
+                        break;
+                    case 'pengurangan':
+                        document.getElementById('game-question-sub').textContent = 
+                            `Berapa hasil dari ${question.a} - ${question.b}?`;
+                        this.createVisualization(question.a, question.b, '-', 'visualization-sub');
+                        this.setAnswerOptions(question.answer, 'pengurangan');
+                        break;
+                    case 'perkalian':
+                        document.getElementById('game-question-mul').textContent = 
+                            `Berapa hasil dari ${question.a} × ${question.b}?`;
+                        this.createVisualization(question.a, question.b, '×', 'visualization-mul');
+                        this.setAnswerOptions(question.answer, 'perkalian');
+                        break;
+                    case 'pembagian':
+                        document.getElementById('game-question-div').textContent = 
+                            `Berapa hasil dari ${question.a} ÷ ${question.b}?`;
+                        this.createVisualization(question.a, question.b, '÷', 'visualization-div');
+                        this.setAnswerOptions(question.answer, 'pembagian');
+                        break;
+                }
+                
+                // Reset feedback
+                document.getElementById('game-feedback').textContent = '';
+                document.getElementById('game-feedback').className = '';
+                document.getElementById('game-feedback-sub').textContent = '';
+                document.getElementById('game-feedback-sub').className = '';
+                document.getElementById('game-feedback-mul').textContent = '';
+                document.getElementById('game-feedback-mul').className = '';
+                document.getElementById('game-feedback-div').textContent = '';
+                document.getElementById('game-feedback-div').className = '';
+            },
+            
+            createVisualization: function(a, b, operation, containerId) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                
+                // Buat elemen untuk angka pertama
+                const group1 = document.createElement('div');
+                group1.className = 'd-flex flex-wrap justify-content-center';
+                group1.style.width = '100%';
+                
+                for (let i = 0; i < a; i++) {
+                    const fruit = document.createElement('span');
+                    fruit.className = 'fruit-img bounce';
+                    fruit.textContent = fruits[Math.floor(Math.random() * fruits.length)];
+                    group1.appendChild(fruit);
+                }
+                
+                container.appendChild(group1);
+                
+                // Tambahkan tanda operasi
+                const opSign = document.createElement('div');
+                opSign.className = 'operation-sign';
+                opSign.textContent = operation;
+                container.appendChild(opSign);
+                
+                // Buat elemen untuk angka kedua
+                const group2 = document.createElement('div');
+                group2.className = 'd-flex flex-wrap justify-content-center';
+                group2.style.width = '100%';
+                
+                for (let i = 0; i < b; i++) {
+                    const fruit = document.createElement('span');
+                    fruit.className = 'fruit-img bounce';
+                    fruit.textContent = fruits[Math.floor(Math.random() * fruits.length)];
+                    group2.appendChild(fruit);
+                }
+                
+                container.appendChild(group2);
+                
+                // Jika operasi pembagian, buat visualisasi kelompok
+                if (operation === '÷') {
+                    const equalSign = document.createElement('div');
+                    equalSign.className = 'operation-sign';
+                    equalSign.textContent = '=';
+                    container.appendChild(equalSign);
+                    
+                    const groupsContainer = document.createElement('div');
+                    groupsContainer.className = 'd-flex flex-wrap justify-content-center gap-4';
+                    
+                    for (let i = 0; i < b; i++) {
+                        const group = document.createElement('div');
+                        group.className = 'd-flex flex-column align-items-center';
+                        
+                        for (let j = 0; j < (a/b); j++) {
+                            const fruit = document.createElement('span');
+                            fruit.className = 'fruit-img';
+                            fruit.textContent = fruits[Math.floor(Math.random() * fruits.length)];
+                            group.appendChild(fruit);
+                        }
+                        
+                        groupsContainer.appendChild(group);
+                    }
+                    
+                    container.appendChild(groupsContainer);
+                }
+            },
+            
+            setAnswerOptions: function(correctAnswer, operation) {
+                let buttons;
+                let wrongAnswers = [];
+                
+                // Buat jawaban salah
+                while (wrongAnswers.length < 2) {
+                    const wrongAnswer = correctAnswer + (Math.floor(Math.random() * 3) + 1) * (Math.random() < 0.5 ? 1 : -1);
+                    if (wrongAnswer !== correctAnswer && wrongAnswer > 0 && !wrongAnswers.includes(wrongAnswer)) {
+                        wrongAnswers.push(wrongAnswer);
+                    }
+                }
+                
+                const allAnswers = [correctAnswer, ...wrongAnswers];
+                
+                // Acak urutan jawaban
+                for (let i = allAnswers.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [allAnswers[i], allAnswers[j]] = [allAnswers[j], allAnswers[i]];
+                }
+                
+                // Set tombol jawaban berdasarkan operasi
+                switch(operation) {
+                    case 'penjumlahan':
+                        buttons = document.querySelectorAll('.answer-btn');
+                        break;
+                    case 'pengurangan':
+                        buttons = document.querySelectorAll('.answer-btn-sub');
+                        break;
+                    case 'perkalian':
+                        buttons = document.querySelectorAll('.answer-btn-mul');
+                        break;
+                    case 'pembagian':
+                        buttons = document.querySelectorAll('.answer-btn-div');
+                        break;
+                }
+                
+                allAnswers.forEach((answer, index) => {
+                    if (buttons[index]) {
+                        buttons[index].textContent = answer;
+                        buttons[index].classList.remove('btn-success', 'btn-danger');
+                        buttons[index].classList.add('btn-outline-primary');
+                    }
+                });
+            },
+            
+            checkAnswer: function(selectedAnswer, operation) {
+                const correctAnswer = this.currentQuestion.question.answer;
+                let feedback;
+                let buttons;
+                
+                switch(operation) {
+                    case 'penjumlahan':
+                        feedback = document.getElementById('game-feedback');
+                        buttons = document.querySelectorAll('.answer-btn');
+                        break;
+                    case 'pengurangan':
+                        feedback = document.getElementById('game-feedback-sub');
+                        buttons = document.querySelectorAll('.answer-btn-sub');
+                        break;
+                    case 'perkalian':
+                        feedback = document.getElementById('game-feedback-mul');
+                        buttons = document.querySelectorAll('.answer-btn-mul');
+                        break;
+                    case 'pembagian':
+                        feedback = document.getElementById('game-feedback-div');
+                        buttons = document.querySelectorAll('.answer-btn-div');
+                        break;
+                }
+                
+                if (selectedAnswer === correctAnswer) {
+                    this.score++;
+                    document.getElementById('score').textContent = this.score;
+                    
+                    const totalQuestions = Object.values(this.questions).reduce((acc, curr) => acc + curr.length, 0);
+                    const progress = (this.score / totalQuestions) * 100;
+                    document.getElementById('progress-bar').style.width = `${progress}%`;
+                    
+                    feedback.textContent = "Benar! 🎉";
+                    feedback.className = "feedback-correct";
+                    
+                    // Tandai tombol yang benar
+                    buttons.forEach(btn => {
+                        if (parseInt(btn.textContent) === correctAnswer) {
+                            btn.classList.remove('btn-outline-primary');
+                            btn.classList.add('btn-success');
+                        }
+                    });
+                    
+                    // Tandai pertanyaan ini sudah dijawab
+                    this.answeredQuestions.push({
+                        operation: this.currentOperation,
+                        index: this.currentQuestion.index
+                    });
+                    
+                    setTimeout(() => {
+                        this.displayQuestion();
+                    }, 1500);
+                } else {
+                    feedback.textContent = "Coba lagi!";
+                    feedback.className = "feedback-wrong";
+                    
+                    // Tandai tombol yang salah dan benar
+                    buttons.forEach(btn => {
+                        const btnAnswer = parseInt(btn.textContent);
+                        if (btnAnswer === selectedAnswer) {
+                            btn.classList.remove('btn-outline-primary');
+                            btn.classList.add('btn-danger');
+                        } else if (btnAnswer === correctAnswer) {
+                            btn.classList.remove('btn-outline-primary');
+                            btn.classList.add('btn-success');
+                        }
+                    });
+                }
+            }
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            mathGame.init();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Aritmatika - Petualangan Antariksa</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #f72585;
+            --success: #4cc9f0;
+            --danger: #f94144;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #0a0a2a;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            touch-action: manipulation;
+            background-image: 
+                radial-gradient(white 1px, transparent 1px),
+                radial-gradient(white 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: 0 0, 25px 25px;
+            animation: stars 50s linear infinite;
+        }
+
+        @keyframes stars {
+            from { background-position: 0 0, 25px 25px; }
+            to { background-position: 500px 500px, 525px 525px; }
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid var(--info);
+        }
+
+        .hud-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .hud-icon {
+            font-size: 1.2rem;
+        }
+
+        #power-bar {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            border: 2px solid var(--warning);
+            overflow: hidden;
+            z-index: 100;
+        }
+
+        #power-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--warning), var(--danger));
+            transition: width 0.3s;
+        }
+
+        #astronaut {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: url('https://www.freepnglogos.com/uploads/astronaut-png/astronaut-clip-art-png-transparent-images-png-only-22.png') no-repeat center center;
+            background-size: contain;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+
+        #rocket {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: url('https://www.freepnglogos.com/uploads/rocket-png/rocket-png-transparent-image-pngpix-0.png') no-repeat center center;
+            background-size: contain;
+            z-index: 5;
+        }
+
+        #alien-boss {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: url('https://www.freepnglogos.com/uploads/alien-png/alien-png-transparent-images-png-only-22.png') no-repeat center center;
+            background-size: contain;
+            z-index: 8;
+            transition: top 1s ease-in-out;
+        }
+
+        .alien-health {
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .alien-health-bar {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, var(--danger), var(--secondary));
+            transition: width 0.3s;
+        }
+
+        #math-panel {
+            position: absolute;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 20;
+            width: 80%;
+            max-width: 400px;
+            border: 2px solid var(--info);
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.5);
+        }
+
+        #math-question {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        #math-answer {
+            width: 80%;
+            padding: 12px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid var(--info);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        #math-submit {
+            padding: 10px 25px;
+            background: var(--primary);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        #math-submit:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(67, 97, 238, 0.4);
+        }
+
+        #boss-dialog {
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            max-width: 300px;
+            text-align: center;
+            z-index: 30;
+            border: 2px solid var(--danger);
+            display: none;
+        }
+
+        .power-up {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 7;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        #level-complete {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            flex-direction: column;
+        }
+
+        #level-complete h1 {
+            color: var(--success);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #next-level-btn {
+            padding: 12px 30px;
+            background: var(--primary);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #next-level-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(67, 97, 238, 0.4);
+        }
+
+        #game-over {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            flex-direction: column;
+        }
+
+        #game-over h1 {
+            color: var(--danger);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #restart-btn {
+            padding: 12px 30px;
+            background: var(--danger);
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #restart-btn:hover {
+            background: #e63336;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(249, 65, 68, 0.4);
+        }
+
+        .explosion {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: url('https://www.freepnglogos.com/uploads/explosion-png/explosion-png-transparent-images-png-only-27.png') no-repeat center center;
+            background-size: contain;
+            z-index: 15;
+            animation: explode 0.5s forwards;
+        }
+
+        @keyframes explode {
+            0% { transform: scale(0.5); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        #shake-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            #math-panel {
+                bottom: 150px;
+                width: 90%;
+            }
+            
+            #math-question {
+                font-size: 1.5rem;
+            }
+            
+            #astronaut {
+                width: 60px;
+                height: 60px;
+                bottom: 120px;
+            }
+            
+            #rocket {
+                width: 90px;
+                height: 90px;
+            }
+            
+            #alien-boss {
+                width: 120px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="hud">
+            <div class="hud-item">
+                <span class="hud-icon">🚀</span>
+                <span id="level-display">Level 1</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-icon">❤️</span>
+                <span id="lives-display">3</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-icon">⭐</span>
+                <span id="points-display">0/5</span>
+            </div>
+        </div>
+        
+        <div id="power-bar">
+            <div id="power-fill"></div>
+        </div>
+        
+        <div id="astronaut"></div>
+        <div id="rocket"></div>
+        <div id="alien-boss">
+            <div class="alien-health">
+                <div class="alien-health-bar"></div>
+            </div>
+        </div>
+        
+        <div id="boss-dialog">
+            <p>HAHAHA! Jawabanmu salah! Aku akan mengguncang roketmu!</p>
+        </div>
+        
+        <div id="math-panel">
+            <div id="math-question">5 × 5 = ?</div>
+            <input type="number" id="math-answer" placeholder="Masukkan jawaban...">
+            <button id="math-submit">Submit</button>
+        </div>
+        
+        <div id="level-complete">
+            <h1>Level Selesai!<br>Kamu Mengalahkan Bos Alien!</h1>
+            <button id="next-level-btn">Lanjut ke Level Berikutnya</button>
+        </div>
+        
+        <div id="game-over">
+            <h1>Game Over!<br>Bos Alien Menang!</h1>
+            <button id="restart-btn">Main Lagi</button>
+        </div>
+        
+        <div id="shake-container"></div>
+    </div>
+    
+    <audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+    <audio id="wrong-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
+    <audio id="powerup-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-extra-bonus-in-a-video-game-2045.mp3" preload="auto"></audio>
+    <audio id="alien-laugh" src="https://assets.mixkit.co/sfx/preview/mixkit-creature-laugh-402.mp3" preload="auto"></audio>
+    <audio id="explosion-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-explosion-impact-1684.mp3" preload="auto"></audio>
+    <audio id="rocket-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-rocket-whoosh-1714.mp3" preload="auto"></audio>
+    <audio id="boss-music" src="https://assets.mixkit.co/sfx/preview/mixkit-ominous-drums-227.mp3" preload="auto"></audio>
+    
+    <script>
+        // Game state
+        const gameState = {
+            level: 1,
+            lives: 3,
+            points: 0,
+            targetPoints: 5,
+            power: 0,
+            maxPower: 100,
+            bossHealth: 100,
+            isBossActive: false,
+            isPaused: false,
+            powerUps: [
+                { type: 'time', icon: '⏱️', effect: 'Waktu tambahan' },
+                { type: 'hint', icon: '💡', effect: 'Petunjuk soal' },
+                { type: 'health', icon: '❤️', effect: 'Nyawa tambahan' }
+            ],
+            activePowerUps: []
+        };
+        
+        // DOM elements
+        const elements = {
+            gameContainer: document.getElementById('game-container'),
+            hud: document.getElementById('hud'),
+            levelDisplay: document.getElementById('level-display'),
+            livesDisplay: document.getElementById('lives-display'),
+            pointsDisplay: document.getElementById('points-display'),
+            powerBar: document.getElementById('power-bar'),
+            powerFill: document.getElementById('power-fill'),
+            astronaut: document.getElementById('astronaut'),
+            rocket: document.getElementById('rocket'),
+            alienBoss: document.getElementById('alien-boss'),
+            alienHealthBar: document.querySelector('.alien-health-bar'),
+            bossDialog: document.getElementById('boss-dialog'),
+            mathPanel: document.getElementById('math-panel'),
+            mathQuestion: document.getElementById('math-question'),
+            mathAnswer: document.getElementById('math-answer'),
+            mathSubmit: document.getElementById('math-submit'),
+            levelComplete: document.getElementById('level-complete'),
+            nextLevelBtn: document.getElementById('next-level-btn'),
+            gameOver: document.getElementById('game-over'),
+            restartBtn: document.getElementById('restart-btn'),
+            shakeContainer: document.getElementById('shake-container'),
+            correctSound: document.getElementById('correct-sound'),
+            wrongSound: document.getElementById('wrong-sound'),
+            powerupSound: document.getElementById('powerup-sound'),
+            alienLaugh: document.getElementById('alien-laugh'),
+            explosionSound: document.getElementById('explosion-sound'),
+            rocketSound: document.getElementById('rocket-sound'),
+            bossMusic: document.getElementById('boss-music')
+        };
+        
+        // Initialize game
+        function initGame() {
+            updateUI();
+            generateMathQuestion();
+            setupEventListeners();
+            startLevel();
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            elements.mathSubmit.addEventListener('click', checkAnswer);
+            elements.mathAnswer.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkAnswer();
+            });
+            
+            elements.nextLevelBtn.addEventListener('click', nextLevel);
+            elements.restartBtn.addEventListener('click', restartGame);
+            
+            // Astronaut click animation
+            elements.astronaut.addEventListener('click', () => {
+                elements.astronaut.style.transform = 'translateX(-50%) scale(1.1)';
+                setTimeout(() => {
+                    elements.astronaut.style.transform = 'translateX(-50%) scale(1)';
+                }, 200);
+            });
+        }
+        
+        // Update UI
+        function updateUI() {
+            elements.levelDisplay.textContent = `Level ${gameState.level}`;
+            elements.livesDisplay.textContent = gameState.lives;
+            elements.pointsDisplay.textContent = `${gameState.points}/${gameState.targetPoints}`;
+            elements.powerFill.style.width = `${gameState.power}%`;
+            
+            if (gameState.isBossActive) {
+                elements.alienHealthBar.style.width = `${gameState.bossHealth}%`;
+            }
+        }
+        
+        // Start level
+        function startLevel() {
+            gameState.points = 0;
+            gameState.power = 0;
+            gameState.bossHealth = 100;
+            gameState.isBossActive = false;
+            
+            // Reset boss position
+            elements.alienBoss.style.top = '-200px';
+            elements.bossDialog.style.display = 'none';
+            
+            updateUI();
+            generateMathQuestion();
+            
+            // Spawn power-ups randomly
+            setInterval(spawnPowerUp, 10000);
+        }
+        
+        // Generate math question
+        function generateMathQuestion() {
+            const num1 = Math.floor(Math.random() * (2 + gameState.level * 2)) + 1;
+            const num2 = Math.floor(Math.random() * (2 + gameState.level * 2)) + 1;
+            const answer = num1 * num2;
+            
+            elements.mathQuestion.textContent = `${num1} × ${num2} = ?`;
+            elements.mathAnswer.value = '';
+            elements.mathQuestion.dataset.answer = answer;
+            elements.mathAnswer.focus();
+        }
+        
+        // Check answer
+        function checkAnswer() {
+            const userAnswer = parseInt(elements.mathAnswer.value);
+            const correctAnswer = parseInt(elements.mathQuestion.dataset.answer);
+            
+            if (isNaN(userAnswer)) return;
+            
+            if (userAnswer === correctAnswer) {
+                // Correct answer
+                elements.correctSound.currentTime = 0;
+                elements.correctSound.play();
+                
+                // Increase power
+                gameState.power += 20;
+                if (gameState.power > gameState.maxPower) {
+                    gameState.power = gameState.maxPower;
+                }
+                
+                // Add point
+                gameState.points++;
+                
+                // Check if boss should appear
+                if (gameState.points >= gameState.targetPoints && !gameState.isBossActive) {
+                    startBossBattle();
+                    return;
+                }
+                
+                // Check if level complete
+                if (gameState.points >= gameState.targetPoints && gameState.bossHealth <= 0) {
+                    completeLevel();
+                    return;
+                }
+                
+                // Random chance for power-up
+                if (Math.random() < 0.3) {
+                    spawnPowerUp();
+                }
+                
+                updateUI();
+                generateMathQuestion();
+            } else {
+                // Wrong answer
+                elements.wrongSound.currentTime = 0;
+                elements.wrongSound.play();
+                elements.mathAnswer.value = '';
+                
+                // Lose power
+                gameState.power = Math.max(0, gameState.power - 10);
+                
+                // If boss is active, boss attacks
+                if (gameState.isBossActive) {
+                    bossAttack();
+                } else {
+                    // Small penalty when boss is not active
+                    gameState.lives--;
+                    
+                    if (gameState.lives <= 0) {
+                        gameOver();
+                    }
+                }
+                
+                updateUI();
+            }
+        }
+        
+        // Start boss battle
+        function startBossBattle() {
+            gameState.isBossActive = true;
+            elements.bossMusic.currentTime = 0;
+            elements.bossMusic.loop = true;
+            elements.bossMusic.play();
+            
+            // Boss enters screen
+            elements.alienBoss.style.top = '50px';
+            
+            // Show boss dialog
+            elements.bossDialog.style.display = 'block';
+            elements.bossDialog.innerHTML = `<p>AKU BOS ALIEN LEVEL ${gameState.level}! KALAU KAU TIDAK BISA JAWAB SOALKU, AKU HANCURKAN ROKETMU!</p>`;
+            
+            setTimeout(() => {
+                elements.bossDialog.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Boss attack
+        function bossAttack() {
+            elements.alienLaugh.currentTime = 0;
+            elements.alienLaugh.play();
+            
+            // Show boss dialog
+            elements.bossDialog.style.display = 'block';
+            elements.bossDialog.innerHTML = '<p>HAHAHA! Jawabanmu salah! Aku akan mengguncang roketmu!</p>';
+            
+            // Shake animation
+            shakeScreen();
+            
+            // Lose life
+            gameState.lives--;
+            
+            if (gameState.lives <= 0) {
+                gameOver();
+            }
+            
+            setTimeout(() => {
+                elements.bossDialog.style.display = 'none';
+            }, 2000);
+            
+            updateUI();
+        }
+        
+        // Attack boss
+        function attackBoss() {
+            if (gameState.power >= 50) {
+                // Use 50 power to attack
+                gameState.power -= 50;
+                
+                // Boss takes damage
+                gameState.bossHealth -= 20 + (gameState.level * 5);
+                
+                // Create explosion effect
+                const explosion = document.createElement('div');
+                explosion.className = 'explosion';
+                explosion.style.left = `${elements.alienBoss.offsetLeft - 10}px`;
+                explosion.style.top = `${elements.alienBoss.offsetTop - 10}px`;
+                elements.gameContainer.appendChild(explosion);
+                
+                elements.explosionSound.currentTime = 0;
+                elements.explosionSound.play();
+                
+                setTimeout(() => {
+                    explosion.remove();
+                }, 500);
+                
+                // Check if boss defeated
+                if (gameState.bossHealth <= 0) {
+                    gameState.bossHealth = 0;
+                    defeatBoss();
+                }
+                
+                updateUI();
+            }
+        }
+        
+        // Defeat boss
+        function defeatBoss() {
+            elements.bossMusic.pause();
+            elements.explosionSound.currentTime = 0;
+            elements.explosionSound.play();
+            
+            // Big explosion
+            const explosion = document.createElement('div');
+            explosion.className = 'explosion';
+            explosion.style.width = '200px';
+            explosion.style.height = '200px';
+            explosion.style.left = `${elements.alienBoss.offsetLeft - 50}px`;
+            explosion.style.top = `${elements.alienBoss.offsetTop - 50}px`;
+            elements.gameContainer.appendChild(explosion);
+            
+            elements.alienBoss.style.top = '-200px';
+            
+            setTimeout(() => {
+                explosion.remove();
+                completeLevel();
+            }, 500);
+        }
+        
+        // Spawn power-up
+        function spawnPowerUp() {
+            if (gameState.isPaused || gameState.isBossActive) return;
+            
+            const powerUp = gameState.powerUps[Math.floor(Math.random() * gameState.powerUps.length)];
+            const powerUpElement = document.createElement('div');
+            powerUpElement.className = 'power-up';
+            powerUpElement.innerHTML = powerUp.icon;
+            powerUpElement.dataset.type = powerUp.type;
+            powerUpElement.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+            powerUpElement.style.top = `${Math.random() * (window.innerHeight - 200) + 100}px`;
+            
+            powerUpElement.addEventListener('click', () => {
+                collectPowerUp(powerUp.type);
+                powerUpElement.remove();
+            });
+            
+            elements.gameContainer.appendChild(powerUpElement);
+            
+            // Remove power-up after some time
+            setTimeout(() => {
+                if (powerUpElement.parentNode) {
+                    powerUpElement.remove();
+                }
+            }, 5000);
+        }
+        
+        // Collect power-up
+        function collectPowerUp(type) {
+            elements.powerupSound.currentTime = 0;
+            elements.powerupSound.play();
+            
+            switch (type) {
+                case 'time':
+                    // Add extra time (not implemented in this version)
+                    showTempMessage('⏱️ Waktu Ditambah!');
+                    break;
+                case 'hint':
+                    // Show hint (not implemented in this version)
+                    showTempMessage('💡 Petunjuk Didapat!');
+                    break;
+                case 'health':
+                    gameState.lives = Math.min(gameState.lives + 1, 5);
+                    showTempMessage('❤️ Nyawa Bertambah!');
+                    break;
+            }
+            
+            updateUI();
+        }
+        
+        // Show temporary message
+        function showTempMessage(message) {
+            const msgElement = document.createElement('div');
+            msgElement.style.position = 'absolute';
+            msgElement.style.top = '50%';
+            msgElement.style.left = '50%';
+            msgElement.style.transform = 'translate(-50%, -50%)';
+            msgElement.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            msgElement.style.padding = '10px 20px';
+            msgElement.style.borderRadius = '10px';
+            msgElement.style.border = '2px solid var(--success)';
+            msgElement.style.fontSize = '1.2rem';
+            msgElement.style.zIndex = '200';
+            msgElement.textContent = message;
+            
+            elements.gameContainer.appendChild(msgElement);
+            
+            setTimeout(() => {
+                msgElement.remove();
+            }, 2000);
+        }
+        
+        // Shake screen
+        function shakeScreen() {
+            elements.shakeContainer.style.animation = 'none';
+            void elements.shakeContainer.offsetWidth; // Trigger reflow
+            elements.shakeContainer.style.animation = 'shake 0.5s linear';
+            
+            // Rocket sound
+            elements.rocketSound.currentTime = 0;
+            elements.rocketSound.play();
+            
+            // Remove shake animation after it completes
+            setTimeout(() => {
+                elements.shakeContainer.style.animation = 'none';
+            }, 500);
+        }
+        
+        // Complete level
+        function completeLevel() {
+            gameState.isPaused = true;
+            elements.levelComplete.style.display = 'flex';
+        }
+        
+        // Next level
+        function nextLevel() {
+            gameState.level++;
+            gameState.targetPoints = 5 + Math.floor(gameState.level / 2);
+            gameState.lives = Math.min(gameState.lives + 1, 5); // Bonus life for next level
+            
+            elements.levelComplete.style.display = 'none';
+            gameState.isPaused = false;
+            startLevel();
+        }
+        
+        // Game over
+        function gameOver() {
+            gameState.isPaused = true;
+            elements.bossMusic.pause();
+            elements.gameOver.style.display = 'flex';
+        }
+        
+        // Restart game
+        function restartGame() {
+            gameState.level = 1;
+            gameState.lives = 3;
+            gameState.targetPoints = 5;
+            
+            elements.gameOver.style.display = 'none';
+            gameState.isPaused = false;
+            startLevel();
+        }
+        
+        // Start the game
+        window.addEventListener('load', initGame);
+        
+        // Add shake animation to styles
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0% { transform: translate(0, 0); }
+                10% { transform: translate(-5px, -5px); }
+                20% { transform: translate(5px, 5px); }
+                30% { transform: translate(-5px, 0); }
+                40% { transform: translate(5px, -5px); }
+                50% { transform: translate(-5px, 5px); }
+                60% { transform: translate(5px, 0); }
+                70% { transform: translate(-5px, -5px); }
+                80% { transform: translate(5px, 5px); }
+                90% { transform: translate(-5px, 0); }
+                100% { transform: translate(0, 0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

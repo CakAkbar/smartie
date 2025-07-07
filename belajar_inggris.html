@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn English - Fun and Exciting!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --dark-color: #292F36;
+            --light-color: #F7FFF7;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chilanka', cursive, sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .language-nav {
+            background-color: var(--accent-color);
+            border-radius: 15px;
+            padding: 5px;
+        }
+        
+        .materi-card {
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            height: 100%;
+            background-color: white;
+        }
+        
+        .materi-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        
+        .materi-card .card-header {
+            font-weight: bold;
+            font-size: 1.3rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border-bottom: none;
+        }
+        
+        .category-img {
+            height: 150px;
+            object-fit: contain;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .category-img:hover {
+            transform: scale(1.1);
+        }
+        
+        .letter-card {
+            width: 70px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 15px !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .letter-card:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+        
+        .item-card {
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            height: 100%;
+            position: relative;
+            background-color: white;
+            border: 3px solid transparent;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .item-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            border-color: var(--accent-color);
+        }
+        
+        .item-img {
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .item-img:hover {
+            transform: scale(1.1);
+        }
+        
+        .nav-pills .nav-link {
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 50px !important;
+            color: var(--dark-color);
+            background-color: white;
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+            font-weight: bold;
+            color: white;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .tab-content {
+            padding: 25px 0;
+        }
+        
+        .audio-btn {
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--primary-color);
+            background-color: var(--accent-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .audio-btn:hover {
+            color: white;
+            background-color: var(--primary-color);
+            transform: scale(1.1) rotate(10deg);
+        }
+        
+        .sentence {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid var(--secondary-color);
+        }
+        
+        .vowel-card {
+            background-color: #FFD166;
+            color: #333;
+        }
+        
+        .consonant-card {
+            background-color: #06D6A0;
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #FF5252;
+            border-color: #FF5252;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(255,107,107,0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-lg {
+            padding: 15px 30px;
+            font-size: 1.3rem;
+            margin: 20px 0;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .bounce-animation {
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold" href="index.html">
+                <i class="fas fa-arrow-left me-2"></i>Back
+            </a>
+            <div class="ms-auto">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-language me-2"></i>Language
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="belajar_inggris.html">bahasa inggris</a></li>
+                            <li><a class="dropdown-item" href="belajar_indonesia.html">Bahasa Indonesia</a></li>
+                            <li><a class="dropdown-item" href="belajar_madura.html">Basa Madura</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+        <div class="container text-center text-white">
+            <h1 class="fw-bold display-4">Learn English</h1>
+            <p class="lead fs-3">Fun, Exciting, and Colorful!</p>
+            <div class="mt-4">
+            </div>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <section class="py-5">
+        <div class="container">
+            <ul class="nav nav-pills mb-4 justify-content-center" id="materiTab">
+                <li class="nav-item">
+                    <a class="nav-link active" id="letters-tab" data-bs-toggle="pill" href="#letters">
+                        <i class="fas fa-font me-2"></i>Letters
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="numbers-tab" data-bs-toggle="pill" href="#numbers">
+                        <i class="fas fa-sort-numeric-up me-2"></i>Numbers
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="colors-tab" data-bs-toggle="pill" href="#colors">
+                        <i class="fas fa-palette me-2"></i>Colors
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="fruits-tab" data-bs-toggle="pill" href="#fruits">
+                        <i class="fas fa-apple-alt me-2"></i>Fruits & Vegetables
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="materiTabContent">
+                <!-- Letters -->
+                <div class="tab-pane fade show active" id="letters">
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary">English Alphabet</h3>
+                        <p class="fs-5">Learn letters from A to Z in a fun way!</p>
+                        <button class="btn btn-primary" onclick="playAlphabetSong()">
+                            <i class="fas fa-music me-2"></i>Alphabet Song
+                        </button>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h4 class="text-center mb-4" style="color: var(--primary-color);">
+                            <i class="fas fa-star me-2"></i>Vowels
+                        </h4>
+                        <div class="d-flex flex-wrap justify-content-center">
+                            <div class="card letter-card vowel-card bounce-animation" onclick="playAudio('A', 'Letter A')">
+                                <div>A</div>
+                            </div>
+                            <div class="card letter-card vowel-card bounce-animation" onclick="playAudio('E', 'Letter E')">
+                                <div>E</div>
+                            </div>
+                            <div class="card letter-card vowel-card bounce-animation" onclick="playAudio('I', 'Letter I')">
+                                <div>I</div>
+                            </div>
+                            <div class="card letter-card vowel-card bounce-animation" onclick="playAudio('O', 'Letter O')">
+                                <div>O</div>
+                            </div>
+                            <div class="card letter-card vowel-card bounce-animation" onclick="playAudio('U', 'Letter U')">
+                                <div>U</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h4 class="text-center mb-4" style="color: var(--secondary-color);">
+                            <i class="fas fa-star me-2"></i>Consonants
+                        </h4>
+                        <div class="d-flex flex-wrap justify-content-center">
+                            <div class="card letter-card consonant-card" onclick="playAudio('B', 'Letter B')">B</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('C', 'Letter C')">C</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('D', 'Letter D')">D</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('F', 'Letter F')">F</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('G', 'Letter G')">G</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('H', 'Letter H')">H</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('J', 'Letter J')">J</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('K', 'Letter K')">K</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('L', 'Letter L')">L</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('M', 'Letter M')">M</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('N', 'Letter N')">N</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('P', 'Letter P')">P</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('Q', 'Letter Q')">Q</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('R', 'Letter R')">R</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('S', 'Letter S')">S</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('T', 'Letter T')">T</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('V', 'Letter V')">V</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('W', 'Letter W')">W</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('X', 'Letter X')">X</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('Y', 'Letter Y')">Y</div>
+                            <div class="card letter-card consonant-card" onclick="playAudio('Z', 'Letter Z')">Z</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vocabulary and Sentences -->
+                    <div class="mt-5">
+                        <h4 class="text-center mb-4" style="color: var(--primary-color);">
+                            <i class="fas fa-book me-2"></i>Vocabulary and Sentences
+                        </h4>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">👨</div>
+                                    <h5>Father</h5>
+                                    <p class="text-muted">/ˈfɑː.ðər/</p>
+                                    <div class="sentence">
+                                        "Father goes to work every morning."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('father', 'Father')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">👩</div>
+                                    <h5>Mother</h5>
+                                    <p class="text-muted">/ˈmʌð.ər/</p>
+                                    <div class="sentence">
+                                        "Mother is cooking in the kitchen."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('mother', 'Mother')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">👶</div>
+                                    <h5>Child</h5>
+                                    <p class="text-muted">/tʃaɪld/</p>
+                                    <div class="sentence">
+                                        "The child is playing with a ball."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('child', 'Child')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">🏠</div>
+                                    <h5>House</h5>
+                                    <p class="text-muted">/haʊs/</p>
+                                    <div class="sentence">
+                                        "We live in a big house."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('house', 'House')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">🏫</div>
+                                    <h5>School</h5>
+                                    <p class="text-muted">/skuːl/</p>
+                                    <div class="sentence">
+                                        "I go to school every morning."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('school', 'School')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">📚</div>
+                                    <h5>Book</h5>
+                                    <p class="text-muted">/bʊk/</p>
+                                    <div class="sentence">
+                                        "That book is very interesting."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('book', 'Book')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Numbers -->
+                <div class="tab-pane fade" id="numbers">
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary">Numbers 1-20</h3>
+                        <p class="fs-5">Learn to count in English in a fun way!</p>
+                        <button class="btn btn-primary" onclick="playNumberSong()">
+                            <i class="fas fa-music me-2"></i>Number Song
+                        </button>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣</div>
+                                <h5>One</h5>
+                                <p class="text-muted">/wʌn/</p>
+                                <div class="sentence">
+                                    "I have one pencil."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('one', 'One')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">2️⃣</div>
+                                <h5>Two</h5>
+                                <p class="text-muted">/tuː/</p>
+                                <div class="sentence">
+                                    "There are two apples on the table."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('two', 'Two')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">3️⃣</div>
+                                <h5>Three</h5>
+                                <p class="text-muted">/θriː/</p>
+                                <div class="sentence">
+                                    "The cat has three kittens."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('three', 'Three')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">4️⃣</div>
+                                <h5>Four</h5>
+                                <p class="text-muted">/fɔːr/</p>
+                                <div class="sentence">
+                                    "There are four chairs in the room."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('four', 'Four')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">5️⃣</div>
+                                <h5>Five</h5>
+                                <p class="text-muted">/faɪv/</p>
+                                <div class="sentence">
+                                    "I have five fingers on my hand."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('five', 'Five')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">6️⃣</div>
+                                <h5>Six</h5>
+                                <p class="text-muted">/sɪks/</p>
+                                <div class="sentence">
+                                    "An ant has six legs."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('six', 'Six')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">7️⃣</div>
+                                <h5>Seven</h5>
+                                <p class="text-muted">/ˈsev.ən/</p>
+                                <div class="sentence">
+                                    "A week has seven days."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('seven', 'Seven')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">8️⃣</div>
+                                <h5>Eight</h5>
+                                <p class="text-muted">/eɪt/</p>
+                                <div class="sentence">
+                                    "An octopus has eight tentacles."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('eight', 'Eight')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">9️⃣</div>
+                                <h5>Nine</h5>
+                                <p class="text-muted">/naɪn/</p>
+                                <div class="sentence">
+                                    "I have nine marbles."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('nine', 'Nine')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">🔟</div>
+                                <h5>Ten</h5>
+                                <p class="text-muted">/ten/</p>
+                                <div class="sentence">
+                                    "There are ten fingers on both hands."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('ten', 'Ten')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣1️⃣</div>
+                                <h5>Eleven</h5>
+                                <p class="text-muted">/ɪˈlev.ən/</p>
+                                <div class="sentence">
+                                    "The clock shows eleven o'clock."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('eleven', 'Eleven')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣2️⃣</div>
+                                <h5>Twelve</h5>
+                                <p class="text-muted">/twelv/</p>
+                                <div class="sentence">
+                                    "A year has twelve months."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('twelve', 'Twelve')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣3️⃣</div>
+                                <h5>Thirteen</h5>
+                                <p class="text-muted">/ˌθɜːˈtiːn/</p>
+                                <div class="sentence">
+                                    "This is the thirteenth day."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('thirteen', 'Thirteen')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣4️⃣</div>
+                                <h5>Fourteen</h5>
+                                <p class="text-muted">/ˌfɔːˈtiːn/</p>
+                                <div class="sentence">
+                                    "I was born on the fourteenth."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('fourteen', 'Fourteen')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣5️⃣</div>
+                                <h5>Fifteen</h5>
+                                <p class="text-muted">/ˌfɪfˈtiːn/</p>
+                                <div class="sentence">
+                                    "The event starts at fifteen hundred."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('fifteen', 'Fifteen')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣6️⃣</div>
+                                <h5>Sixteen</h5>
+                                <p class="text-muted">/ˌsɪkˈstiːn/</p>
+                                <div class="sentence">
+                                    "I have sixteen colored pencils."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('sixteen', 'Sixteen')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣7️⃣</div>
+                                <h5>Seventeen</h5>
+                                <p class="text-muted">/ˌsev.ənˈtiːn/</p>
+                                <div class="sentence">
+                                    "I will be seventeen years old."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('seventeen', 'Seventeen')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣8️⃣</div>
+                                <h5>Eighteen</h5>
+                                <p class="text-muted">/ˌeɪˈtiːn/</p>
+                                <div class="sentence">
+                                    "You must be eighteen to vote."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('eighteen', 'Eighteen')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣9️⃣</div>
+                                <h5>Nineteen</h5>
+                                <p class="text-muted">/ˌnaɪnˈtiːn/</p>
+                                <div class="sentence">
+                                    "This is the year nineteen twenty-three."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('nineteen', 'Nineteen')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">2️⃣0️⃣</div>
+                                <h5>Twenty</h5>
+                                <p class="text-muted">/ˈtwen.ti/</p>
+                                <div class="sentence">
+                                    "There are twenty students in the class."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('twenty', 'Twenty')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colors -->
+                <div class="tab-pane fade" id="colors">
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary">Colors</h3>
+                        <p class="fs-5">Learn color names in English in a fun way!</p>
+                        <button class="btn btn-primary" onclick="playColorSong()">
+                            <i class="fas fa-music me-2"></i>Color Song
+                        </button>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FF0000; color: white;">
+                                <div class="fs-1">🔴</div>
+                                <h5>Red</h5>
+                                <p class="text-white">/red/</p>
+                                <div class="sentence">
+                                    "The apple is red."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('red', 'Red')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #0000FF; color: white;">
+                                <div class="fs-1">🔵</div>
+                                <h5>Blue</h5>
+                                <p class="text-white">/bluː/</p>
+                                <div class="sentence">
+                                    "The ocean looks blue."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('blue', 'Blue')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFFF00;">
+                                <div class="fs-1">🟡</div>
+                                <h5>Yellow</h5>
+                                <p>/ˈjel.əʊ/</p>
+                                <div class="sentence">
+                                    "The sun is yellow."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('yellow', 'Yellow')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #008000; color: white;">
+                                <div class="fs-1">🟢</div>
+                                <h5>Green</h5>
+                                <p class="text-white">/ɡriːn/</p>
+                                <div class="sentence">
+                                    "Leaves are usually green."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('green', 'Green')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFA500;">
+                                <div class="fs-1">🟠</div>
+                                <h5>Orange</h5>
+                                <p>/ˈɒr.ɪndʒ/</p>
+                                <div class="sentence">
+                                    "Oranges are orange."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('orange', 'Orange')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #800080; color: white;">
+                                <div class="fs-1">🟣</div>
+                                <h5>Purple</h5>
+                                <p class="text-white">/ˈpɜː.pəl/</p>
+                                <div class="sentence">
+                                    "Some eggplants are purple."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('purple', 'Purple')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFC0CB;">
+                                <div class="fs-1">💗</div>
+                                <h5>Pink</h5>
+                                <p>/pɪŋk/</p>
+                                <div class="sentence">
+                                    "The flower is pink."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('pink', 'Pink')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #A52A2A; color: white;">
+                                <div class="fs-1">🟤</div>
+                                <h5>Brown</h5>
+                                <p class="text-white">/braʊn/</p>
+                                <div class="sentence">
+                                    "Chocolate is brown."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('brown', 'Brown')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #000000; color: white;">
+                                <div class="fs-1">⚫</div>
+                                <h5>Black</h5>
+                                <p class="text-white">/blæk/</p>
+                                <div class="sentence">
+                                    "The night looks black."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('black', 'Black')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFFFFF; border: 1px solid #ddd;">
+                                <div class="fs-1">⚪</div>
+                                <h5>White</h5>
+                                <p>/waɪt/</p>
+                                <div class="sentence">
+                                    "Snow is white."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('white', 'White')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #808080; color: white;">
+                                <div class="fs-1">🔘</div>
+                                <h5>Gray</h5>
+                                <p class="text-white">/ɡreɪ/</p>
+                                <div class="sentence">
+                                    "Elephants are gray."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('gray', 'Gray')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFD700;">
+                                <div class="fs-1">🌟</div>
+                                <h5>Gold</h5>
+                                <p>/ɡəʊld/</p>
+                                <div class="sentence">
+                                    "Gold medals are very valuable."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('gold', 'Gold')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fruits & Vegetables -->
+                <div class="tab-pane fade" id="fruits">
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary">Fruits & Vegetables</h3>
+                        <p class="fs-5">Learn fruit and vegetable names in English in a fun way!</p>
+                        <button class="btn btn-primary" onclick="playFruitSong()">
+                            <i class="fas fa-music me-2"></i>Fruit Song
+                        </button>
+                    </div>
+                    
+                    <ul class="nav nav-tabs mb-4" id="foodTab">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="fruits-tab" data-bs-toggle="tab" href="#fruits-list">
+                                <i class="fas fa-apple-alt me-2"></i>Fruits
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="vegetables-tab" data-bs-toggle="tab" href="#vegetables-list">
+                                <i class="fas fa-carrot me-2"></i>Vegetables
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="foodTabContent">
+                        <!-- Fruits -->
+                        <div class="tab-pane fade show active" id="fruits-list">
+                            <div class="row g-4">
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍎</div>
+                                        <h5>Apple</h5>
+                                        <p class="text-muted">/ˈæp.əl/</p>
+                                        <div class="sentence">
+                                            "I like to eat red apples."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('apple', 'Apple')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍌</div>
+                                        <h5>Banana</h5>
+                                        <p class="text-muted">/bəˈnɑː.nə/</p>
+                                        <div class="sentence">
+                                            "Bananas are good for digestion."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('banana', 'Banana')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍊</div>
+                                        <h5>Orange</h5>
+                                        <p class="text-muted">/ˈɒr.ɪndʒ/</p>
+                                        <div class="sentence">
+                                            "Oranges contain vitamin C."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('orange fruit', 'Orange')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍓</div>
+                                        <h5>Strawberry</h5>
+                                        <p class="text-muted">/ˈstrɔː.bər.i/</p>
+                                        <div class="sentence">
+                                            "Strawberries are red and sweet."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('strawberry', 'Strawberry')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍇</div>
+                                        <h5>Grape</h5>
+                                        <p class="text-muted">/ɡreɪp/</p>
+                                        <div class="sentence">
+                                            "Grapes can be green or purple."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('grape', 'Grape')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍉</div>
+                                        <h5>Watermelon</h5>
+                                        <p class="text-muted">/ˈwɔː.təˌmel.ən/</p>
+                                        <div class="sentence">
+                                            "Watermelon is very refreshing in hot weather."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('watermelon', 'Watermelon')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍍</div>
+                                        <h5>Pineapple</h5>
+                                        <p class="text-muted">/ˈpaɪnˌæp.əl/</p>
+                                        <div class="sentence">
+                                            "Pineapple has a sweet and sour taste."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('pineapple', 'Pineapple')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥭</div>
+                                        <h5>Mango</h5>
+                                        <p class="text-muted">/ˈmæŋ.ɡəʊ/</p>
+                                        <div class="sentence">
+                                            "Mangoes are very delicious."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('mango', 'Mango')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍐</div>
+                                        <h5>Pear</h5>
+                                        <p class="text-muted">/peər/</p>
+                                        <div class="sentence">
+                                            "Pears are shaped like light bulbs."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('pear', 'Pear')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍑</div>
+                                        <h5>Peach</h5>
+                                        <p class="text-muted">/piːtʃ/</p>
+                                        <div class="sentence">
+                                            "Peaches have fuzzy skin."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('peach', 'Peach')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍒</div>
+                                        <h5>Cherry</h5>
+                                        <p class="text-muted">/ˈtʃer.i/</p>
+                                        <div class="sentence">
+                                            "Cherries are small and red."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('cherry', 'Cherry')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥝</div>
+                                        <h5>Kiwi</h5>
+                                        <p class="text-muted">/ˈkiː.wiː/</p>
+                                        <div class="sentence">
+                                            "Kiwis have many small seeds."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('kiwi', 'Kiwi')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Vegetables -->
+                        <div class="tab-pane fade" id="vegetables-list">
+                            <div class="row g-4">
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥕</div>
+                                        <h5>Carrot</h5>
+                                        <p class="text-muted">/ˈkær.ət/</p>
+                                        <div class="sentence">
+                                            "Carrots are good for eye health."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('carrot', 'Carrot')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥔</div>
+                                        <h5>Potato</h5>
+                                        <p class="text-muted">/pəˈteɪ.təʊ/</p>
+                                        <div class="sentence">
+                                            "Potatoes can be fried or boiled."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('potato', 'Potato')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍅</div>
+                                        <h5>Tomato</h5>
+                                        <p class="text-muted">/təˈmɑː.təʊ/</p>
+                                        <div class="sentence">
+                                            "Tomatoes can be made into pasta sauce."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('tomato', 'Tomato')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥦</div>
+                                        <h5>Broccoli</h5>
+                                        <p class="text-muted">/ˈbrɒk.əl.i/</p>
+                                        <div class="sentence">
+                                            "Broccoli looks like small trees."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('broccoli', 'Broccoli')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🧅</div>
+                                        <h5>Onion</h5>
+                                        <p class="text-muted">/ˈʌn.jən/</p>
+                                        <div class="sentence">
+                                            "Onions make your eyes water."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('onion', 'Onion')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥒</div>
+                                        <h5>Cucumber</h5>
+                                        <p class="text-muted">/ˈkjuː.kʌm.bər/</p>
+                                        <div class="sentence">
+                                            "Cucumbers are fresh for salads."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('cucumber', 'Cucumber')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🌽</div>
+                                        <h5>Corn</h5>
+                                        <p class="text-muted">/kɔːn/</p>
+                                        <div class="sentence">
+                                            "Corn can be boiled or grilled."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('corn', 'Corn')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍆</div>
+                                        <h5>Eggplant</h5>
+                                        <p class="text-muted">/ˈeɡ.plɑːnt/</p>
+                                        <div class="sentence">
+                                            "Purple eggplants are often used in dishes."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('eggplant', 'Eggplant')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥬</div>
+                                        <h5>Cabbage</h5>
+                                        <p class="text-muted">/ˈkæb.ɪdʒ/</p>
+                                        <div class="sentence">
+                                            "Cabbage can be used for soup or salad."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('cabbage', 'Cabbage')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🫑</div>
+                                        <h5>Bell Pepper</h5>
+                                        <p class="text-muted">/ˈbel ˌpep.ər/</p>
+                                        <div class="sentence">
+                                            "Bell peppers come in red, yellow, and green."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('bell pepper', 'Bell pepper')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🧄</div>
+                                        <h5>Garlic</h5>
+                                        <p class="text-muted">/ˈɡɑː.lɪk/</p>
+                                        <div class="sentence">
+                                            "Garlic adds flavor to dishes."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('garlic', 'Garlic')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍄</div>
+                                        <h5>Mushroom</h5>
+                                        <p class="text-muted">/ˈmʌʃ.ruːm/</p>
+                                        <div class="sentence">
+                                            "There are many types of mushrooms."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('mushroom', 'Mushroom')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 SMARTIE</p>
+        </div>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="audio-element"></audio>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Function to play audio
+        function playAudio(textToSpeak, displayText) {
+            // For demo, we'll use Web Speech API
+            // In real implementation, you could use prerecorded audio files
+            
+            // Give visual feedback
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.text = textToSpeak;
+            utterance.lang = 'en-US';
+            utterance.rate = 0.8;
+            
+            // Show what's being spoken
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-info d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-volume-up me-2"></i>${displayText}`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            // Hide feedback after 3 seconds
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+            
+            // Start speaking
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Function to play alphabet song
+        function playAlphabetSong() {
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-success d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-music me-2"></i>Playing Alphabet Song...`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+            
+            // In real implementation:
+            // document.getElementById('audio-element').src = "sounds/alphabet-song.mp3";
+            // document.getElementById('audio-element').play();
+        }
+        
+        // Function to play number song
+        function playNumberSong() {
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-success d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-music me-2"></i>Playing Number Song...`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+        }
+        
+        // Function to play color song
+        function playColorSong() {
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-success d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-music me-2"></i>Playing Color Song...`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+        }
+        
+        // Function to play fruit song
+        function playFruitSong() {
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-success d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-music me-2"></i>Playing Fruit Song...`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+        }
+        
+        // Initialize tooltip
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enable tooltip
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>

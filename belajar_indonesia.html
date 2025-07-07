@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Bahasa Indonesia - Seru dan Menyenangkan!</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --dark-color: #292F36;
+            --light-color: #F7FFF7;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chilanka', cursive, sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .language-nav {
+            background-color: var(--accent-color);
+            border-radius: 15px;
+            padding: 5px;
+        }
+        
+        .materi-card {
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            height: 100%;
+            background-color: white;
+        }
+        
+        .materi-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        }
+        
+        .materi-card .card-header {
+            font-weight: bold;
+            font-size: 1.3rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border-bottom: none;
+        }
+        
+        .category-img {
+            height: 150px;
+            object-fit: contain;
+            padding: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .category-img:hover {
+            transform: scale(1.1);
+        }
+        
+        .letter-card {
+            width: 70px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 15px !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .letter-card:hover {
+            transform: scale(1.15) rotate(5deg);
+        }
+        
+        .item-card {
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            height: 100%;
+            position: relative;
+            background-color: white;
+            border: 3px solid transparent;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .item-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            border-color: var(--accent-color);
+        }
+        
+        .item-img {
+            height: 120px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+        
+        .item-img:hover {
+            transform: scale(1.1);
+        }
+        
+        .nav-pills .nav-link {
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 50px !important;
+            color: var(--dark-color);
+            background-color: white;
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+            font-weight: bold;
+            color: white;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .tab-content {
+            padding: 25px 0;
+        }
+        
+        .audio-btn {
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--primary-color);
+            background-color: var(--accent-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .audio-btn:hover {
+            color: white;
+            background-color: var(--primary-color);
+            transform: scale(1.1) rotate(10deg);
+        }
+        
+        .sentence {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid var(--secondary-color);
+        }
+        
+        .vokal-card {
+            background-color: #FFD166;
+            color: #333;
+        }
+        
+        .konsonan-card {
+            background-color: #06D6A0;
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #FF5252;
+            border-color: #FF5252;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(255,107,107,0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-lg {
+            padding: 15px 30px;
+            font-size: 1.3rem;
+            margin: 20px 0;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .bounce-animation {
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigasi Bahasa -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold" href="index.html">
+                <i class="fas fa-arrow-left me-2"></i>Kembali
+            </a>
+            <div class="ms-auto">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-language me-2"></i>Bahasa
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="belajar_inggris.html">bahasa inggris</a></li>
+                            <li><a class="dropdown-item active" href="belajar_indonesia.html">Bahasa Indonesia</a></li>
+                            <li><a class="dropdown-item" href="belajar_madura.html">Basa Madura</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="py-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
+        <div class="container text-center text-white">
+            <h1 class="fw-bold display-4">Belajar Bahasa Indonesia</h1>
+            <p class="lead fs-3">Seru, Menyenangkan, dan Penuh Warna!</p>
+            <div class="mt-4">
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Materi -->
+    <section class="py-5">
+        <div class="container">
+            <ul class="nav nav-pills mb-4 justify-content-center" id="materiTab">
+                <li class="nav-item">
+                    <a class="nav-link active" id="huruf-tab" data-bs-toggle="pill" href="#huruf">
+                        <i class="fas fa-font me-2"></i>Huruf
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="angka-tab" data-bs-toggle="pill" href="#angka">
+                        <i class="fas fa-sort-numeric-up me-2"></i>Angka
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="warna-tab" data-bs-toggle="pill" href="#warna">
+                        <i class="fas fa-palette me-2"></i>Warna
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="buah-tab" data-bs-toggle="pill" href="#buah">
+                        <i class="fas fa-apple-alt me-2"></i>Buah & Sayur
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="materiTabContent">
+                <!-- Huruf -->
+                <div class="tab-pane fade show active" id="huruf">
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary">Huruf Abjad</h3>
+                        <p class="fs-5">Belajar huruf A sampai Z dengan cara menyenangkan!</p>
+                        <button class="btn btn-primary" onclick="playLaguAbjad()">
+                            <i class="fas fa-music me-2"></i>Lagu Abjad
+                        </button>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h4 class="text-center mb-4" style="color: var(--primary-color);">
+                            <i class="fas fa-star me-2"></i>Huruf Vokal
+                        </h4>
+                        <div class="d-flex flex-wrap justify-content-center">
+                            <div class="card letter-card vokal-card bounce-animation" onclick="playAudio('A', 'Huruf A')">
+                                <div>A</div>
+                            </div>
+                            <div class="card letter-card vokal-card bounce-animation" onclick="playAudio('I', 'Huruf I')">
+                                <div>I</div>
+                            </div>
+                            <div class="card letter-card vokal-card bounce-animation" onclick="playAudio('U', 'Huruf U')">
+                                <div>U</div>
+                            </div>
+                            <div class="card letter-card vokal-card bounce-animation" onclick="playAudio('E', 'Huruf E')">
+                                <div>E</div>
+                            </div>
+                            <div class="card letter-card vokal-card bounce-animation" onclick="playAudio('O', 'Huruf O')">
+                                <div>O</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-5">
+                        <h4 class="text-center mb-4" style="color: var(--secondary-color);">
+                            <i class="fas fa-star me-2"></i>Huruf Konsonan
+                        </h4>
+                        <div class="d-flex flex-wrap justify-content-center">
+                            <div class="card letter-card konsonan-card" onclick="playAudio('B', 'Huruf B')">B</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('C', 'Huruf C')">C</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('D', 'Huruf D')">D</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('F', 'Huruf F')">F</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('G', 'Huruf G')">G</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('H', 'Huruf H')">H</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('J', 'Huruf J')">J</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('K', 'Huruf K')">K</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('L', 'Huruf L')">L</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('M', 'Huruf M')">M</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('N', 'Huruf N')">N</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('P', 'Huruf P')">P</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('Q', 'Huruf Q')">Q</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('R', 'Huruf R')">R</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('S', 'Huruf S')">S</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('T', 'Huruf T')">T</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('V', 'Huruf V')">V</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('W', 'Huruf W')">W</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('X', 'Huruf X')">X</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('Y', 'Huruf Y')">Y</div>
+                            <div class="card letter-card konsonan-card" onclick="playAudio('Z', 'Huruf Z')">Z</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Kosakata dan Kalimat -->
+                    <div class="mt-5">
+                        <h4 class="text-center mb-4" style="color: var(--primary-color);">
+                            <i class="fas fa-book me-2"></i>Kosakata dan Kalimat
+                        </h4>
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">👨</div>
+                                    <h5>Ayah</h5>
+                                    <p class="text-muted">/a-yah/</p>
+                                    <div class="sentence">
+                                        "Ayah pergi ke kantor."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('ayah', 'Ayah')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">👩</div>
+                                    <h5>Ibu</h5>
+                                    <p class="text-muted">/i-bu/</p>
+                                    <div class="sentence">
+                                        "Ibu memasak di dapur."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('ibu', 'Ibu')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">👶</div>
+                                    <h5>Anak</h5>
+                                    <p class="text-muted">/a-nak/</p>
+                                    <div class="sentence">
+                                        "Anak itu bermain bola."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('anak', 'Anak')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">🏠</div>
+                                    <h5>Rumah</h5>
+                                    <p class="text-muted">/ru-mah/</p>
+                                    <div class="sentence">
+                                        "Kami tinggal di rumah besar."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('rumah', 'Rumah')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">🏫</div>
+                                    <h5>Sekolah</h5>
+                                    <p class="text-muted">/se-ko-lah/</p>
+                                    <div class="sentence">
+                                        "Saya pergi sekolah setiap pagi."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('sekolah', 'Sekolah')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card item-card">
+                                    <div class="fs-1">📚</div>
+                                    <h5>Buku</h5>
+                                    <p class="text-muted">/bu-ku/</p>
+                                    <div class="sentence">
+                                        "Buku itu sangat menarik."
+                                    </div>
+                                    <div class="audio-btn" onclick="playAudio('buku', 'Buku')">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Angka -->
+                <div class="tab-pane fade" id="angka">
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary">Angka 1-20</h3>
+                        <p class="fs-5">Belajar menghitung dalam bahasa Indonesia dengan cara menyenangkan!</p>
+                        <button class="btn btn-primary" onclick="playLaguAngka()">
+                            <i class="fas fa-music me-2"></i>Lagu Angka
+                        </button>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣</div>
+                                <h5>Satu</h5>
+                                <p class="text-muted">/sa-tu/</p>
+                                <div class="sentence">
+                                    "Saya punya satu pensil."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('satu', 'Satu')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">2️⃣</div>
+                                <h5>Dua</h5>
+                                <p class="text-muted">/du-a/</p>
+                                <div class="sentence">
+                                    "Ada dua apel di meja."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('dua', 'Dua')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">3️⃣</div>
+                                <h5>Tiga</h5>
+                                <p class="text-muted">/ti-ga/</p>
+                                <div class="sentence">
+                                    "Kucing itu punya tiga anak."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('tiga', 'Tiga')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">4️⃣</div>
+                                <h5>Empat</h5>
+                                <p class="text-muted">/em-pat/</p>
+                                <div class="sentence">
+                                    "Ada empat kursi di ruangan."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('empat', 'Empat')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">5️⃣</div>
+                                <h5>Lima</h5>
+                                <p class="text-muted">/li-ma/</p>
+                                <div class="sentence">
+                                    "Saya punya lima jari di tangan."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('lima', 'Lima')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">6️⃣</div>
+                                <h5>Enam</h5>
+                                <p class="text-muted">/e-nam/</p>
+                                <div class="sentence">
+                                    "Semut itu punya enam kaki."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('enam', 'Enam')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">7️⃣</div>
+                                <h5>Tujuh</h5>
+                                <p class="text-muted">/tu-juh/</p>
+                                <div class="sentence">
+                                    "Minggu memiliki tujuh hari."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('tujuh', 'Tujuh')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">8️⃣</div>
+                                <h5>Delapan</h5>
+                                <p class="text-muted">/de-la-pan/</p>
+                                <div class="sentence">
+                                    "Gurita punya delapan tentakel."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('delapan', 'Delapan')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">9️⃣</div>
+                                <h5>Sembilan</h5>
+                                <p class="text-muted">/sem-bi-lan/</p>
+                                <div class="sentence">
+                                    "Saya punya sembilan kelereng."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('sembilan', 'Sembilan')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">🔟</div>
+                                <h5>Sepuluh</h5>
+                                <p class="text-muted">/se-pu-luh/</p>
+                                <div class="sentence">
+                                    "Ada sepuluh jari di kedua tangan."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('sepuluh', 'Sepuluh')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣1️⃣</div>
+                                <h5>Sebelas</h5>
+                                <p class="text-muted">/se-be-las/</p>
+                                <div class="sentence">
+                                    "Jam menunjukkan pukul sebelas."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('sebelas', 'Sebelas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣2️⃣</div>
+                                <h5>Dua belas</h5>
+                                <p class="text-muted">/du-a be-las/</p>
+                                <div class="sentence">
+                                    "Setahun ada dua belas bulan."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('dua belas', 'Dua belas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣3️⃣</div>
+                                <h5>Tiga belas</h5>
+                                <p class="text-muted">/ti-ga be-las/</p>
+                                <div class="sentence">
+                                    "Ini adalah hari ketiga belas."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('tiga belas', 'Tiga belas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣4️⃣</div>
+                                <h5>Empat belas</h5>
+                                <p class="text-muted">/em-pat be-las/</p>
+                                <div class="sentence">
+                                    "Saya lahir tanggal empat belas."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('empat belas', 'Empat belas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣5️⃣</div>
+                                <h5>Lima belas</h5>
+                                <p class="text-muted">/li-ma be-las/</p>
+                                <div class="sentence">
+                                    "Acara dimulai pukul lima belas."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('lima belas', 'Lima belas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣6️⃣</div>
+                                <h5>Enam belas</h5>
+                                <p class="text-muted">/e-nam be-las/</p>
+                                <div class="sentence">
+                                    "Saya punya enam belas pensil warna."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('enam belas', 'Enam belas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣7️⃣</div>
+                                <h5>Tujuh belas</h5>
+                                <p class="text-muted">/tu-juh be-las/</p>
+                                <div class="sentence">
+                                    "Agustus adalah bulan kemerdekaan, tujuh belas."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('tujuh belas', 'Tujuh belas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣8️⃣</div>
+                                <h5>Delapan belas</h5>
+                                <p class="text-muted">/de-la-pan be-las/</p>
+                                <div class="sentence">
+                                    "Saya berumur delapan belas tahun."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('delapan belas', 'Delapan belas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">1️⃣9️⃣</div>
+                                <h5>Sembilan belas</h5>
+                                <p class="text-muted">/sem-bi-lan be-las/</p>
+                                <div class="sentence">
+                                    "Ini adalah tahun sembilan belas."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('sembilan belas', 'Sembilan belas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card">
+                                <div class="fs-1">2️⃣0️⃣</div>
+                                <h5>Dua puluh</h5>
+                                <p class="text-muted">/du-a pu-luh/</p>
+                                <div class="sentence">
+                                    "Ada dua puluh siswa di kelas."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('dua puluh', 'Dua puluh')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warna -->
+                <div class="tab-pane fade" id="warna">
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary">Warna</h3>
+                        <p class="fs-5">Belajar nama-nama warna dalam bahasa Indonesia dengan cara menyenangkan!</p>
+                        <button class="btn btn-primary" onclick="playLaguWarna()">
+                            <i class="fas fa-music me-2"></i>Lagu Warna
+                        </button>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FF0000; color: white;">
+                                <div class="fs-1">🔴</div>
+                                <h5>Merah</h5>
+                                <p class="text-white">/me-rah/</p>
+                                <div class="sentence">
+                                    "Apel itu berwarna merah."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('merah', 'Merah')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #0000FF; color: white;">
+                                <div class="fs-1">🔵</div>
+                                <h5>Biru</h5>
+                                <p class="text-white">/bi-ru/</p>
+                                <div class="sentence">
+                                    "Laut terlihat biru."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('biru', 'Biru')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFFF00;">
+                                <div class="fs-1">🟡</div>
+                                <h5>Kuning</h5>
+                                <p>/ku-ning/</p>
+                                <div class="sentence">
+                                    "Matahari berwarna kuning."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('kuning', 'Kuning')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #008000; color: white;">
+                                <div class="fs-1">🟢</div>
+                                <h5>Hijau</h5>
+                                <p class="text-white">/hi-jau/</p>
+                                <div class="sentence">
+                                    "Daun biasanya berwarna hijau."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('hijau', 'Hijau')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFA500;">
+                                <div class="fs-1">🟠</div>
+                                <h5>Oranye</h5>
+                                <p>/o-ran-ye/</p>
+                                <div class="sentence">
+                                    "Jeruk berwarna oranye."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('oranye', 'Oranye')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #800080; color: white;">
+                                <div class="fs-1">🟣</div>
+                                <h5>Ungu</h5>
+                                <p class="text-white">/u-ngu/</p>
+                                <div class="sentence">
+                                    "Terong ada yang berwarna ungu."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('ungu', 'Ungu')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFC0CB;">
+                                <div class="fs-1">💗</div>
+                                <h5>Merah muda</h5>
+                                <p>/me-rah mu-da/</p>
+                                <div class="sentence">
+                                    "Bunga itu berwarna merah muda."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('merah muda', 'Merah muda')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #A52A2A; color: white;">
+                                <div class="fs-1">🟤</div>
+                                <h5>Coklat</h5>
+                                <p class="text-white">/cok-lat/</p>
+                                <div class="sentence">
+                                    "Cokelat berwarna coklat."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('coklat', 'Coklat')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #000000; color: white;">
+                                <div class="fs-1">⚫</div>
+                                <h5>Hitam</h5>
+                                <p class="text-white">/hi-tam/</p>
+                                <div class="sentence">
+                                    "Malam terlihat hitam."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('hitam', 'Hitam')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFFFFF; border: 1px solid #ddd;">
+                                <div class="fs-1">⚪</div>
+                                <h5>Putih</h5>
+                                <p>/pu-tih/</p>
+                                <div class="sentence">
+                                    "Salju berwarna putih."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('putih', 'Putih')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #808080; color: white;">
+                                <div class="fs-1">🔘</div>
+                                <h5>Abu-abu</h5>
+                                <p class="text-white">/a-bu a-bu/</p>
+                                <div class="sentence">
+                                    "Gajah berwarna abu-abu."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('abu-abu', 'Abu-abu')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="card item-card" style="background-color: #FFD700;">
+                                <div class="fs-1">🌟</div>
+                                <h5>Emas</h5>
+                                <p>/e-mas/</p>
+                                <div class="sentence">
+                                    "Medali emas sangat berharga."
+                                </div>
+                                <div class="audio-btn" onclick="playAudio('emas', 'Emas')">
+                                    <i class="fas fa-volume-up"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buah & Sayur -->
+                <div class="tab-pane fade" id="buah">
+                    <div class="text-center mb-5">
+                        <h3 class="fw-bold text-primary">Buah & Sayuran</h3>
+                        <p class="fs-5">Belajar nama buah dan sayuran dalam bahasa Indonesia dengan cara menyenangkan!</p>
+                        <button class="btn btn-primary" onclick="playLaguBuah()">
+                            <i class="fas fa-music me-2"></i>Lagu Buah
+                        </button>
+                    </div>
+                    
+                    <ul class="nav nav-tabs mb-4" id="makananTab">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="buah-tab" data-bs-toggle="tab" href="#daftar-buah">
+                                <i class="fas fa-apple-alt me-2"></i>Buah-buahan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="sayur-tab" data-bs-toggle="tab" href="#daftar-sayur">
+                                <i class="fas fa-carrot me-2"></i>Sayuran
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="makananTabContent">
+                        <!-- Buah-buahan -->
+                        <div class="tab-pane fade show active" id="daftar-buah">
+                            <div class="row g-4">
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍎</div>
+                                        <h5>Apel</h5>
+                                        <p class="text-muted">/a-pel/</p>
+                                        <div class="sentence">
+                                            "Saya suka makan apel merah."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('apel', 'Apel')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍌</div>
+                                        <h5>Pisang</h5>
+                                        <p class="text-muted">/pi-sang/</p>
+                                        <div class="sentence">
+                                            "Pisang baik untuk pencernaan."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('pisang', 'Pisang')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍊</div>
+                                        <h5>Jeruk</h5>
+                                        <p class="text-muted">/je-ruk/</p>
+                                        <div class="sentence">
+                                            "Jeruk mengandung vitamin C."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('jeruk', 'Jeruk')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍓</div>
+                                        <h5>Stroberi</h5>
+                                        <p class="text-muted">/stro-be-ri/</p>
+                                        <div class="sentence">
+                                            "Stroberi berwarna merah dan manis."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('stroberi', 'Stroberi')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍇</div>
+                                        <h5>Anggur</h5>
+                                        <p class="text-muted">/ang-gur/</p>
+                                        <div class="sentence">
+                                            "Anggur ada yang hijau dan ungu."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('anggur', 'Anggur')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍉</div>
+                                        <h5>Semangka</h5>
+                                        <p class="text-muted">/se-man-ka/</p>
+                                        <div class="sentence">
+                                            "Semangka sangat segar dimakan saat panas."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('semangka', 'Semangka')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍍</div>
+                                        <h5>Nanas</h5>
+                                        <p class="text-muted">/na-nas/</p>
+                                        <div class="sentence">
+                                            "Nanas memiliki rasa manis dan asam."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('nanas', 'Nanas')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥭</div>
+                                        <h5>Mangga</h5>
+                                        <p class="text-muted">/man-ga/</p>
+                                        <div class="sentence">
+                                            "Mangga harum manis sangat enak."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('mangga', 'Mangga')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍐</div>
+                                        <h5>Pir</h5>
+                                        <p class="text-muted">/pir/</p>
+                                        <div class="sentence">
+                                            "Pir berbentuk seperti bola lampu."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('pir', 'Pir')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍑</div>
+                                        <h5>Persik</h5>
+                                        <p class="text-muted">/per-sik/</p>
+                                        <div class="sentence">
+                                            "Persik memiliki kulit berbulu halus."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('persik', 'Persik')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍒</div>
+                                        <h5>Ceri</h5>
+                                        <p class="text-muted">/ce-ri/</p>
+                                        <div class="sentence">
+                                            "Ceri kecil dan berwarna merah."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('ceri', 'Ceri')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥝</div>
+                                        <h5>Kiwi</h5>
+                                        <p class="text-muted">/ki-wi/</p>
+                                        <div class="sentence">
+                                            "Kiwi memiliki banyak biji kecil."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('kiwi', 'Kiwi')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sayuran -->
+                        <div class="tab-pane fade" id="daftar-sayur">
+                            <div class="row g-4">
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥕</div>
+                                        <h5>Wortel</h5>
+                                        <p class="text-muted">/wor-tel/</p>
+                                        <div class="sentence">
+                                            "Wortel baik untuk kesehatan mata."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('wortel', 'Wortel')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥔</div>
+                                        <h5>Kentang</h5>
+                                        <p class="text-muted">/ken-tang/</p>
+                                        <div class="sentence">
+                                            "Kentang bisa digoreng atau direbus."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('kentang', 'Kentang')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍅</div>
+                                        <h5>Tomat</h5>
+                                        <p class="text-muted">/to-mat/</p>
+                                        <div class="sentence">
+                                            "Tomat bisa dibuat saus pasta."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('tomat', 'Tomat')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥦</div>
+                                        <h5>Brokoli</h5>
+                                        <p class="text-muted">/bro-ko-li/</p>
+                                        <div class="sentence">
+                                            "Brokoli berbentuk seperti pohon kecil."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('brokoli', 'Brokoli')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🧅</div>
+                                        <h5>Bawang Bombay</h5>
+                                        <p class="text-muted">/ba-wang bom-bay/</p>
+                                        <div class="sentence">
+                                            "Bawang bombay membuat mata berair."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('bawang bombay', 'Bawang bombay')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥒</div>
+                                        <h5>Mentimun</h5>
+                                        <p class="text-muted">/men-ti-mun/</p>
+                                        <div class="sentence">
+                                            "Mentimun segar untuk lalapan."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('mentimun', 'Mentimun')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🌽</div>
+                                        <h5>Jagung</h5>
+                                        <p class="text-muted">/ja-gung/</p>
+                                        <div class="sentence">
+                                            "Jagung bisa direbus atau dibakar."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('jagung', 'Jagung')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍆</div>
+                                        <h5>Terong</h5>
+                                        <p class="text-muted">/te-rong/</p>
+                                        <div class="sentence">
+                                            "Terong ungu sering dibuat sambal."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('terong', 'Terong')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🥬</div>
+                                        <h5>Kubis</h5>
+                                        <p class="text-muted">/ku-bis/</p>
+                                        <div class="sentence">
+                                            "Kubis bisa dibuat sup atau salad."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('kubis', 'Kubis')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🫑</div>
+                                        <h5>Paprika</h5>
+                                        <p class="text-muted">/pa-pri-ka/</p>
+                                        <div class="sentence">
+                                            "Paprika ada yang merah, kuning, dan hijau."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('paprika', 'Paprika')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🧄</div>
+                                        <h5>Bawang Putih</h5>
+                                        <p class="text-muted">/ba-wang pu-tih/</p>
+                                        <div class="sentence">
+                                            "Bawang putih memberi aroma pada masakan."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('bawang putih', 'Bawang putih')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-6">
+                                    <div class="card item-card">
+                                        <div class="fs-1">🍄</div>
+                                        <h5>Jamur</h5>
+                                        <p class="text-muted">/ja-mur/</p>
+                                        <div class="sentence">
+                                            "Jamur ada banyak jenisnya."
+                                        </div>
+                                        <div class="audio-btn" onclick="playAudio('jamur', 'Jamur')">
+                                            <i class="fas fa-volume-up"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 SMARTIE </p>
+        </div>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="audio-element"></audio>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Fungsi untuk memainkan audio
+        function playAudio(textToSpeak, displayText) {
+            // Untuk demo, kita akan menggunakan Web Speech API
+            // Di implementasi nyata, Anda bisa menggunakan file audio prerecorded
+            
+            // Beri feedback visual
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.text = textToSpeak;
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.8;
+            
+            // Tampilkan apa yang sedang diucapkan
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-info d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-volume-up me-2"></i>${displayText}`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            // Sembunyikan feedback setelah 3 detik
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+            
+            // Mulai berbicara
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Fungsi untuk memainkan lagu abjad
+        function playLaguAbjad() {
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-success d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-music me-2"></i>Memutar Lagu Abjad...`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+            
+            // Di implementasi nyata:
+            // document.getElementById('audio-element').src = "sounds/lagu-abjad.mp3";
+            // document.getElementById('audio-element').play();
+        }
+        
+        // Fungsi untuk memainkan lagu angka
+        function playLaguAngka() {
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-success d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-music me-2"></i>Memutar Lagu Angka...`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+        }
+        
+        // Fungsi untuk memainkan lagu warna
+        function playLaguWarna() {
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-success d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-music me-2"></i>Memutar Lagu Warna...`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+        }
+        
+        // Fungsi untuk memainkan lagu buah
+        function playLaguBuah() {
+            const feedback = document.createElement('div');
+            feedback.className = 'alert alert-success d-inline-block position-fixed top-0 start-50 translate-middle-x mt-3';
+            feedback.innerHTML = `<i class="fas fa-music me-2"></i>Memutar Lagu Buah...`;
+            feedback.style.zIndex = '1000';
+            
+            document.body.appendChild(feedback);
+            
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
+        }
+        
+        // Inisialisasi tooltip
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aktifkan tooltip
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soal Bhasa Mathura - Belajar Seru</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .language-nav {
+            background-color: #e3f2fd;
+            border-radius: 10px;
+        }
+        .materi-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        .materi-card:hover {
+            transform: translateY(-10px);
+        }
+        .materi-card .card-header {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .category-img {
+            height: 120px;
+            object-fit: contain;
+            padding: 10px;
+        }
+        .quiz-card {
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .option-btn {
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        .option-btn:hover {
+            transform: scale(1.05);
+        }
+        .correct {
+            background-color: #28a745 !important;
+            color: white !important;
+        }
+        .incorrect {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        .nav-pills .nav-link.active {
+            background-color: #0d6efd;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigasi Bahasa -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold" href="index.html">
+                <i class="fas fa-arrow-left me-2"></i>Kembali
+            </a>
+            <div class="ms-auto">
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-language me-2"></i>Bahasa
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="materi-bahasa-inggris.html">English</a></li>
+                            <li><a class="dropdown-item" href="materi-bahasa-indonesia.html">Bahasa Indonesia</a></li>
+                            <li><a class="dropdown-item" href="materi-bahasa-madura.html">Basa Mathura</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="bg-light py-4">
+        <div class="container text-center">
+            <h1 class="fw-bold">Soal Bhasa Mathura</h1>
+            <p class="lead">Tes pengetahuan bhasa Mathura sampeyan!</p>
+        </div>
+    </header>
+
+    <!-- Kategori Soal -->
+    <section class="py-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card materi-card">
+                        <img src="https://img.freepik.com/free-vector/hand-drawn-english-alphabet_23-2147739309.jpg" class="card-img-top category-img" alt="Kosakata">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Kosakata</h5>
+                            <a href="#kosakata" class="btn btn-primary">Mulai</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card materi-card">
+                        <img src="https://img.freepik.com/free-vector/numbers-background-with-happy-kids_23-2147869450.jpg" class="card-img-top category-img" alt="Angka">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Angka</h5>
+                            <a href="#angka" class="btn btn-primary">Mulai</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card materi-card">
+                        <img src="https://img.freepik.com/free-vector/fruits-vegetables-background_23-2148482391.jpg" class="card-img-top category-img" alt="Makanan">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Makanan</h5>
+                            <a href="#makanan" class="btn btn-primary">Mulai</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Konten Soal -->
+    <section class="py-4">
+        <div class="container">
+            <ul class="nav nav-pills mb-4 justify-content-center" id="soalTab">
+                <li class="nav-item">
+                    <a class="nav-link active" id="kosakata-tab" data-bs-toggle="pill" href="#kosakata">Kosakata</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="angka-tab" data-bs-toggle="pill" href="#angka">Angka</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="makanan-tab" data-bs-toggle="pill" href="#makanan">Makanan</a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="soalTabContent">
+                <!-- Kosakata -->
+                <div class="tab-pane fade show active" id="kosakata">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold">Soal Kosakata Bhasa Mathura</h3>
+                        <p>Pilih terjemahan yang benar dari bahasa Indonesia ke Bhasa Mathura</p>
+                    </div>
+                    
+                    <div id="kosakata-quiz">
+                        <!-- Soal akan di-generate oleh JavaScript -->
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary btn-lg" onclick="checkAnswers('kosakata')">
+                            <i class="fas fa-check me-2"></i>Periksa Jawaban
+                        </button>
+                        <button class="btn btn-secondary btn-lg ms-2" onclick="resetQuiz('kosakata')">
+                            <i class="fas fa-redo me-2"></i>Ulangi
+                        </button>
+                        <div class="score-display" id="kosakata-score">Skor: 0/5</div>
+                    </div>
+                </div>
+
+                <!-- Angka -->
+                <div class="tab-pane fade" id="angka">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold">Soal Angka Bhasa Mathura</h3>
+                        <p>Pilih terjemahan angka yang benar dari bahasa Indonesia ke Bhasa Mathura</p>
+                    </div>
+                    
+                    <div id="angka-quiz">
+                        <!-- Soal akan di-generate oleh JavaScript -->
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary btn-lg" onclick="checkAnswers('angka')">
+                            <i class="fas fa-check me-2"></i>Periksa Jawaban
+                        </button>
+                        <button class="btn btn-secondary btn-lg ms-2" onclick="resetQuiz('angka')">
+                            <i class="fas fa-redo me-2"></i>Ulangi
+                        </button>
+                        <div class="score-display" id="angka-score">Skor: 0/5</div>
+                    </div>
+                </div>
+
+                <!-- Makanan -->
+                <div class="tab-pane fade" id="makanan">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold">Soal Makanan Bhasa Mathura</h3>
+                        <p>Pilih nama makanan dalam Bhasa Mathura yang sesuai dengan gambar</p>
+                    </div>
+                    
+                    <div id="makanan-quiz">
+                        <!-- Soal akan di-generate oleh JavaScript -->
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary btn-lg" onclick="checkAnswers('makanan')">
+                            <i class="fas fa-check me-2"></i>Periksa Jawaban
+                        </button>
+                        <button class="btn btn-secondary btn-lg ms-2" onclick="resetQuiz('makanan')">
+                            <i class="fas fa-redo me-2"></i>Ulangi
+                        </button>
+                        <div class="score-display" id="makanan-score">Skor: 0/5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 SMARTIE</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Data soal untuk Bhasa Mathura
+        const quizData = {
+            kosakata: [
+                {
+                    question: "Apa bahasa Madura untuk 'Rumah'?",
+                    options: ["Bhunga", "Romo", "Tanean", "Lanjheng"],
+                    correctAnswer: 0,
+                    explanation: "'Bhunga' artinya Rumah dalam Bhasa Mathura"
+                },
+                {
+                    question: "Bagaimana mengatakan 'Air' dalam Bhasa Mathura?",
+                    options: ["Aeng", "Tana", "Angen", "Ombak"],
+                    correctAnswer: 0,
+                    explanation: "'Aeng' artinya Air dalam Bhasa Mathura"
+                },
+                {
+                    question: "Apa terjemahan 'Makan' dalam Bhasa Mathura?",
+                    options: ["Ngeddhung", "Nole", "Ngakan", "Makan"],
+                    correctAnswer: 2,
+                    explanation: "'Ngakan' artinya Makan dalam Bhasa Mathura"
+                },
+                {
+                    question: "Bagaimana mengatakan 'Pergi' dalam Bhasa Mathura?",
+                    options: ["Lakar", "Jalan", "Ghi'", "Polana"],
+                    correctAnswer: 0,
+                    explanation: "'Lakar' artinya Pergi dalam Bhasa Mathura"
+                },
+                {
+                    question: "Apa bahasa Madura untuk 'Anak'?",
+                    options: ["Pana", "Bocah", "Anak", "Pote"],
+                    correctAnswer: 1,
+                    explanation: "'Bocah' artinya Anak dalam Bhasa Mathura"
+                }
+            ],
+            angka: [
+                {
+                    question: "Bagaimana mengatakan 'Satu' dalam Bhasa Mathura?",
+                    options: ["Settong", "Dhuwa'", "Tello", "Eppak"],
+                    correctAnswer: 0,
+                    explanation: "'Settong' artinya Satu dalam Bhasa Mathura"
+                },
+                {
+                    question: "Apa bahasa Madura untuk 'Lima'?",
+                    options: ["Eppak", "Lima", "Lhemma", "Telloh"],
+                    correctAnswer: 2,
+                    explanation: "'Lhemma' artinya Lima dalam Bhasa Mathura"
+                },
+                {
+                    question: "Bagaimana mengatakan 'Sepuluh' dalam Bhasa Mathura?",
+                    options: ["Sepolo", "Sapolo", "Polo", "Dhuppolo"],
+                    correctAnswer: 1,
+                    explanation: "'Sapolo' artinya Sepuluh dalam Bhasa Mathura"
+                },
+                {
+                    question: "Apa terjemahan 'Tujuh' dalam Bhasa Mathura?",
+                    options: ["Petto", "Tujuh", "Telloh", "Dhuwa'"],
+                    correctAnswer: 0,
+                    explanation: "'Petto' artinya Tujuh dalam Bhasa Mathura"
+                },
+                {
+                    question: "Bagaimana mengatakan 'Dua puluh' dalam Bhasa Mathura?",
+                    options: ["Dhuwa' polo", "Ruang polo", "Duppolo", "Telloh polo"],
+                    correctAnswer: 2,
+                    explanation: "'Duppolo' artinya Dua puluh dalam Bhasa Mathura"
+                }
+            ],
+            makanan: [
+                {
+                    question: "Apa nama makanan ini dalam Bhasa Mathura? 🍚",
+                    options: ["Nasek", "Buras", "Nasi", "Sego"],
+                    correctAnswer: 0,
+                    explanation: "'Nasek' artinya Nasi dalam Bhasa Mathura"
+                },
+                {
+                    question: "Bagaimana mengatakan 'Ikan' dalam Bhasa Mathura? 🐟",
+                    options: ["Juko'", "Iwak", "Lauk", "Senneng"],
+                    correctAnswer: 0,
+                    explanation: "'Juko'' artinya Ikan dalam Bhasa Mathura"
+                },
+                {
+                    question: "Apa bahasa Madura untuk 'Ayam'? 🐔",
+                    options: ["Manok", "Ayam", "Jago", "Bebek"],
+                    correctAnswer: 0,
+                    explanation: "'Manok' artinya Ayam dalam Bhasa Mathura"
+                },
+                {
+                    question: "Bagaimana mengatakan 'Telur' dalam Bhasa Mathura? 🥚",
+                    options: ["Telor", "Tellor", "Bhellur", "Endhog"],
+                    correctAnswer: 1,
+                    explanation: "'Tellor' artinya Telur dalam Bhasa Mathura"
+                },
+                {
+                    question: "Apa terjemahan 'Sayur' dalam Bhasa Mathura? 🥬",
+                    options: ["Sayur", "Jhukok", "Lalap", "Pecel"],
+                    correctAnswer: 1,
+                    explanation: "'Jhukok' artinya Sayur dalam Bhasa Mathura"
+                }
+            ]
+        };
+
+        // Fungsi untuk menampilkan soal
+        function displayQuiz(category) {
+            const quizContainer = document.getElementById(`${category}-quiz`);
+            quizContainer.innerHTML = '';
+            
+            quizData[category].forEach((question, index) => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'quiz-card mb-4';
+                questionElement.innerHTML = `
+                    <h5>${index + 1}. ${question.question}</h5>
+                    <div class="options mt-3">
+                        ${question.options.map((option, i) => `
+                            <button class="btn btn-outline-primary option-btn" 
+                                    onclick="selectAnswer(this, '${category}', ${index}, ${i})">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div class="explanation mt-2 text-muted" id="${category}-explanation-${index}" style="display: none;">
+                        ${question.explanation}
+                    </div>
+                `;
+                quizContainer.appendChild(questionElement);
+            });
+        }
+
+        // Fungsi untuk memilih jawaban
+        function selectAnswer(button, category, questionIndex, optionIndex) {
+            // Reset semua button di pertanyaan ini
+            const questionDiv = button.closest('.quiz-card');
+            const buttons = questionDiv.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('btn-primary', 'btn-outline-primary', 'selected');
+                btn.classList.add('btn-outline-primary');
+            });
+            
+            // Tandai yang dipilih
+            button.classList.remove('btn-outline-primary');
+            button.classList.add('btn-primary', 'selected');
+            
+            // Simpan jawaban yang dipilih
+            quizData[category][questionIndex].selectedAnswer = optionIndex;
+        }
+
+        // Fungsi untuk memeriksa jawaban
+        function checkAnswers(category) {
+            let score = 0;
+            const questions = quizData[category];
+            
+            questions.forEach((question, index) => {
+                const explanation = document.getElementById(`${category}-explanation-${index}`);
+                const questionDiv = document.querySelector(`#${category}-quiz .quiz-card:nth-child(${index + 1})`);
+                const buttons = questionDiv.querySelectorAll('.option-btn');
+                
+                // Tampilkan penjelasan
+                explanation.style.display = 'block';
+                
+                // Tandai jawaban yang benar dan salah
+                buttons.forEach((button, i) => {
+                    if (i === question.correctAnswer) {
+                        button.classList.add('correct');
+                    } else if (question.selectedAnswer === i) {
+                        button.classList.add('incorrect');
+                    }
+                    button.disabled = true;
+                });
+                
+                // Hitung skor
+                if (question.selectedAnswer === question.correctAnswer) {
+                    score++;
+                }
+            });
+            
+            // Tampilkan skor
+            document.getElementById(`${category}-score`).textContent = `Skor: ${score}/${questions.length}`;
+        }
+
+        // Fungsi untuk mengulang kuis
+        function resetQuiz(category) {
+            // Reset pilihan
+            quizData[category].forEach(question => {
+                question.selectedAnswer = null;
+            });
+            
+            // Reset tampilan
+            displayQuiz(category);
+            document.getElementById(`${category}-score`).textContent = `Skor: 0/${quizData[category].length}`;
+        }
+
+        // Inisialisasi kuis saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', function() {
+            displayQuiz('kosakata');
+            displayQuiz('angka');
+            displayQuiz('makanan');
+            
+            // Tangani perubahan tab
+            const tabLinks = document.querySelectorAll('#soalTab .nav-link');
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const target = this.getAttribute('href').substring(1);
+                    resetQuiz(target);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

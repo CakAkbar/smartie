@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Kuis Bahasa Indonesia - Belajar Seru</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --accent-color: #FFE66D;
+            --dark-color: #292F36;
+            --light-color: #F7FFF7;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chilanka', cursive, sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .quiz-card {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            overflow: hidden;
+            background-color: white;
+        }
+        
+        .question-container {
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .question-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .option-btn {
+            font-size: 1.2rem;
+            transition: all 0.3s;
+            margin: 8px;
+            min-width: 120px;
+            border-radius: 50px !important;
+            padding: 12px 20px;
+            border: 2px solid var(--secondary-color);
+            background-color: white;
+            color: var(--dark-color);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .option-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .emoji-display {
+            font-size: 4rem;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+        
+        .progress {
+            height: 25px;
+            border-radius: 10px;
+            background-color: #e9ecef;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.6s ease;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-15px);}
+            60% {transform: translateY(-7px);}
+        }
+        
+        .bounce {
+            animation: bounce 0.8s;
+        }
+        
+        @keyframes shake {
+            0%, 100% {transform: translateX(0);}
+            10%, 30%, 50%, 70%, 90% {transform: translateX(-8px);}
+            20%, 40%, 60%, 80% {transform: translateX(8px);}
+        }
+        
+        .shake {
+            animation: shake 0.6s;
+        }
+        
+        .audio-btn {
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--primary-color);
+            background-color: var(--accent-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-size: 1.5rem;
+        }
+        
+        .audio-btn:hover {
+            color: white;
+            background-color: var(--primary-color);
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .nav-pills .nav-link {
+            font-size: 1.1rem;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 50px !important;
+            color: var(--dark-color);
+            background-color: white;
+            border: 2px solid var(--secondary-color);
+            transition: all 0.3s;
+        }
+        
+        .nav-pills .nav-link.active {
+            background-color: var(--primary-color);
+            font-weight: bold;
+            color: white;
+            border: 2px solid var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-pills .nav-link:hover:not(.active) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #FF5252;
+            border-color: #FF5252;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(255,107,107,0.3);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .score-display {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background-color: var(--accent-color);
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .timer-container {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+        }
+        
+        .timer-circle {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        
+        .timer-bg {
+            fill: none;
+            stroke: #e9ecef;
+            stroke-width: 8;
+        }
+        
+        .timer-progress {
+            fill: none;
+            stroke: var(--primary-color);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s linear;
+        }
+        
+        .timer-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary-color);
+            opacity: 0;
+        }
+        
+        .game-over {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+        
+        .game-over.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .game-over-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: scale(0.8);
+            transition: transform 0.5s;
+        }
+        
+        .game-over.show .game-over-content {
+            transform: scale(1);
+        }
+        
+        .star-rating {
+            font-size: 2rem;
+            color: #FFD700;
+            margin: 15px 0;
+        }
+        
+        .star-rating .far {
+            opacity: 0.3;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigasi -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold" href="index.html">
+                <i class="fas fa-arrow-left me-2"></i>Kembali 
+            </a>
+            <div class="ms-auto d-flex align-items-center">
+                <span class="score-display me-3">
+                    <i class="fas fa-star me-2"></i>
+                    <span id="score">0</span>/<span id="total-questions">0</span>
+                </span>
+                <div class="timer-container">
+                    <svg class="timer-circle" viewBox="0 0 36 36">
+                        <circle class="timer-bg" cx="18" cy="18" r="16"></circle>
+                        <circle class="timer-progress" cx="18" cy="18" r="16" stroke-dasharray="100" stroke-dashoffset="100"></circle>
+                    </svg>
+                    <div class="timer-text" id="timer">30</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <main class="container my-4 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card quiz-card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4 fw-bold">Game Kuis Bahasa Indonesia</h2>
+                        
+                        <ul class="nav nav-pills mb-4 justify-content-center" id="quizTab">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="huruf-tab" data-bs-toggle="pill" href="#huruf-quiz">
+                                    <i class="fas fa-font me-2"></i>Huruf
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="angka-tab" data-bs-toggle="pill" href="#angka-quiz">
+                                    <i class="fas fa-sort-numeric-up me-2"></i>Angka
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="warna-tab" data-bs-toggle="pill" href="#warna-quiz">
+                                    <i class="fas fa-palette me-2"></i>Warna
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="buah-tab" data-bs-toggle="pill" href="#buah-quiz">
+                                    <i class="fas fa-apple-alt me-2"></i>Buah & Sayur
+                                </a>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="quizTabContent">
+                            <!-- Huruf -->
+                            <div class="tab-pane fade show active" id="huruf-quiz">
+                                <div class="question-container text-center py-4">
+                                    <h4 id="huruf-question" class="mb-4 fw-bold">Huruf apakah ini?</h4>
+                                    <div id="huruf-display" class="emoji-display">A</div>
+                                    <div class="audio-btn" id="play-huruf">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex flex-wrap justify-content-center mb-4" id="huruf-options">
+                                    <button class="btn btn-outline-primary option-btn">A</button>
+                                    <button class="btn btn-outline-primary option-btn">B</button>
+                                    <button class="btn btn-outline-primary option-btn">C</button>
+                                    <button class="btn btn-outline-primary option-btn">D</button>
+                                </div>
+                                
+                                <p id="huruf-feedback" class="text-center fw-bold fs-4 mb-4"></p>
+                            </div>
+                            
+                            <!-- Angka -->
+                            <div class="tab-pane fade" id="angka-quiz">
+                                <div class="question-container text-center py-4">
+                                    <h4 id="angka-question" class="mb-4 fw-bold">Angka apakah ini?</h4>
+                                    <div id="angka-display" class="emoji-display">1️⃣</div>
+                                    <div class="audio-btn" id="play-angka">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex flex-wrap justify-content-center mb-4" id="angka-options">
+                                    <button class="btn btn-outline-primary option-btn">Satu</button>
+                                    <button class="btn btn-outline-primary option-btn">Dua</button>
+                                    <button class="btn btn-outline-primary option-btn">Tiga</button>
+                                    <button class="btn btn-outline-primary option-btn">Empat</button>
+                                </div>
+                                
+                                <p id="angka-feedback" class="text-center fw-bold fs-4 mb-4"></p>
+                            </div>
+                            
+                            <!-- Warna -->
+                            <div class="tab-pane fade" id="warna-quiz">
+                                <div class="question-container text-center py-4">
+                                    <h4 id="warna-question" class="mb-4 fw-bold">Warna apakah ini?</h4>
+                                    <div id="warna-display" class="emoji-display" style="color: #FF0000;">🔴</div>
+                                    <div class="audio-btn" id="play-warna">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex flex-wrap justify-content-center mb-4" id="warna-options">
+                                    <button class="btn btn-outline-primary option-btn">Merah</button>
+                                    <button class="btn btn-outline-primary option-btn">Biru</button>
+                                    <button class="btn btn-outline-primary option-btn">Hijau</button>
+                                    <button class="btn btn-outline-primary option-btn">Kuning</button>
+                                </div>
+                                
+                                <p id="warna-feedback" class="text-center fw-bold fs-4 mb-4"></p>
+                            </div>
+                            
+                            <!-- Buah & Sayur -->
+                            <div class="tab-pane fade" id="buah-quiz">
+                                <div class="question-container text-center py-4">
+                                    <h4 id="buah-question" class="mb-4 fw-bold">Ini adalah gambar apa?</h4>
+                                    <div id="buah-display" class="emoji-display">🍎</div>
+                                    <div class="audio-btn" id="play-buah">
+                                        <i class="fas fa-volume-up"></i>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex flex-wrap justify-content-center mb-4" id="buah-options">
+                                    <button class="btn btn-outline-primary option-btn">Apel</button>
+                                    <button class="btn btn-outline-primary option-btn">Pisang</button>
+                                    <button class="btn btn-outline-primary option-btn">Jeruk</button>
+                                    <button class="btn btn-outline-primary option-btn">Anggur</button>
+                                </div>
+                                
+                                <p id="buah-feedback" class="text-center fw-bold fs-4 mb-4"></p>
+                            </div>
+                        </div>
+                        
+                        <div class="progress mb-4">
+                            <div id="progress-bar" class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button id="next-btn" class="btn btn-primary">
+                                Soal Berikutnya <i class="fas fa-forward ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Game Over Modal -->
+    <div class="game-over" id="game-over">
+        <div class="game-over-content">
+            <h2 class="fw-bold mb-3">Permainan Selesai!</h2>
+            <div class="star-rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="far fa-star"></i>
+                <i class="far fa-star"></i>
+            </div>
+            <p class="fs-4">Skor Akhir: <span id="final-score">0</span> dari <span id="final-total">0</span></p>
+            <div class="d-flex justify-content-center mt-4">
+                <button id="restart-btn" class="btn btn-primary me-3">
+                    <i class="fas fa-redo me-2"></i>Main Lagi
+                </button>
+                <button id="quit-btn" class="btn btn-outline-secondary">
+                    <i class="fas fa-home me-2"></i>Keluar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2025 SMARTIE</p>
+        </div>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="audio-element"></audio>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Data untuk kuis
+        const quizData = {
+            huruf: [
+                { huruf: "A", pertanyaan: "Huruf apakah ini?", opsi: ["A", "B", "C", "D"], jawaban: "A" },
+                { huruf: "B", pertanyaan: "Huruf apakah ini?", opsi: ["A", "B", "D", "F"], jawaban: "B" },
+                { huruf: "C", pertanyaan: "Huruf apakah ini?", opsi: ["C", "G", "O", "Q"], jawaban: "C" },
+                { huruf: "D", pertanyaan: "Huruf apakah ini?", opsi: ["B", "D", "P", "Q"], jawaban: "D" },
+                { huruf: "E", pertanyaan: "Huruf apakah ini?", opsi: ["E", "F", "L", "T"], jawaban: "E" },
+                { huruf: "M", pertanyaan: "Huruf apakah ini?", opsi: ["M", "N", "W", "H"], jawaban: "M" },
+                { huruf: "S", pertanyaan: "Huruf apakah ini?", opsi: ["S", "Z", "X", "Y"], jawaban: "S" },
+                { huruf: "T", pertanyaan: "Huruf apakah ini?", opsi: ["T", "F", "L", "I"], jawaban: "T" },
+                { huruf: "P", pertanyaan: "Huruf apakah ini?", opsi: ["P", "B", "D", "R"], jawaban: "P" },
+                { huruf: "K", pertanyaan: "Huruf apakah ini?", opsi: ["K", "H", "X", "Y"], jawaban: "K" }
+            ],
+            angka: [
+                { emoji: "1️⃣", kata: "Satu", pertanyaan: "Angka apakah ini?", opsi: ["Satu", "Dua", "Tiga", "Empat"], jawaban: "Satu" },
+                { emoji: "2️⃣", kata: "Dua", pertanyaan: "Angka apakah ini?", opsi: ["Satu", "Dua", "Sepuluh", "Dua belas"], jawaban: "Dua" },
+                { emoji: "3️⃣", kata: "Tiga", pertanyaan: "Angka apakah ini?", opsi: ["Tiga", "Empat", "Lima", "Enam"], jawaban: "Tiga" },
+                { emoji: "4️⃣", kata: "Empat", pertanyaan: "Angka apakah ini?", opsi: ["Dua", "Empat", "Enam", "Delapan"], jawaban: "Empat" },
+                { emoji: "5️⃣", kata: "Lima", pertanyaan: "Angka apakah ini?", opsi: ["Lima", "Tujuh", "Sembilan", "Sepuluh"], jawaban: "Lima" },
+                { emoji: "6️⃣", kata: "Enam", pertanyaan: "Angka apakah ini?", opsi: ["Empat", "Enam", "Delapan", "Sepuluh"], jawaban: "Enam" },
+                { emoji: "7️⃣", kata: "Tujuh", pertanyaan: "Angka apakah ini?", opsi: ["Lima", "Tujuh", "Sembilan", "Sebelas"], jawaban: "Tujuh" },
+                { emoji: "8️⃣", kata: "Delapan", pertanyaan: "Angka apakah ini?", opsi: ["Enam", "Delapan", "Sepuluh", "Dua belas"], jawaban: "Delapan" },
+                { emoji: "9️⃣", kata: "Sembilan", pertanyaan: "Angka apakah ini?", opsi: ["Tujuh", "Sembilan", "Sebelas", "Tiga belas"], jawaban: "Sembilan" },
+                { emoji: "🔟", kata: "Sepuluh", pertanyaan: "Angka apakah ini?", opsi: ["Delapan", "Sepuluh", "Dua belas", "Dua puluh"], jawaban: "Sepuluh" }
+            ],
+            warna: [
+                { emoji: "🔴", warna: "Merah", pertanyaan: "Warna apakah ini?", opsi: ["Merah", "Biru", "Hijau", "Kuning"], jawaban: "Merah" },
+                { emoji: "🔵", warna: "Biru", pertanyaan: "Warna apakah ini?", opsi: ["Merah", "Biru", "Ungu", "Merah muda"], jawaban: "Biru" },
+                { emoji: "🟡", warna: "Kuning", pertanyaan: "Warna apakah ini?", opsi: ["Kuning", "Oranye", "Putih", "Emas"], jawaban: "Kuning" },
+                { emoji: "🟢", warna: "Hijau", pertanyaan: "Warna apakah ini?", opsi: ["Hijau", "Biru", "Ungu", "Coklat"], jawaban: "Hijau" },
+                { emoji: "🟠", warna: "Oranye", pertanyaan: "Warna apakah ini?", opsi: ["Oranye", "Merah", "Kuning", "Merah muda"], jawaban: "Oranye" },
+                { emoji: "🟣", warna: "Ungu", pertanyaan: "Warna apakah ini?", opsi: ["Ungu", "Biru", "Merah muda", "Coklat"], jawaban: "Ungu" },
+                { emoji: "⚫", warna: "Hitam", pertanyaan: "Warna apakah ini?", opsi: ["Hitam", "Abu-abu", "Biru", "Ungu"], jawaban: "Hitam" },
+                { emoji: "⚪", warna: "Putih", pertanyaan: "Warna apakah ini?", opsi: ["Putih", "Kuning", "Merah muda", "Abu-abu"], jawaban: "Putih" },
+                { emoji: "🟤", warna: "Coklat", pertanyaan: "Warna apakah ini?", opsi: ["Coklat", "Hitam", "Abu-abu", "Hijau"], jawaban: "Coklat" },
+                { emoji: "🔘", warna: "Abu-abu", pertanyaan: "Warna apakah ini?", opsi: ["Abu-abu", "Hitam", "Putih", "Biru"], jawaban: "Abu-abu" }
+            ],
+            buah: [
+                { emoji: "🍎", nama: "Apel", pertanyaan: "Ini adalah gambar apa?", opsi: ["Apel", "Pisang", "Pir", "Persik"], jawaban: "Apel" },
+                { emoji: "🍌", nama: "Pisang", pertanyaan: "Ini adalah gambar apa?", opsi: ["Pisang", "Apel", "Jeruk", "Mangga"], jawaban: "Pisang" },
+                { emoji: "🍊", nama: "Jeruk", pertanyaan: "Ini adalah gambar apa?", opsi: ["Jeruk", "Apel", "Lemon", "Persik"], jawaban: "Jeruk" },
+                { emoji: "🍓", nama: "Stroberi", pertanyaan: "Ini adalah gambar apa?", opsi: ["Stroberi", "Ceri", "Raspberry", "Apel"], jawaban: "Stroberi" },
+                { emoji: "🍉", nama: "Semangka", pertanyaan: "Ini adalah gambar apa?", opsi: ["Semangka", "Melon", "Labu", "Stroberi"], jawaban: "Semangka" },
+                { emoji: "🥕", nama: "Wortel", pertanyaan: "Ini adalah gambar apa?", opsi: ["Wortel", "Kentang", "Mentimun", "Paprika"], jawaban: "Wortel" },
+                { emoji: "🍅", nama: "Tomat", pertanyaan: "Ini adalah gambar apa?", opsi: ["Tomat", "Apel", "Ceri", "Stroberi"], jawaban: "Tomat" },
+                { emoji: "🥦", nama: "Brokoli", pertanyaan: "Ini adalah gambar apa?", opsi: ["Brokoli", "Kembang kol", "Selada", "Bayam"], jawaban: "Brokoli" },
+                { emoji: "🍆", nama: "Terong", pertanyaan: "Ini adalah gambar apa?", opsi: ["Terong", "Timun", "Zucchini", "Labu"], jawaban: "Terong" },
+                { emoji: "🌽", nama: "Jagung", pertanyaan: "Ini adalah gambar apa?", opsi: ["Jagung", "Kacang", "Kacang polong", "Buncis"], jawaban: "Jagung" }
+            ]
+        };
+
+        // Variabel state kuis
+        const quizState = {
+            kategoriSekarang: 'huruf',
+            pertanyaanSekarang: 0,
+            skor: 0,
+            pertanyaanTerjawab: [],
+            waktu: 30,
+            timer: null,
+            gameActive: true
+        };
+
+        // Inisialisasi kuis
+        function initKuis() {
+            // Set total pertanyaan
+            const totalPertanyaan = Object.values(quizData).reduce((acc, curr) => acc + curr.length, 0);
+            document.getElementById('total-questions').textContent = totalPertanyaan;
+            
+            // Event listener untuk tab
+            const tabEls = document.querySelectorAll('a[data-bs-toggle="pill"]');
+            tabEls.forEach(tabEl => {
+                tabEl.addEventListener('shown.bs.tab', (event) => {
+                    const kategori = event.target.getAttribute('href').substring(1).replace('-quiz', '');
+                    quizState.kategoriSekarang = kategori;
+                    quizState.pertanyaanSekarang = 0;
+                    resetTimer();
+                    muatPertanyaan();
+                });
+            });
+            
+            // Event listener untuk tombol next
+            document.getElementById('next-btn').addEventListener('click', () => {
+                if (quizState.gameActive) {
+                    muatPertanyaan();
+                    resetTimer();
+                }
+            });
+            
+            // Event listener untuk tombol audio
+            document.getElementById('play-huruf').addEventListener('click', () => playAudio(quizState.itemPertanyaanSekarang.huruf));
+            document.getElementById('play-angka').addEventListener('click', () => playAudio(quizState.itemPertanyaanSekarang.kata));
+            document.getElementById('play-warna').addEventListener('click', () => playAudio(quizState.itemPertanyaanSekarang.warna));
+            document.getElementById('play-buah').addEventListener('click', () => playAudio(quizState.itemPertanyaanSekarang.nama));
+            
+            // Event listener untuk tombol game over
+            document.getElementById('restart-btn').addEventListener('click', restartGame);
+            document.getElementById('quit-btn').addEventListener('click', () => window.location.href = 'index.html');
+            
+            // Muat pertanyaan pertama
+            muatPertanyaan();
+            startTimer();
+        }
+        
+        // Memuat pertanyaan
+        function muatPertanyaan() {
+            if (!quizState.gameActive) return;
+            
+            // Reset feedback
+            document.getElementById(`${quizState.kategoriSekarang}-feedback`).textContent = '';
+            document.getElementById(`${quizState.kategoriSekarang}-feedback`).className = "text-center fw-bold fs-4 mb-4";
+            
+            // Dapatkan pertanyaan acak yang belum dijawab
+            const pertanyaanTersedia = quizData[quizState.kategoriSekarang].filter((_, index) => 
+                !quizState.pertanyaanTerjawab.some(q => q.kategori === quizState.kategoriSekarang && q.index === index)
+            );
+            
+            // Jika semua pertanyaan sudah dijawab, tampilkan game over
+            if (pertanyaanTersedia.length === 0) {
+                endGame();
+                return;
+            }
+            
+            const randomIndex = Math.floor(Math.random() * pertanyaanTersedia.length);
+            const indexPertanyaan = quizData[quizState.kategoriSekarang].indexOf(pertanyaanTersedia[randomIndex]);
+            
+            quizState.pertanyaanSekarang = indexPertanyaan;
+            quizState.itemPertanyaanSekarang = quizData[quizState.kategoriSekarang][indexPertanyaan];
+            
+            // Update tampilan berdasarkan kategori
+            switch(quizState.kategoriSekarang) {
+                case 'huruf':
+                    document.getElementById('huruf-question').textContent = quizState.itemPertanyaanSekarang.pertanyaan;
+                    document.getElementById('huruf-display').textContent = quizState.itemPertanyaanSekarang.huruf;
+                    
+                    const hurufOptions = document.getElementById('huruf-options');
+                    hurufOptions.innerHTML = '';
+                    quizState.itemPertanyaanSekarang.opsi.forEach(opsi => {
+                        const btn = document.createElement('button');
+                        btn.className = "btn btn-outline-primary option-btn";
+                        btn.textContent = opsi;
+                        btn.addEventListener('click', () => periksaJawaban(opsi));
+                        hurufOptions.appendChild(btn);
+                    });
+                    break;
+                    
+                case 'angka':
+                    document.getElementById('angka-question').textContent = quizState.itemPertanyaanSekarang.pertanyaan;
+                    document.getElementById('angka-display').textContent = quizState.itemPertanyaanSekarang.emoji;
+                    
+                    const angkaOptions = document.getElementById('angka-options');
+                    angkaOptions.innerHTML = '';
+                    quizState.itemPertanyaanSekarang.opsi.forEach(opsi => {
+                        const btn = document.createElement('button');
+                        btn.className = "btn btn-outline-primary option-btn";
+                        btn.textContent = opsi;
+                        btn.addEventListener('click', () => periksaJawaban(opsi));
+                        angkaOptions.appendChild(btn);
+                    });
+                    break;
+                    
+                case 'warna':
+                    document.getElementById('warna-question').textContent = quizState.itemPertanyaanSekarang.pertanyaan;
+                    document.getElementById('warna-display').textContent = quizState.itemPertanyaanSekarang.emoji;
+                    document.getElementById('warna-display').style.color = 
+                        quizState.itemPertanyaanSekarang.warna === 'Merah' ? '#FF0000' :
+                        quizState.itemPertanyaanSekarang.warna === 'Biru' ? '#0000FF' :
+                        quizState.itemPertanyaanSekarang.warna === 'Kuning' ? '#FFFF00' :
+                        quizState.itemPertanyaanSekarang.warna === 'Hijau' ? '#008000' :
+                        quizState.itemPertanyaanSekarang.warna === 'Oranye' ? '#FFA500' :
+                        quizState.itemPertanyaanSekarang.warna === 'Ungu' ? '#800080' :
+                        quizState.itemPertanyaanSekarang.warna === 'Merah muda' ? '#FFC0CB' :
+                        quizState.itemPertanyaanSekarang.warna === 'Coklat' ? '#A52A2A' :
+                        quizState.itemPertanyaanSekarang.warna === 'Hitam' ? '#000000' : '#FFFFFF';
+                    
+                    const warnaOptions = document.getElementById('warna-options');
+                    warnaOptions.innerHTML = '';
+                    quizState.itemPertanyaanSekarang.opsi.forEach(opsi => {
+                        const btn = document.createElement('button');
+                        btn.className = "btn btn-outline-primary option-btn";
+                        btn.textContent = opsi;
+                        btn.addEventListener('click', () => periksaJawaban(opsi));
+                        warnaOptions.appendChild(btn);
+                    });
+                    break;
+                    
+                case 'buah':
+                    document.getElementById('buah-question').textContent = quizState.itemPertanyaanSekarang.pertanyaan;
+                    document.getElementById('buah-display').textContent = quizState.itemPertanyaanSekarang.emoji;
+                    
+                    const buahOptions = document.getElementById('buah-options');
+                    buahOptions.innerHTML = '';
+                    quizState.itemPertanyaanSekarang.opsi.forEach(opsi => {
+                        const btn = document.createElement('button');
+                        btn.className = "btn btn-outline-primary option-btn";
+                        btn.textContent = opsi;
+                        btn.addEventListener('click', () => periksaJawaban(opsi));
+                        buahOptions.appendChild(btn);
+                    });
+                    break;
+            }
+        }
+        
+        // Memeriksa jawaban
+        function periksaJawaban(jawabanTerpilih) {
+            if (!quizState.gameActive) return;
+            
+            const feedbackId = `${quizState.kategoriSekarang}-feedback`;
+            const feedback = document.getElementById(feedbackId);
+            const jawabanBenar = quizState.itemPertanyaanSekarang.jawaban;
+            
+            if (jawabanTerpilih === jawabanBenar) {
+                quizState.skor++;
+                document.getElementById('score').textContent = quizState.skor;
+                
+                const totalPertanyaan = Object.values(quizData).reduce((acc, curr) => acc + curr.length, 0);
+                const progress = (quizState.skor / totalPertanyaan) * 100;
+                document.getElementById('progress-bar').style.width = `${progress}%`;
+                
+                feedback.textContent = "Benar! Kamu hebat! 🎉";
+                feedback.className = "text-success fw-bold fs-4 mb-4";
+                
+                // Tandai pertanyaan ini sudah dijawab
+                quizState.pertanyaanTerjawab.push({
+                    kategori: quizState.kategoriSekarang,
+                    index: quizState.pertanyaanSekarang
+                });
+                
+                // Animasi
+                const displayElement = document.getElementById(`${quizState.kategoriSekarang}-display`);
+                displayElement.classList.add('bounce');
+                setTimeout(() => {
+                    displayElement.classList.remove('bounce');
+                }, 1000);
+                
+                // Buat confetti
+                createConfetti();
+            } else {
+                feedback.textContent = `Ups! Jawaban yang benar adalah ${jawabanBenar}`;
+                feedback.className = "text-danger fw-bold fs-4 mb-4";
+                
+                // Animasi
+                const displayElement = document.getElementById(`${quizState.kategoriSekarang}-display`);
+                displayElement.classList.add('shake');
+                setTimeout(() => {
+                    displayElement.classList.remove('shake');
+                }, 600);
+            }
+            
+            // Nonaktifkan tombol opsi setelah menjawab
+            const optionButtons = document.querySelectorAll(`#${quizState.kategoriSekarang}-options .option-btn`);
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === jawabanTerpilih) {
+                    btn.classList.add(jawabanTerpilih === jawabanBenar ? 'btn-success' : 'btn-danger');
+                } else if (btn.textContent === jawabanBenar) {
+                    btn.classList.add('btn-success');
+                }
+            });
+            
+            // Reset timer
+            resetTimer();
+        }
+        
+        // Timer functions
+        function startTimer() {
+            clearInterval(quizState.timer);
+            quizState.waktu = 30;
+            updateTimerDisplay();
+            
+            quizState.timer = setInterval(() => {
+                quizState.waktu--;
+                updateTimerDisplay();
+                
+                if (quizState.waktu <= 0) {
+                    clearInterval(quizState.timer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+        
+        function resetTimer() {
+            clearInterval(quizState.timer);
+            startTimer();
+        }
+        
+        function updateTimerDisplay() {
+            document.getElementById('timer').textContent = quizState.waktu;
+            const timerProgress = document.querySelector('.timer-progress');
+            const progress = (quizState.waktu / 30) * 100;
+            timerProgress.style.strokeDashoffset = progress;
+            
+            // Ubah warna timer berdasarkan waktu tersisa
+            if (quizState.waktu <= 10) {
+                timerProgress.style.stroke = '#FF5252';
+                document.getElementById('timer').classList.add('text-danger');
+                document.getElementById('timer').classList.add('pulse');
+            } else if (quizState.waktu <= 20) {
+                timerProgress.style.stroke = '#FFA500';
+                document.getElementById('timer').classList.remove('text-danger');
+                document.getElementById('timer').classList.add('text-warning');
+                document.getElementById('timer').classList.remove('pulse');
+            } else {
+                timerProgress.style.stroke = '#4ECDC4';
+                document.getElementById('timer').classList.remove('text-danger', 'text-warning');
+                document.getElementById('timer').classList.remove('pulse');
+            }
+        }
+        
+        function timeUp() {
+            if (!quizState.gameActive) return;
+            
+            const feedbackId = `${quizState.kategoriSekarang}-feedback`;
+            const feedback = document.getElementById(feedbackId);
+            const jawabanBenar = quizState.itemPertanyaanSekarang.jawaban;
+            
+            feedback.textContent = `Waktu habis! Jawaban yang benar adalah ${jawabanBenar}`;
+            feedback.className = "text-danger fw-bold fs-4 mb-4";
+            
+            // Tandai pertanyaan ini sudah dijawab
+            quizState.pertanyaanTerjawab.push({
+                kategori: quizState.kategoriSekarang,
+                index: quizState.pertanyaanSekarang
+            });
+            
+            // Nonaktifkan tombol opsi
+            const optionButtons = document.querySelectorAll(`#${quizState.kategoriSekarang}-options .option-btn`);
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === jawabanBenar) {
+                    btn.classList.add('btn-success');
+                }
+            });
+            
+            // Animasi
+            const displayElement = document.getElementById(`${quizState.kategoriSekarang}-display`);
+            displayElement.classList.add('shake');
+            setTimeout(() => {
+                displayElement.classList.remove('shake');
+            }, 600);
+        }
+        
+        // Game over
+        function endGame() {
+            quizState.gameActive = false;
+            clearInterval(quizState.timer);
+            
+            const totalPertanyaan = Object.values(quizData).reduce((acc, curr) => acc + curr.length, 0);
+            const persentase = (quizState.skor / totalPertanyaan) * 100;
+            
+            // Update game over modal
+            document.getElementById('final-score').textContent = quizState.skor;
+            document.getElementById('final-total').textContent = totalPertanyaan;
+            
+            // Update star rating
+            const stars = document.querySelectorAll('.star-rating i');
+            stars.forEach((star, index) => {
+                if (persentase >= (index + 1) * 20) {
+                    star.classList.add('fas');
+                    star.classList.remove('far');
+                } else {
+                    star.classList.add('far');
+                    star.classList.remove('fas');
+                }
+            });
+            
+            // Show game over modal
+            document.getElementById('game-over').classList.add('show');
+        }
+        
+        // Restart game
+        function restartGame() {
+            quizState.skor = 0;
+            quizState.pertanyaanTerjawab = [];
+            quizState.gameActive = true;
+            
+            document.getElementById('score').textContent = '0';
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('game-over').classList.remove('show');
+            
+            muatPertanyaan();
+            startTimer();
+        }
+        
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#A5D8FF', '#C8B6FF'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.top = '-10px';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                document.body.appendChild(confetti);
+                
+                // Animasi confetti
+                const animationDuration = Math.random() * 3 + 2;
+                confetti.style.transition = `all ${animationDuration}s linear`;
+                confetti.style.opacity = '1';
+                
+                setTimeout(() => {
+                    confetti.style.top = `${Math.random() * 100 + 100}%`;
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.opacity = '0';
+                }, 10);
+                
+                // Hapus confetti setelah animasi selesai
+                setTimeout(() => {
+                    confetti.remove();
+                }, animationDuration * 1000);
+            }
+        }
+        
+        // Memainkan audio
+        function playAudio(teksYangDiucapkan) {
+            const utterance = new SpeechSynthesisUtterance();
+            utterance.text = teksYangDiucapkan;
+            utterance.lang = 'id-ID';
+            utterance.rate = 0.8;
+            window.speechSynthesis.speak(utterance);
+        }
+        
+        // Inisialisasi kuis saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', initKuis);
+    </script>
+</body>
+</html>

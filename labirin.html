@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Labirin Matematika - Petualangan Baru</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #f72585;
+            --success: #4cc9f0;
+            --danger: #f94144;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --bg-gradient: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-gradient);
+            color: white;
+            touch-action: manipulation;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+
+        .game-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 15px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .stat-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+        }
+
+        .mode-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .mode-btn.active {
+            background: var(--warning);
+            color: var(--dark);
+            box-shadow: 0 0 15px rgba(248, 150, 30, 0.5);
+        }
+
+        .game-area {
+            display: flex;
+            flex-grow: 1;
+            gap: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .maze-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            min-height: 0;
+        }
+
+        .maze {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-gap: 2px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 8px;
+            border-radius: 12px;
+            width: 100%;
+            height: 100%;
+            max-width: 500px;
+            max-height: 500px;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cell {
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%; /* Membuat sel berbentuk persegi */
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            overflow: hidden; /* Memastikan konten tidak meluber */
+        }
+
+        .cell-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wall {
+            background: rgba(0, 0, 0, 0.6);
+            background-image: linear-gradient(45deg, rgba(0,0,0,0.3) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.3) 75%, transparent 75%, transparent 100%);
+            background-size: 15px 15px;
+        }
+
+        .player {
+            background: #4cc9f0; /* Changed player color to light blue */
+            border-radius: 50%;
+            width: 80%;
+            height: 80%;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.8); /* Updated shadow color */
+            position: relative;
+            z-index: 2;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        .player::after {
+            content: "";
+            position: absolute;
+            top: 15%;
+            left: 15%;
+            width: 20%;
+            height: 20%;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+        }
+
+        .path {
+            
+            background: rgba(76, 201, 240, 0.3); /* Light blue path */
+            box-shadow: inset 0 0 10px rgba(76, 201, 240, 0.5);
+        }
+
+        .checkpoint {
+            background: var(--info);
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 15px rgba(72, 149, 239, 0.6);
+        }
+
+        .wrong-path {
+            background: rgba(255, 87, 34, 0.5);
+        }
+
+        .exit {
+            background: var(--light);
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 20px rgba(11, 225, 25, 0.7);
+        }
+
+        .health-chest {
+            background: var(--secondary);
+            animation: pulse 1s infinite;
+            box-shadow: 0 0 15px rgba(247, 37, 133, 0.6);
+        }
+
+        .enemy {
+            background: var(--danger);
+            position: relative;
+            z-index: 1;
+            animation: shake 0.5s infinite alternate;
+        }
+
+        .enemy::before {
+            content: "👾";
+            font-size: 1.5rem;
+            position: absolute;
+            filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+        }
+
+        .enemy-defeated {
+            background: rgba(158, 158, 158, 0.5);
+            opacity: 0.5;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(-2px); }
+            100% { transform: translateX(2px); }
+        }
+
+        /* Controls Section */
+        .controls-section {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            gap: 20px;
+        }
+
+        .control-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .control-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dpad {
+            display: grid;
+            grid-template-areas:
+                ". up ."
+                "left . right"
+                ". down .";
+            gap: 12px;
+            margin: 0 auto;
+        }
+
+        .dpad-btn {
+            width: 65px;
+            height: 65px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dpad-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dpad-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .dpad-btn.up { grid-area: up; }
+        .dpad-btn.left { grid-area: left; }
+        .dpad-btn.right { grid-area: right; }
+        .dpad-btn.down { grid-area: down; }
+
+        .manual-controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            width: 220px;
+        }
+
+        /* Modals */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: var(--dark);
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-family: 'Fredoka One', cursive;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .modal-text {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .modal-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(67, 97, 238, 0.3);
+            outline: none;
+        }
+
+        .modal-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        .modal-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .modal-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* RPS Modal */
+        .rps-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .rps-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-size: 2.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rps-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .rps-btn:active {
+            transform: scale(0.95);
+        }
+
+        .rps-result {
+            font-size: 1.2rem;
+            margin: 15px 0;
+            font-weight: bold;
+            color: var(--dark);
+            min-height: 40px;
+        }
+
+        /* Tutorial Overlay */
+    .tutorial-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        display: none; /* Changed from flex to none */
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        flex-direction: column;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        backdrop-filter: blur(5px);
+}
+
+    .tutorial-content {
+        max-width: 500px;
+        width: 90%;
+        background: rgba(67, 97, 238, 0.9);
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        margin: 20px;
+    }
+
+    .tutorial-title {
+        font-family: 'Fredoka One', cursive;
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: white;
+        line-height: 1.2;
+    }
+
+    .tutorial-text {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .tutorial-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .tutorial-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.95rem;
+        text-align: left;
+        padding: 8px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+    }
+
+    .tutorial-icon {
+        width: 30px;
+        height: 30px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .tutorial-icon.player {
+        background: #4cc9f0;
+        border-radius: 50%;
+    }
+
+    .tutorial-icon.exit {
+        background: white;
+        animation: pulse 1.5s infinite;
+    }
+
+    .tutorial-icon.checkpoint {
+        background: #4895ef;
+        animation: pulse 2s infinite;
+    }
+
+    .tutorial-icon.enemy {
+        background: #f94144;
+    }
+
+    .tutorial-icon.health-chest {
+        background: #f72585;
+        animation: pulse 1s infinite;
+    }
+
+    .tutorial-icon.path {
+        background: rgba(76, 201, 240, 0.3);
+    }
+
+    .tutorial-btn {
+        margin-top: 20px;
+        padding: 12px 30px;
+        background: var(--warning);
+        color: var(--dark);
+        border: none;
+        border-radius: 50px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(248, 150, 30, 0.4);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .tutorial-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(248, 150, 30, 0.5);
+        background: #f9a03f;
+    }
+
+    .tutorial-btn:active {
+        transform: translateY(1px);
+    }
+
+
+        /* Effects */
+        .explosion {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, #ff5722 0%, #ff9800 50%, transparent 70%);
+            opacity: 0;
+            z-index: 3;
+            pointer-events: none;
+            border-radius: 5px;
+        }
+
+        @keyframes explosion {
+            0% { transform: scale(0.3); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            opacity: 0;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .health-up {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle, #4CAF50 0%, #2E7D32 50%, transparent 70%);
+            opacity: 0;
+            z-index: 3;
+            pointer-events: none;
+            border-radius: 5px;
+        }
+
+        @keyframes health-up {
+            0% { transform: scale(0.3); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .game-area {
+                flex-direction: column;
+            }
+            
+            .manual-controls {
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            .dpad-btn, .control-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
+
+                .enemy {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .enemy-emoji {
+        font-size: 1.5rem;
+        filter: drop-shadow(0 0 2px rgba(0,0,0,0.5));
+        animation: shake 0.5s infinite alternate;
+    }
+    
+    .enemy-health {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 5px;
+        background-color: red;
+        border-radius: 0 0 5px 5px;
+        transition: width 0.3s;
+    }
+
+    @media (max-width: 768px) {
+    .tutorial-content {
+        padding: 20px;
+    }
+    
+    .tutorial-title {
+        font-size: 1.5rem;
+    }
+    
+    .tutorial-text {
+        font-size: 1rem;
+    }
+    
+    .tutorial-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .tutorial-item {
+        font-size: 0.9rem;
+    }
+    
+    .tutorial-btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
+    
+    @keyframes shake {
+        0% { transform: translateX(-2px) rotate(-5deg); }
+        100% { transform: translateX(2px) rotate(5deg); }
+    }
+        }
+    </style>
+</head>
+<body>
+    <div class="tutorial-overlay" id="tutorial-overlay">
+    <div class="tutorial-content">
+        <h2 class="tutorial-title">Selamat Datang di Labirin Matematika!</h2>
+        <p class="tutorial-text">Kendalikan karakter biru untuk mencapai pintu keluar (putih) sambil memecahkan soal matematika!</p>
+        
+        <div class="tutorial-grid">
+            <div class="tutorial-item">
+                <div class="tutorial-icon player"></div>
+                <span>Karakter Pemain</span>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-icon exit"></div>
+                <span>Pintu Keluar</span>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-icon checkpoint"></div>
+                <span>Checkpoint Matematika</span>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-icon enemy">👹</div>
+                <span>Musuh (Hadapi dengan Gunting-Batu-Kertas)</span>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-icon health-chest"></div>
+                <span>Kotak Kesehatan</span>
+            </div>
+            <div class="tutorial-item">
+                <div class="tutorial-icon path"></div>
+                <span>Jalan yang Dilalui</span>
+            </div>
+        </div>
+        
+        <button class="tutorial-btn" id="start-btn">Mulai Petualangan!</button>
+    </div>
+</div>
+
+    <div class="game-container">
+        <div class="header">
+            <div class="stats">
+                <a class="navbar-brand text-white fw-bold" href="index.html">
+                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                </a>
+                <div class="stat-box">
+                    <span class="stat-icon">❤️</span>
+                    <span id="lives">3</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-icon">🏆</span>
+                    <span id="level">1</span>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="game-area">
+            <div class="maze-container">
+                <div class="maze" id="maze">
+                    <!-- Labirin akan diisi oleh JavaScript -->
+                </div>
+            </div>
+            
+            <div class="manual-controls" id="manual-controls">
+                <div class="dpad">
+                    <button class="dpad-btn up" id="up-btn">↑</button>
+                    <button class="dpad-btn left" id="left-btn">←</button>
+                    <button class="dpad-btn right" id="right-btn">→</button>
+                    <button class="dpad-btn down" id="down-btn">↓</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls-section">
+            <button class="control-btn" id="pause-btn">⏸️</button>
+            <button class="control-btn" id="hint-btn">💡</button>
+            <button class="tutorial-btn" id="tutorial-btn">❓ Tutorial</button>
+        </div>
+    </div>
+
+    <!-- Math Question Modal -->
+    <div id="question-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3 class="modal-title">Pertanyaan Matematika</h3>
+            <p class="modal-text" id="question-text"></p>
+            <input type="number" id="answer-input" class="modal-input" placeholder="Masukkan jawaban...">
+            <button id="submit-answer" class="modal-btn">Submit</button>
+        </div>
+    </div>
+
+    <!-- RPS Battle Modal -->
+    <div id="rps-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3 class="modal-title">Hadapi Musuh!</h3>
+            <p class="modal-text">Pilih senjata untuk melawan:</p>
+            <div class="rps-options">
+                <button class="rps-btn" id="rock-btn">✊</button>
+                <button class="rps-btn" id="paper-btn">✋</button>
+                <button class="rps-btn" id="scissors-btn">✌️</button>
+            </div>
+            <div class="rps-result" id="rps-result"></div>
+            <button id="rps-continue" class="modal-btn" style="display: none;">Lanjutkan</button>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="correct-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3" preload="auto"></audio>
+    <audio id="wrong-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3" preload="auto"></audio>
+    <audio id="move-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+    <audio id="explosion-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-explosion-impact-1684.mp3" preload="auto"></audio>
+    <audio id="win-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
+    <audio id="health-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
+    <audio id="enemy-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-ominous-drums-227.mp3" preload="auto"></audio>
+    <audio id="battle-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-show-suspense-waiting-668.mp3" preload="auto"></audio>
+
+    <!-- JavaScript -->
+<script>
+    // Game state
+    const gameState = {
+        level: 1,
+        lives: 3,
+        maxLives: 5,
+        playerPosition: { x: 1, y: 1 },
+        exitPosition: { x: 13, y: 13 },
+        maze: [],
+        mazeSize: 15,
+        isPaused: false,
+        checkpoints: [],
+        checkpointsReached: [],
+        enemies: [],
+        defeatedEnemies: [],
+        healthChests: [],
+        collectedChests: [],
+        visitedCells: [],
+        hintPath: [],
+        showHint: false,
+        firstTimePlaying: true,
+        enemyTypes: [
+            {
+                name: "Goblin",
+                emoji: "👹",
+                difficulty: 1,
+                winRate: 0.8,
+                health: 1,
+                message: "Goblin lemah tapi licik!"
+            },
+            {
+                name: "Orc",
+                emoji: "👺",
+                difficulty: 2,
+                winRate: 0.7,
+                health: 2,
+                message: "Orc kuat tapi lamban!"
+            },
+            {
+                name: "Hantu",
+                emoji: "👻",
+                difficulty: 3,
+                winRate: 0.6,
+                health: 1,
+                message: "Hantu sulit diprediksi!"
+            },
+            {
+                name: "Penyihir",
+                emoji: "🧙",
+                difficulty: 4,
+                winRate: 0.5,
+                health: 3,
+                message: "Penyihir punya trik jahat!"
+            },
+            {
+                name: "Naga",
+                emoji: "🐉",
+                difficulty: 5,
+                winRate: 0.4,
+                health: 5,
+                message: "Naga sangat berbahaya!"
+            },
+            {
+                name: "Zombie",
+                emoji: "🧟",
+                difficulty: 2,
+                winRate: 0.75,
+                health: 2,
+                message: "Zombie tak kenal lelah!"
+            },
+            {
+                name: "Vampir",
+                emoji: "🧛",
+                difficulty: 4,
+                winRate: 0.55,
+                health: 3,
+                message: "Vampir mencuri nyawamu!"
+            },
+            {
+                name: "Raksasa",
+                emoji: "👾",
+                difficulty: 6,
+                winRate: 0.3,
+                health: 6,
+                message: "Raksasa menghancurkan!"
+            }
+        ]
+    };
+
+    // DOM elements
+    const elements = {
+        maze: document.getElementById('maze'),
+        livesDisplay: document.getElementById('lives'),
+        levelDisplay: document.getElementById('level'),
+        tutorialOverlay: document.getElementById('tutorial-overlay'),
+        startBtn: document.getElementById('start-btn'),
+        tutorialBtn: document.getElementById('tutorial-btn'),
+        manualControls: document.getElementById('manual-controls'),
+        upBtn: document.getElementById('up-btn'),
+        leftBtn: document.getElementById('left-btn'),
+        rightBtn: document.getElementById('right-btn'),
+        downBtn: document.getElementById('down-btn'),
+        pauseBtn: document.getElementById('pause-btn'),
+        hintBtn: document.getElementById('hint-btn'),
+        questionModal: document.getElementById('question-modal'),
+        questionText: document.getElementById('question-text'),
+        answerInput: document.getElementById('answer-input'),
+        submitAnswer: document.getElementById('submit-answer'),
+        rpsModal: document.getElementById('rps-modal'),
+        rockBtn: document.getElementById('rock-btn'),
+        paperBtn: document.getElementById('paper-btn'),
+        scissorsBtn: document.getElementById('scissors-btn'),
+        rpsResult: document.getElementById('rps-result'),
+        rpsContinue: document.getElementById('rps-continue'),
+        correctSound: document.getElementById('correct-sound'),
+        wrongSound: document.getElementById('wrong-sound'),
+        moveSound: document.getElementById('move-sound'),
+        explosionSound: document.getElementById('explosion-sound'),
+        winSound: document.getElementById('win-sound'),
+        healthSound: document.getElementById('health-sound'),
+        enemySound: document.getElementById('enemy-sound'),
+        battleSound: document.getElementById('battle-sound')
+    };
+
+    // Initialize the game
+    function initGame() {
+        // Initialize game state
+        resetGameState();
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Check if first time playing
+        const hasPlayedBefore = localStorage.getItem('hasPlayedBefore');
+        if (!hasPlayedBefore) {
+            showTutorial();
+            localStorage.setItem('hasPlayedBefore', 'true');
+            gameState.firstTimePlaying = true;
+        } else {
+            gameState.firstTimePlaying = false;
+            startGame();
+        }
+    }
+
+    function setupEventListeners() {
+        // Tutorial controls
+        elements.startBtn.addEventListener('click', startGame);
+        elements.tutorialBtn.addEventListener('click', showTutorial);
+        
+        // Movement controls
+        elements.upBtn.addEventListener('click', () => movePlayer(0, -1));
+        elements.leftBtn.addEventListener('click', () => movePlayer(-1, 0));
+        elements.rightBtn.addEventListener('click', () => movePlayer(1, 0));
+        elements.downBtn.addEventListener('click', () => movePlayer(0, 1));
+        
+        // Game controls
+        elements.pauseBtn.addEventListener('click', togglePause);
+        elements.hintBtn.addEventListener('click', showHint);
+        
+        // Modal controls
+        elements.submitAnswer.addEventListener('click', checkAnswer);
+        elements.rockBtn.addEventListener('click', () => playRPS('rock'));
+        elements.paperBtn.addEventListener('click', () => playRPS('paper'));
+        elements.scissorsBtn.addEventListener('click', () => playRPS('scissors'));
+        elements.rpsContinue.addEventListener('click', continueAfterRPS);
+        
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (gameState.isPaused) return;
+            switch (e.key) {
+                case 'ArrowUp': case 'w': case 'W': movePlayer(0, -1); break;
+                case 'ArrowLeft': case 'a': case 'A': movePlayer(-1, 0); break;
+                case 'ArrowRight': case 'd': case 'D': movePlayer(1, 0); break;
+                case 'ArrowDown': case 's': case 'S': movePlayer(0, 1); break;
+            }
+        });
+    }
+
+    function showTutorial() {
+        elements.tutorialOverlay.style.display = 'flex';
+    }
+
+    function startGame() {
+    elements.tutorialOverlay.style.display = 'none';
+    resetGameState(); // Reset all game state including visited cells
+    generateMaze();
+    renderMaze();
+    updateUI();
+    }
+
+    // Reset game state for a new levell
+    function resetGameState() {
+        gameState.playerPosition = { x: 1, y: 1 };
+        gameState.exitPosition = { x: gameState.mazeSize - 2, y: gameState.mazeSize - 2 };
+        gameState.maze = [];
+        gameState.checkpoints = [];
+        gameState.checkpointsReached = [];
+        gameState.enemies = [];
+        gameState.defeatedEnemies = [];
+        gameState.healthChests = [];
+        gameState.collectedChests = [];
+        gameState.visitedCells = []; // Reset visited cells
+        gameState.hintPath = [];
+        gameState.showHint = false;
+        
+        // Always add starting position to visited cells
+        gameState.visitedCells.push(`${gameState.playerPosition.x},${gameState.playerPosition.y}`);
+    }
+    // Generate the maze
+    function generateMaze() {
+        // Initialize maze with all walls
+        for (let y = 0; y < gameState.mazeSize; y++) {
+            gameState.maze[y] = [];
+            for (let x = 0; x < gameState.mazeSize; x++) {
+                gameState.maze[y][x] = { isWall: true };
+            }
+        }
+
+        // Create paths
+        carvePaths(1, 1);
+
+        // Ensure exit is reachable
+        gameState.maze[gameState.exitPosition.y][gameState.exitPosition.x].isWall = false;
+
+        // Connect any isolated areas
+        connectIsolatedAreas();
+
+        // Add game elements
+        addCheckpoints();
+        addEnemies();
+        addHealthChests();
+        generateHintPath();
+    }
+
+    // Recursive backtracking maze generation
+    function carvePaths(x, y) {
+        gameState.maze[y][x].isWall = false;
+        
+        const directions = [
+            [1, 0], [-1, 0], [0, 1], [0, -1]
+        ];
+        
+        // Shuffle directions
+        for (let i = directions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [directions[i], directions[j]] = [directions[j], directions[i]];
+        }
+        
+        for (const [dx, dy] of directions) {
+            const nx = x + dx * 2;
+            const ny = y + dy * 2;
+            
+            if (nx > 0 && nx < gameState.mazeSize - 1 && 
+                ny > 0 && ny < gameState.mazeSize - 1 && 
+                gameState.maze[ny][nx].isWall) {
+                gameState.maze[y + dy][x + dx].isWall = false;
+                carvePaths(nx, ny);
+            }
+        }
+    }
+
+    // Connect isolated areas
+    function connectIsolatedAreas() {
+        const visited = Array(gameState.mazeSize).fill().map(() => Array(gameState.mazeSize).fill(false));
+        const areas = [];
+        
+        for (let y = 1; y < gameState.mazeSize - 1; y++) {
+            for (let x = 1; x < gameState.mazeSize - 1; x++) {
+                if (!gameState.maze[y][x].isWall && !visited[y][x]) {
+                    const area = [];
+                    const queue = [{x, y}];
+                    visited[y][x] = true;
+                    
+                    while (queue.length > 0) {
+                        const current = queue.shift();
+                        area.push(current);
+                        
+                        // Check neighbors
+                        const neighbors = [
+                            {x: current.x + 1, y: current.y},
+                            {x: current.x - 1, y: current.y},
+                            {x: current.x, y: current.y + 1},
+                            {x: current.x, y: current.y - 1}
+                        ];
+                        
+                        for (const neighbor of neighbors) {
+                            if (neighbor.x > 0 && neighbor.x < gameState.mazeSize - 1 &&
+                                neighbor.y > 0 && neighbor.y < gameState.mazeSize - 1 &&
+                                !gameState.maze[neighbor.y][neighbor.x].isWall &&
+                                !visited[neighbor.y][neighbor.x]) {
+                                visited[neighbor.y][neighbor.x] = true;
+                                queue.push(neighbor);
+                            }
+                        }
+                    }
+                    
+                    areas.push(area);
+                }
+            }
+        }
+        
+        // Connect areas if needed
+        if (areas.length > 1) {
+            for (let i = 1; i < areas.length; i++) {
+                const prevArea = areas[i-1];
+                const currentArea = areas[i];
+                
+                // Find closest points
+                let minDist = Infinity;
+                let bestPair = null;
+                
+                for (const p1 of prevArea) {
+                    for (const p2 of currentArea) {
+                        const dist = Math.abs(p1.x - p2.x) + Math.abs(p1.y - p2.y);
+                        if (dist < minDist) {
+                            minDist = dist;
+                            bestPair = {p1, p2};
+                        }
+                    }
+                }
+                
+                // Create path
+                if (bestPair) {
+                    const {p1, p2} = bestPair;
+                    let x = p1.x;
+                    let y = p1.y;
+                    
+                    while (x !== p2.x || y !== p2.y) {
+                        if (x < p2.x) x++;
+                        else if (x > p2.x) x--;
+                        else if (y < p2.y) y++;
+                        else if (y > p2.y) y--;
+                        
+                        gameState.maze[y][x].isWall = false;
+                    }
+                }
+            }
+        }
+    }
+
+    // Add checkpoints
+    function addCheckpoints() {
+        const numCheckpoints = Math.min(10, gameState.level + 4);
+        
+        for (let i = 0; i < numCheckpoints; i++) {
+            let x, y;
+            let attempts = 0;
+            const maxAttempts = 100;
+            
+            do {
+                x = Math.floor(Math.random() * (gameState.mazeSize - 4)) + 2;
+                y = Math.floor(Math.random() * (gameState.mazeSize - 4)) + 2;
+                attempts++;
+                
+                if (attempts >= maxAttempts) {
+                    x = Math.floor(Math.random() * (gameState.mazeSize - 2)) + 1;
+                    y = Math.floor(Math.random() * (gameState.mazeSize - 2)) + 1;
+                    break;
+                }
+            } while (
+                gameState.maze[y][x].isWall || 
+                (x === gameState.playerPosition.x && y === gameState.playerPosition.y) ||
+                (x === gameState.exitPosition.x && y === gameState.exitPosition.y) ||
+                gameState.checkpoints.some(cp => cp.x === x && cp.y === y) ||
+                isTooCloseToOtherPoints(x, y)
+            );
+            
+            gameState.checkpoints.push({ x, y });
+        }
+    }
+
+    // Check if position is too close to other points
+    function isTooCloseToOtherPoints(x, y) {
+        const minDistance = 3;
+        
+        // Check distance to player start
+        if (Math.abs(x - gameState.playerPosition.x) + Math.abs(y - gameState.playerPosition.y) < minDistance) {
+            return true;
+        }
+        
+        // Check distance to exit
+        if (Math.abs(x - gameState.exitPosition.x) + Math.abs(y - gameState.exitPosition.y) < minDistance) {
+            return true;
+        }
+        
+        // Check distance to other checkpoints
+        for (const cp of gameState.checkpoints) {
+            if (Math.abs(x - cp.x) + Math.abs(y - cp.y) < minDistance) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    // Add enemies
+    function addEnemies() {
+        const maxEnemies = Math.min(3 + Math.floor(gameState.level / 3), 5);
+        gameState.enemies = []; // Clear existing enemies
+
+        // Enemy distribution by level tiers
+        const enemyDistribution = [
+            { 
+                levelRange: [1, 2], 
+                types: ['Goblin', 'Zombie'],
+                weights: [60, 40] // 60% Goblin, 40% Zombie
+            },
+            { 
+                levelRange: [3, 4], 
+                types: ['Goblin', 'Zombie', 'Orc', 'Hantu'],
+                weights: [30, 30, 20, 20] 
+            },
+            { 
+                levelRange: [5, 6], 
+                types: ['Orc', 'Hantu', 'Penyihir', 'Vampir'],
+                weights: [30, 30, 20, 20]
+            },
+            { 
+                levelRange: [7, 100], // Anything above level 7
+                types: ['Penyihir', 'Vampir', 'Naga', 'Raksasa'],
+                weights: [30, 30, 20, 20]
+            }
+        ];
+
+        // Get current distribution
+        let currentDistribution = enemyDistribution[0];
+        for (const dist of enemyDistribution) {
+            if (gameState.level >= dist.levelRange[0] && gameState.level <= dist.levelRange[1]) {
+                currentDistribution = dist;
+                break;
+            }
+        }
+
+        // Create weighted enemy pool
+        const enemyPool = [];
+        currentDistribution.types.forEach((type, index) => {
+            const count = Math.ceil(currentDistribution.weights[index] / 10);
+            const enemyType = gameState.enemyTypes.find(e => e.name === type);
+            for (let i = 0; i < count; i++) {
+                enemyPool.push(enemyType);
+            }
+        });
+
+        // Helper function to get random enemy from weighted pool
+        function getRandomEnemy() {
+            const randomIndex = Math.floor(Math.random() * enemyPool.length);
+            return enemyPool[randomIndex];
+        }
+
+        // Place enemies
+        for (let i = 0; i < maxEnemies; i++) {
+            let x, y;
+            let attempts = 0;
+            const maxAttempts = 100;
+            
+            const enemyType = getRandomEnemy();
+            
+            do {
+                x = Math.floor(Math.random() * (gameState.mazeSize - 4)) + 2;
+                y = Math.floor(Math.random() * (gameState.mazeSize - 4)) + 2;
+                attempts++;
+                
+                if (attempts >= maxAttempts) {
+                    x = Math.floor(Math.random() * (gameState.mazeSize - 2)) + 1;
+                    y = Math.floor(Math.random() * (gameState.mazeSize - 2)) + 1;
+                    break;
+                }
+            } while (
+                gameState.maze[y][x].isWall || 
+                (x === gameState.playerPosition.x && y === gameState.playerPosition.y) ||
+                (x === gameState.exitPosition.x && y === gameState.exitPosition.y) ||
+                gameState.checkpoints.some(cp => cp.x === x && cp.y === y) ||
+                gameState.enemies.some(e => e.x === x && e.y === y) ||
+                isTooCloseToOtherPoints(x, y)
+            );
+            
+            // Scale enemy difficulty with level
+            const scaledEnemy = {
+                ...enemyType,
+                health: Math.min(
+                    enemyType.health + Math.floor(gameState.level / 3),
+                    enemyType.health * 2
+                ),
+                winRate: Math.max(
+                    enemyType.winRate - (gameState.level * 0.02),
+                    enemyType.winRate * 0.7
+                )
+            };
+            
+            gameState.enemies.push({
+                x, 
+                y,
+                type: scaledEnemy,
+                currentHealth: scaledEnemy.health
+            });
+        }
+
+        // Ensure at least one enemy is placed
+        if (gameState.enemies.length === 0 && maxEnemies > 0) {
+            const x = Math.floor(Math.random() * (gameState.mazeSize - 4)) + 2;
+            const y = Math.floor(Math.random() * (gameState.mazeSize - 4)) + 2;
+            
+            if (!gameState.maze[y][x].isWall) {
+                const enemyType = getRandomEnemy();
+                gameState.enemies.push({
+                    x, 
+                    y,
+                    type: enemyType,
+                    currentHealth: enemyType.health
+                });
+            }
+        }
+    }
+
+    // Add health chests
+    function addHealthChests() {
+        if (gameState.lives >= gameState.maxLives) return;
+
+        let x, y;
+        let attempts = 0;
+        const maxAttempts = 100;
+        
+        do {
+            x = Math.floor(Math.random() * (gameState.mazeSize - 4)) + 2;
+            y = Math.floor(Math.random() * (gameState.mazeSize - 4)) + 2;
+            attempts++;
+            
+            if (attempts >= maxAttempts) {
+                x = Math.floor(Math.random() * (gameState.mazeSize - 2)) + 1;
+                y = Math.floor(Math.random() * (gameState.mazeSize - 2)) + 1;
+                break;
+            }
+        } while (
+            gameState.maze[y][x].isWall || 
+            (x === gameState.playerPosition.x && y === gameState.playerPosition.y) ||
+            (x === gameState.exitPosition.x && y === gameState.exitPosition.y) ||
+            gameState.checkpoints.some(cp => cp.x === x && cp.y === y) ||
+            gameState.enemies.some(e => e.x === x && e.y === y) ||
+            gameState.healthChests.some(h => h.x === x && h.y === y)
+        );
+        
+        gameState.healthChests.push({ x, y });
+    }
+
+    // Generate hint path
+    function generateHintPath() {
+        const queue = [];
+        const visited = {};
+        const parent = {};
+        
+        const startKey = `${gameState.playerPosition.x},${gameState.playerPosition.y}`;
+        queue.push(gameState.playerPosition);
+        visited[startKey] = true;
+        
+        while (queue.length > 0) {
+            const current = queue.shift();
+            const currentKey = `${current.x},${current.y}`;
+            
+            if (current.x === gameState.exitPosition.x && current.y === gameState.exitPosition.y) {
+                const path = [];
+                let node = currentKey;
+                
+                while (node !== startKey) {
+                    path.unshift(node);
+                    node = parent[node];
+                }
+                
+                gameState.hintPath = path.map(pos => {
+                    const [x, y] = pos.split(',').map(Number);
+                    return { x, y };
+                });
+                return;
+            }
+            
+            const directions = [
+                { dx: 1, dy: 0 },
+                { dx: -1, dy: 0 },
+                { dx: 0, dy: 1 },
+                { dx: 0, dy: -1 }
+            ];
+            
+            for (const dir of directions) {
+                const nx = current.x + dir.dx;
+                const ny = current.y + dir.dy;
+                const nextKey = `${nx},${ny}`;
+                
+                if (nx >= 0 && nx < gameState.mazeSize && 
+                    ny >= 0 && ny < gameState.mazeSize && 
+                    !gameState.maze[ny][nx].isWall && 
+                    !visited[nextKey]) {
+                    visited[nextKey] = true;
+                    parent[nextKey] = currentKey;
+                    queue.push({ x: nx, y: ny });
+                }
+            }
+        }
+    }
+
+    // Render the maze
+    function renderMaze() {
+        elements.maze.innerHTML = '';
+        elements.maze.style.gridTemplateColumns = `repeat(${gameState.mazeSize}, 1fr)`;
+        
+        for (let y = 0; y < gameState.mazeSize; y++) {
+            for (let x = 0; x < gameState.mazeSize; x++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                
+                // Set wall or path
+                if (gameState.maze[y][x].isWall) {
+                    cell.classList.add('wall');
+                } else {
+                    // Show hint path if enabled
+                    if (gameState.showHint && gameState.hintPath.some(pos => pos.x === x && pos.y === y)) {
+                        cell.classList.add('path');
+                    }
+                    
+                    // Show visited path (only the current path)
+                    const visitedIndex = gameState.visitedCells.indexOf(`${x},${y}`);
+                    if (visitedIndex !== -1) {
+                        cell.classList.add('path');
+                    }
+                    
+                    // Show wrong path only in hint mode
+                    if (gameState.showHint && visitedIndex !== -1 && 
+                        !gameState.hintPath.some(pos => pos.x === x && pos.y === y)) {
+                        cell.classList.add('wrong-path');
+                    }
+                }
+                
+                // Add player
+                if (x === gameState.playerPosition.x && y === gameState.playerPosition.y) {
+                    const player = document.createElement('div');
+                    player.className = 'player';
+                    cell.appendChild(player);
+                }
+                
+                // Add exit
+                if (x === gameState.exitPosition.x && y === gameState.exitPosition.y) {
+                    cell.classList.add('exit');
+                }
+                
+                // Add checkpoints
+                const checkpoint = gameState.checkpoints.find(cp => cp.x === x && cp.y === y);
+                if (checkpoint && !gameState.checkpointsReached.includes(`${x},${y}`)) {
+                    cell.classList.add('checkpoint');
+                }
+                
+                // Add enemies
+                const enemy = gameState.enemies.find(e => e.x === x && e.y === y);
+                if (enemy && !gameState.defeatedEnemies.includes(`${x},${y}`)) {
+                    cell.classList.add('enemy');
+                    const enemyEmoji = document.createElement('div');
+                    enemyEmoji.className = 'enemy-emoji';
+                    enemyEmoji.textContent = enemy.type.emoji;
+                    enemyEmoji.style.fontSize = '1.5rem';
+                    cell.appendChild(enemyEmoji);
+                    
+                    if (enemy.type.health > 1) {
+                        const healthBar = document.createElement('div');
+                        healthBar.className = 'enemy-health';
+                        healthBar.style.width = `${(enemy.currentHealth / enemy.type.health) * 100}%`;
+                        healthBar.style.height = '5px';
+                        healthBar.style.backgroundColor = 'red';
+                        healthBar.style.position = 'absolute';
+                        healthBar.style.bottom = '0';
+                        healthBar.style.left = '0';
+                        healthBar.style.borderRadius = '0 0 5px 5px';
+                        cell.appendChild(healthBar);
+                    }
+                }
+                
+                // Add health chests
+                const healthChest = gameState.healthChests.find(h => h.x === x && h.y === y);
+                if (healthChest && !gameState.collectedChests.includes(`${x},${y}`)) {
+                    cell.classList.add('health-chest');
+                }
+                
+                elements.maze.appendChild(cell);
+            }
+        }
+    }
+
+    // Update UI
+    function updateUI() {
+        elements.livesDisplay.textContent = gameState.lives;
+        elements.levelDisplay.textContent = gameState.level;
+    }
+
+    // Move player
+    function movePlayer(dx, dy) {
+        if (gameState.isPaused) return;
+        
+        const newX = gameState.playerPosition.x + dx;
+        const newY = gameState.playerPosition.y + dy;
+        
+        if (newX < 0 || newX >= gameState.mazeSize || 
+            newY < 0 || newY >= gameState.mazeSize || 
+            gameState.maze[newY][newX].isWall) {
+            return;
+        }
+        
+        elements.moveSound.currentTime = 0;
+        elements.moveSound.play();
+        
+        // Get the current path index if we're backtracking
+        const currentPosIndex = gameState.visitedCells.indexOf(`${gameState.playerPosition.x},${gameState.playerPosition.y}`);
+        const newPosIndex = gameState.visitedCells.indexOf(`${newX},${newY}`);
+        
+        // If we're moving to a previously visited cell, remove all cells after it
+        if (newPosIndex !== -1) {
+            gameState.visitedCells = gameState.visitedCells.slice(0, newPosIndex + 1);
+        } else {
+            // Add new position to visited cells
+            gameState.visitedCells.push(`${newX},${newY}`);
+        }
+        
+        gameState.playerPosition = { x: newX, y: newY };
+        
+        checkCheckpoint(newX, newY);
+        checkEnemy(newX, newY);
+        checkHealthChest(newX, newY);
+        checkExit(newX, newY);
+        
+        renderMaze();
+    }
+
+    // Check checkpoint
+    function checkCheckpoint(x, y) {
+        const checkpointIndex = gameState.checkpoints.findIndex(cp => cp.x === x && cp.y === y);
+        
+        if (checkpointIndex !== -1 && !gameState.checkpointsReached.includes(`${x},${y}`)) {
+            showMathQuestion();
+            gameState.checkpointsReached.push(`${x},${y}`);
+        }
+    }
+
+    // Check enemy
+    function checkEnemy(x, y) {
+        const enemyIndex = gameState.enemies.findIndex(e => e.x === x && e.y === y);
+        
+        if (enemyIndex !== -1 && !gameState.defeatedEnemies.includes(`${x},${y}`)) {
+            showRPSBattle();
+            elements.enemySound.currentTime = 0;
+            elements.enemySound.play();
+        }
+    }
+
+    // Check health chest
+    function checkHealthChest(x, y) {
+        const chestIndex = gameState.healthChests.findIndex(h => h.x === x && h.y === y);
+        
+        if (chestIndex !== -1 && !gameState.collectedChests.includes(`${x},${y}`)) {
+            if (gameState.lives < gameState.maxLives) {
+                gameState.lives++;
+                elements.healthSound.currentTime = 0;
+                elements.healthSound.play();
+                showHealthUpEffect(x, y);
+            }
+            
+            gameState.collectedChests.push(`${x},${y}`);
+            updateUI();
+        }
+    }
+
+    // Check exit
+    function checkExit(x, y) {
+        if (x === gameState.exitPosition.x && y === gameState.exitPosition.y) {
+            if (gameState.checkpoints.length === gameState.checkpointsReached.length) {
+                elements.winSound.currentTime = 0;
+                elements.winSound.play();
+                showConfetti();
+                
+                setTimeout(() => {
+                    gameState.level++;
+                    startGame(); // Ini akan memanggil resetGameState() dan menghapus jejak
+                }, 2000);
+            }
+        }
+    }
+
+    // Show math question
+    function showMathQuestion() {
+        let question, answer;
+        const operationTypes = [
+            'addition', 'subtraction', 'multiplication', 'division',
+            'addition-triple', 'subtraction-triple', 'sequence', 'comparison'
+        ];
+        
+        let operationType;
+        if (gameState.level < 3) {
+            operationType = operationTypes[Math.floor(Math.random() * 4)];
+        } else if (gameState.level < 6) {
+            operationType = operationTypes[Math.floor(Math.random() * 6)];
+        } else {
+            operationType = operationTypes[Math.floor(Math.random() * operationTypes.length)];
+        }
+        
+        switch (operationType) {
+            case 'addition':
+                const a = Math.floor(Math.random() * (gameState.level * 5)) + 1;
+                const b = Math.floor(Math.random() * (gameState.level * 5)) + 1;
+                question = `${a} + ${b} = ?`;
+                answer = a + b;
+                break;
+                
+            case 'subtraction':
+                const c = Math.floor(Math.random() * (gameState.level * 5)) + 1;
+                const d = Math.floor(Math.random() * (gameState.level * 5)) + 1;
+                question = `${Math.max(c, d)} - ${Math.min(c, d)} = ?`;
+                answer = Math.max(c, d) - Math.min(c, d);
+                break;
+                
+            case 'multiplication':
+                const e = Math.floor(Math.random() * (gameState.level * 2)) + 1;
+                const f = Math.floor(Math.random() * (gameState.level * 2)) + 1;
+                question = `${e} × ${f} = ?`;
+                answer = e * f;
+                break;
+                
+            case 'division':
+                const g = Math.floor(Math.random() * (gameState.level * 2)) + 1;
+                const h = Math.floor(Math.random() * (gameState.level * 2)) + 1;
+                const product = g * h;
+                question = `${product} ÷ ${g} = ?`;
+                answer = h;
+                break;
+                
+            case 'addition-triple':
+                const i = Math.floor(Math.random() * (gameState.level * 3)) + 1;
+                const j = Math.floor(Math.random() * (gameState.level * 3)) + 1;
+                const k = Math.floor(Math.random() * (gameState.level * 3)) + 1;
+                question = `${i} + ${j} + ${k} = ?`;
+                answer = i + j + k;
+                break;
+                
+            case 'subtraction-triple':
+                const l = Math.floor(Math.random() * (gameState.level * 3)) + 1;
+                const m = Math.floor(Math.random() * (gameState.level * 3)) + 1;
+                const n = Math.floor(Math.random() * (gameState.level * 3)) + 1;
+                const max = Math.max(l, m, n);
+                const min = Math.min(l, m, n);
+                const mid = l + m + n - max - min;
+                question = `${max} - ${mid} - ${min} = ?`;
+                answer = max - mid - min;
+                break;
+                
+            case 'sequence':
+                const start = Math.floor(Math.random() * 10) + 1;
+                const step = Math.floor(Math.random() * 3) + 1;
+                const seqLength = Math.floor(Math.random() * 2) + 4;
+                let sequence = [];
+                for (let s = 0; s < seqLength; s++) {
+                    sequence.push(start + s * step);
+                }
+                const missingPos = Math.floor(Math.random() * seqLength);
+                answer = sequence[missingPos];
+                sequence[missingPos] = '?';
+                question = `Lanjutkan pola: ${sequence.join(', ')}`;
+                break;
+                
+            case 'comparison':
+                const o = Math.floor(Math.random() * (gameState.level * 5)) + 1;
+                const p = Math.floor(Math.random() * (gameState.level * 5)) + 1;
+                const q = Math.floor(Math.random() * (gameState.level * 5)) + 1;
+                const comparisonType = Math.floor(Math.random() * 3);
+                
+                switch (comparisonType) {
+                    case 0:
+                        question = `Berapa jumlah ${o} + ${p} + ${q}?`;
+                        answer = o + p + q;
+                        break;
+                    case 1:
+                        question = `Berapa selisih antara ${Math.max(o, p)} dan ${Math.min(o, p)}?`;
+                        answer = Math.max(o, p) - Math.min(o, p);
+                        break;
+                    case 2:
+                        question = `Jika ${o} × ${p} = ${o * p}, berapa ${o} × ${p} × ${q}?`;
+                        answer = o * p * q;
+                        break;
+                }
+                break;
+        }
+        
+        elements.questionText.textContent = question;
+        elements.answerInput.value = '';
+        elements.questionModal.style.display = 'flex';
+        elements.answerInput.focus();
+        elements.questionModal.dataset.correctAnswer = answer;
+    }
+
+    // Check answer
+    function checkAnswer() {
+        const userAnswer = parseInt(elements.answerInput.value);
+        const correctAnswer = parseInt(elements.questionModal.dataset.correctAnswer);
+        
+        if (userAnswer === correctAnswer) {
+            elements.correctSound.currentTime = 0;
+            elements.correctSound.play();
+            elements.questionModal.style.display = 'none';
+        } else {
+            elements.wrongSound.currentTime = 0;
+            elements.wrongSound.play();
+            elements.answerInput.value = '';
+            elements.answerInput.focus();
+        }
+    }
+
+    // Show RPS battle
+    function showRPSBattle() {
+        elements.battleSound.currentTime = 0;
+        elements.battleSound.play();
+        elements.rpsResult.textContent = '';
+        elements.rpsContinue.style.display = 'none';
+        elements.rpsModal.style.display = 'flex';
+    }
+
+    // Play RPS
+    function playRPS(playerChoice) {
+        const currentEnemy = gameState.enemies.find(
+            e => e.x === gameState.playerPosition.x && 
+                 e.y === gameState.playerPosition.y
+        );
+        
+        if (!currentEnemy) return;
+        
+        const choices = ['rock', 'paper', 'scissors'];
+        let enemyChoice;
+        
+        const shouldWin = Math.random() < currentEnemy.type.winRate;
+        
+        if (shouldWin) {
+            if (playerChoice === 'rock') enemyChoice = 'scissors';
+            else if (playerChoice === 'paper') enemyChoice = 'rock';
+            else enemyChoice = 'paper';
+        } else {
+            if (playerChoice === 'rock') enemyChoice = 'paper';
+            else if (playerChoice === 'paper') enemyChoice = 'scissors';
+            else enemyChoice = 'rock';
+        }
+        
+        let result;
+        if (playerChoice === enemyChoice) {
+            result = `Seri! ${currentEnemy.type.message}`;
+        } else if (
+            (playerChoice === 'rock' && enemyChoice === 'scissors') ||
+            (playerChoice === 'paper' && enemyChoice === 'rock') ||
+            (playerChoice === 'scissors' && enemyChoice === 'paper')
+        ) {
+            currentEnemy.currentHealth--;
+            
+            if (currentEnemy.currentHealth <= 0) {
+                result = `Kamu menang! ${currentEnemy.type.name} dikalahkan.`;
+            } else {
+                result = `Kamu menyerang! ${currentEnemy.type.name} kehilangan 1 nyawa.`;
+            }
+        } else {
+            gameState.lives--;
+            result = `Kamu kalah! ${currentEnemy.type.name} menyerangmu. Kehilangan 1 nyawa.`;
+        }
+        
+        elements.rpsResult.innerHTML = `
+            <div>Lawan: ${currentEnemy.type.emoji} ${currentEnemy.type.name}</div>
+            <div>Kamu: ${getEmoji(playerChoice)}, Musuh: ${getEmoji(enemyChoice)}</div>
+            <div>${result}</div>
+            ${currentEnemy.currentHealth > 0 ? 
+                `<div>Nyawa ${currentEnemy.type.name}: ${currentEnemy.currentHealth}/${currentEnemy.type.health}</div>` : ''}
+        `;
+        
+        function getEmoji(choice) {
+            return {
+                rock: '✊', 
+                paper: '✋', 
+                scissors: '✌️'
+            }[choice];
+        }
+        
+        if (result.includes("dikalahkan") || result.includes("Kehilangan")) {
+            elements.rpsContinue.style.display = 'block';
+            
+            if (result.includes("dikalahkan")) {
+                const enemyKey = `${gameState.playerPosition.x},${gameState.playerPosition.y}`;
+                gameState.defeatedEnemies.push(enemyKey);
+                showExplosionEffect(gameState.playerPosition.x, gameState.playerPosition.y);
+                elements.explosionSound.currentTime = 0;
+                elements.explosionSound.play();
+            } else if (result.includes("Kehilangan")) {
+                updateUI();
+                
+                if (gameState.lives <= 0) {
+                    gameOver();
+                }
+            }
+        }
+    }
+
+    // Continue after RPS
+    function continueAfterRPS() {
+        elements.rpsModal.style.display = 'none';
+        renderMaze();
+    }
+
+    // Toggle pause
+    function togglePause() {
+        gameState.isPaused = !gameState.isPaused;
+        elements.pauseBtn.textContent = gameState.isPaused ? '▶️' : '⏸️';
+    }
+
+    // Show hint
+    function showHint() {
+        gameState.showHint = !gameState.showHint;
+        renderMaze();
+    }
+
+    // Show explosion effect
+    function showExplosionEffect(x, y) {
+        const cell = document.querySelector(`.cell:nth-child(${y * gameState.mazeSize + x + 1})`);
+        if (!cell) return;
+        
+        const explosion = document.createElement('div');
+        explosion.className = 'explosion';
+        explosion.style.animation = 'explosion 0.5s forwards';
+        cell.appendChild(explosion);
+        
+        setTimeout(() => {
+            cell.removeChild(explosion);
+        }, 500);
+    }
+
+    // Show health up effect
+    function showHealthUpEffect(x, y) {
+        const cell = document.querySelector(`.cell:nth-child(${y * gameState.mazeSize + x + 1})`);
+        if (!cell) return;
+        
+        const healthUp = document.createElement('div');
+        healthUp.className = 'health-up';
+        healthUp.style.animation = 'health-up 0.5s forwards';
+        cell.appendChild(healthUp);
+        
+        setTimeout(() => {
+            cell.removeChild(healthUp);
+        }, 500);
+    }
+
+    // Show confetti effect
+    function showConfetti() {
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            
+            // Random position
+            confetti.style.left = `${Math.random() * 100}%`;
+            
+            // Random color
+            const colors = ['#f00', '#0f0', '#00f', '#ff0', '#f0f', '#0ff'];
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Random animation delay
+            confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s forwards`;
+            confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+            
+            document.body.appendChild(confetti);
+            
+            // Remove after animation
+            setTimeout(() => {
+                document.body.removeChild(confetti);
+            }, 5000);
+        }
+    }
+
+    // Game over
+    function gameOver() {
+        alert('Game Over! Kamu kehabisan nyawa.');
+        gameState.level = 1;
+        gameState.lives = 3;
+        startGame();
+    }
+
+    // Initialize the game when the page loads
+    window.addEventListener('load', initGame);
+</script>
+
+</body>
+</html>
