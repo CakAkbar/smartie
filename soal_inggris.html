@@ -516,468 +516,471 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <script>
-        // Data for quizzes
-const quizData = {
-    letters: [
-        { letter: "A", question: "Which letter is this?", options: ["A", "B", "C", "D"], answer: "A" },
-        { letter: "B", question: "Which letter is this?", options: ["A", "B", "D", "F"], answer: "B" },
-        { letter: "C", question: "Which letter is this?", options: ["C", "G", "O", "Q"], answer: "C" },
-        { letter: "D", question: "Which letter is this?", options: ["B", "D", "P", "Q"], answer: "D" },
-        { letter: "E", question: "Which letter is this?", options: ["E", "F", "L", "T"], answer: "E" },
-        { letter: "M", question: "Which letter is this?", options: ["M", "N", "W", "H"], answer: "M" },
-        { letter: "S", question: "Which letter is this?", options: ["S", "Z", "X", "Y"], answer: "S" },
-        { letter: "T", question: "Which letter is this?", options: ["T", "F", "L", "I"], answer: "T" },
-        { letter: "P", question: "Which letter is this?", options: ["P", "B", "D", "R"], answer: "P" },
-        { letter: "K", question: "Which letter is this?", options: ["K", "H", "X", "Y"], answer: "K" }
-    ],
-    numbers: [
-        { emoji: "1️⃣", word: "One", question: "Which number is this?", options: ["One", "Two", "Three", "Four"], answer: "One" },
-        { emoji: "2️⃣", word: "Two", question: "Which number is this?", options: ["One", "Two", "Ten", "Twelve"], answer: "Two" },
-        { emoji: "3️⃣", word: "Three", question: "Which number is this?", options: ["Three", "Four", "Five", "Six"], answer: "Three" },
-        { emoji: "4️⃣", word: "Four", question: "Which number is this?", options: ["Two", "Four", "Six", "Eight"], answer: "Four" },
-        { emoji: "5️⃣", word: "Five", question: "Which number is this?", options: ["Five", "Seven", "Nine", "Ten"], answer: "Five" },
-        { emoji: "6️⃣", word: "Six", question: "Which number is this?", options: ["Four", "Six", "Eight", "Ten"], answer: "Six" },
-        { emoji: "7️⃣", word: "Seven", question: "Which number is this?", options: ["Five", "Seven", "Nine", "Eleven"], answer: "Seven" },
-        { emoji: "8️⃣", word: "Eight", question: "Which number is this?", options: ["Six", "Eight", "Ten", "Twelve"], answer: "Eight" },
-        { emoji: "9️⃣", word: "Nine", question: "Which number is this?", options: ["Seven", "Nine", "Eleven", "Thirteen"], answer: "Nine" },
-        { emoji: "🔟", word: "Ten", question: "Which number is this?", options: ["Eight", "Ten", "Twelve", "Twenty"], answer: "Ten" }
-    ],
-    colors: [
-        { emoji: "🔴", color: "Red", question: "Which color is this?", options: ["Red", "Blue", "Green", "Yellow"], answer: "Red" },
-        { emoji: "🔵", color: "Blue", question: "Which color is this?", options: ["Red", "Blue", "Purple", "Pink"], answer: "Blue" },
-        { emoji: "🟡", color: "Yellow", question: "Which color is this?", options: ["Yellow", "Orange", "White", "Gold"], answer: "Yellow" },
-        { emoji: "🟢", color: "Green", question: "Which color is this?", options: ["Green", "Blue", "Purple", "Brown"], answer: "Green" },
-        { emoji: "🟠", color: "Orange", question: "Which color is this?", options: ["Orange", "Red", "Yellow", "Pink"], answer: "Orange" },
-        { emoji: "🟣", color: "Purple", question: "Which color is this?", options: ["Purple", "Blue", "Pink", "Brown"], answer: "Purple" },
-        { emoji: "⚫", color: "Black", question: "Which color is this?", options: ["Black", "Gray", "Blue", "Purple"], answer: "Black" },
-        { emoji: "⚪", color: "White", question: "Which color is this?", options: ["White", "Yellow", "Pink", "Gray"], answer: "White" },
-        { emoji: "🟤", color: "Brown", question: "Which color is this?", options: ["Brown", "Black", "Gray", "Green"], answer: "Brown" },
-        { emoji: "🔘", color: "Gray", question: "Which color is this?", options: ["Gray", "Black", "White", "Blue"], answer: "Gray" }
-    ]
-};
+<script>
+    // Data for quizzes
+    const quizData = {
+        letters: [
+            { letter: "A", question: "Which letter is this?", options: ["A", "B", "C", "D"], answer: "A" },
+            { letter: "B", question: "Which letter is this?", options: ["A", "B", "D", "F"], answer: "B" },
+            { letter: "C", question: "Which letter is this?", options: ["C", "G", "O", "Q"], answer: "C" },
+            { letter: "D", question: "Which letter is this?", options: ["B", "D", "P", "Q"], answer: "D" },
+            { letter: "E", question: "Which letter is this?", options: ["E", "F", "L", "T"], answer: "E" },
+            { letter: "M", question: "Which letter is this?", options: ["M", "N", "W", "H"], answer: "M" },
+            { letter: "S", question: "Which letter is this?", options: ["S", "Z", "X", "Y"], answer: "S" },
+            { letter: "T", question: "Which letter is this?", options: ["T", "F", "L", "I"], answer: "T" },
+            { letter: "P", question: "Which letter is this?", options: ["P", "B", "D", "R"], answer: "P" },
+            { letter: "K", question: "Which letter is this?", options: ["K", "H", "X", "Y"], answer: "K" }
+        ],
+        numbers: [
+            { emoji: "1️⃣", word: "One", question: "Which number is this?", options: ["One", "Two", "Three", "Four"], answer: "One" },
+            { emoji: "2️⃣", word: "Two", question: "Which number is this?", options: ["One", "Two", "Ten", "Twelve"], answer: "Two" },
+            { emoji: "3️⃣", word: "Three", question: "Which number is this?", options: ["Three", "Four", "Five", "Six"], answer: "Three" },
+            { emoji: "4️⃣", word: "Four", question: "Which number is this?", options: ["Two", "Four", "Six", "Eight"], answer: "Four" },
+            { emoji: "5️⃣", word: "Five", question: "Which number is this?", options: ["Five", "Seven", "Nine", "Ten"], answer: "Five" },
+            { emoji: "6️⃣", word: "Six", question: "Which number is this?", options: ["Four", "Six", "Eight", "Ten"], answer: "Six" },
+            { emoji: "7️⃣", word: "Seven", question: "Which number is this?", options: ["Five", "Seven", "Nine", "Eleven"], answer: "Seven" },
+            { emoji: "8️⃣", word: "Eight", question: "Which number is this?", options: ["Six", "Eight", "Ten", "Twelve"], answer: "Eight" },
+            { emoji: "9️⃣", word: "Nine", question: "Which number is this?", options: ["Seven", "Nine", "Eleven", "Thirteen"], answer: "Nine" },
+            { emoji: "🔟", word: "Ten", question: "Which number is this?", options: ["Eight", "Ten", "Twelve", "Twenty"], answer: "Ten" }
+        ],
+        colors: [
+            { emoji: "🔴", color: "Red", question: "Which color is this?", options: ["Red", "Blue", "Green", "Yellow"], answer: "Red" },
+            { emoji: "🔵", color: "Blue", question: "Which color is this?", options: ["Red", "Blue", "Purple", "Pink"], answer: "Blue" },
+            { emoji: "🟡", color: "Yellow", question: "Which color is this?", options: ["Yellow", "Orange", "White", "Gold"], answer: "Yellow" },
+            { emoji: "🟢", color: "Green", question: "Which color is this?", options: ["Green", "Blue", "Purple", "Brown"], answer: "Green" },
+            { emoji: "🟠", color: "Orange", question: "Which color is this?", options: ["Orange", "Red", "Yellow", "Pink"], answer: "Orange" },
+            { emoji: "🟣", color: "Purple", question: "Which color is this?", options: ["Purple", "Blue", "Pink", "Brown"], answer: "Purple" },
+            { emoji: "⚫", color: "Black", question: "Which color is this?", options: ["Black", "Gray", "Blue", "Purple"], answer: "Black" },
+            { emoji: "⚪", color: "White", question: "Which color is this?", options: ["White", "Yellow", "Pink", "Gray"], answer: "White" },
+            { emoji: "🟤", color: "Brown", question: "Which color is this?", options: ["Brown", "Black", "Gray", "Green"], answer: "Brown" },
+            { emoji: "🔘", color: "Gray", question: "Which color is this?", options: ["Gray", "Black", "White", "Blue"], answer: "Gray" }
+        ]
+    };
 
-// Word Scramble Data
-const scrambleWords = [
-    "apple", "banana", "orange", "elephant", "giraffe", 
-    "computer", "teacher", "student", "pencil", "notebook"
-];
+    // Word Scramble Data
+    const scrambleWords = [
+        "apple", "banana", "orange", "elephant", "giraffe", 
+        "computer", "teacher", "student", "pencil", "notebook"
+    ];
 
-// Game state
-const gameState = {
-    currentCategory: 'letters',
-    currentQuestion: 0,
-    score: 0,
-    answeredQuestions: [],
-    time: 30,
-    timer: null,
-    gameActive: true,
-    // Word Scramble State
-    currentScrambleWord: "",
-    scrambledLetters: []
-};
+    // Game state
+    const gameState = {
+        currentCategory: 'letters',
+        currentQuestion: 0,
+        score: 0,
+        answeredQuestions: [],
+        time: 30,
+        timer: null,
+        gameActive: true,
+        // Word Scramble State
+        currentScrambleWord: "",
+        scrambledLetters: []
+    };
 
-// DOM Elements
-const elements = {
-    score: document.getElementById('score'),
-    totalQuestions: document.getElementById('total-questions'),
-    timerText: document.getElementById('timer'),
-    timerProgress: document.querySelector('.timer-progress'),
-    progressBar: document.getElementById('progress-bar'),
-    gameOverModal: document.getElementById('game-over'),
-    finalScore: document.getElementById('final-score'),
-    finalTotal: document.getElementById('final-total'),
-    starRating: document.querySelector('.star-rating'),
-    audioElement: document.getElementById('audio-element')
-};
+    // DOM Elements
+    const elements = {
+        score: document.getElementById('score'),
+        totalQuestions: document.getElementById('total-questions'),
+        timerText: document.getElementById('timer'),
+        timerProgress: document.querySelector('.timer-progress'),
+        progressBar: document.getElementById('progress-bar'),
+        gameOverModal: document.getElementById('game-over'),
+        finalScore: document.getElementById('final-score'),
+        finalTotal: document.getElementById('final-total'),
+        starRating: document.querySelector('.star-rating'),
+        audioElement: document.getElementById('audio-element')
+    };
 
-// Initialize game
-function initGame() {
-    // Set total questions
-    const totalQuestions = Object.values(quizData).reduce((acc, curr) => acc + curr.length, 0) + scrambleWords.length;
-    elements.totalQuestions.textContent = totalQuestions;
-    
-    // Event listeners for tabs
-    const tabEls = document.querySelectorAll('a[data-bs-toggle="pill"]');
-    tabEls.forEach(tabEl => {
-        tabEl.addEventListener('shown.bs.tab', (event) => {
-            const category = event.target.getAttribute('href').substring(1).replace('-quiz', '').replace('-game', '');
-            gameState.currentCategory = category;
-            
-            if (category === 'scramble') {
-                initWordScramble();
-            } else {
-                gameState.currentQuestion = 0;
-                resetTimer();
-                loadQuestion();
-            }
+    // Initialize game
+    function initGame() {
+        // Set total questions
+        const totalQuestions = Object.values(quizData).reduce((acc, curr) => acc + curr.length, 0) + scrambleWords.length;
+        elements.totalQuestions.textContent = totalQuestions;
+        
+        // Event listeners for tabs
+        const tabEls = document.querySelectorAll('a[data-bs-toggle="pill"]');
+        tabEls.forEach(tabEl => {
+            tabEl.addEventListener('shown.bs.tab', (event) => {
+                const category = event.target.getAttribute('href').substring(1).replace('-quiz', '').replace('-game', '');
+                gameState.currentCategory = category;
+                
+                if (category === 'scramble') {
+                    initWordScramble();
+                } else {
+                    gameState.currentQuestion = 0;
+                    resetTimer();
+                    loadQuestion();
+                }
+            });
         });
-    });
-    
-    // Next question button
-    document.getElementById('next-btn').addEventListener('click', () => {
-        if (gameState.gameActive && gameState.currentCategory !== 'scramble') {
+        
+        // Next question button - UPDATED to always allow clicking
+        document.getElementById('next-btn').addEventListener('click', () => {
             loadQuestion();
             resetTimer();
-        }
-    });
-    
-    // Audio buttons
-    document.getElementById('play-letters').addEventListener('click', () => playAudio(gameState.currentQuestionItem.letter));
-    document.getElementById('play-numbers').addEventListener('click', () => playAudio(gameState.currentQuestionItem.word));
-    document.getElementById('play-colors').addEventListener('click', () => playAudio(gameState.currentQuestionItem.color));
-    
-    // Game over buttons
-    document.getElementById('restart-btn').addEventListener('click', restartGame);
-    document.getElementById('quit-btn').addEventListener('click', () => window.location.href = 'index.html');
-    
-    // Word scramble submit
-    document.getElementById('scramble-submit').addEventListener('click', checkScrambleAnswer);
-    document.getElementById('scramble-input').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            checkScrambleAnswer();
-        }
-    });
-    
-    // Load first question
-    loadQuestion();
-    startTimer();
-}
-
-// Load question
-function loadQuestion() {
-    if (!gameState.gameActive) return;
-    
-    // Reset feedback
-    const feedbackEl = document.getElementById(`${gameState.currentCategory}-feedback`);
-    feedbackEl.textContent = '';
-    feedbackEl.className = "text-center fw-bold fs-4 mb-4";
-    
-    // Get random unanswered question
-    const availableQuestions = quizData[gameState.currentCategory].filter((_, index) => 
-        !gameState.answeredQuestions.some(q => q.category === gameState.currentCategory && q.index === index)
-    );
-    
-    // If all questions answered, show game over
-    if (availableQuestions.length === 0) {
-        endGame();
-        return;
-    }
-    
-    const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-    const questionIndex = quizData[gameState.currentCategory].indexOf(availableQuestions[randomIndex]);
-    
-    gameState.currentQuestion = questionIndex;
-    gameState.currentQuestionItem = quizData[gameState.currentCategory][questionIndex];
-    
-    // Update display based on category
-    switch(gameState.currentCategory) {
-        case 'letters':
-            document.getElementById('letters-question').textContent = gameState.currentQuestionItem.question;
-            document.getElementById('letters-display').textContent = gameState.currentQuestionItem.letter;
-            updateOptions('letters', gameState.currentQuestionItem.options);
-            break;
-        case 'numbers':
-            document.getElementById('numbers-question').textContent = gameState.currentQuestionItem.question;
-            document.getElementById('numbers-display').textContent = gameState.currentQuestionItem.emoji;
-            updateOptions('numbers', gameState.currentQuestionItem.options);
-            break;
-        case 'colors':
-            document.getElementById('colors-question').textContent = gameState.currentQuestionItem.question;
-            const colorDisplay = document.getElementById('colors-display');
-            colorDisplay.textContent = gameState.currentQuestionItem.emoji;
-            // Remove any existing color class
-            colorDisplay.className = "emoji-display";
-            // Add color if it's a colored emoji
-            if (gameState.currentQuestionItem.emoji === "🔴") colorDisplay.style.color = "#FF0000";
-            if (gameState.currentQuestionItem.emoji === "🔵") colorDisplay.style.color = "#0000FF";
-            if (gameState.currentQuestionItem.emoji === "🟡") colorDisplay.style.color = "#FFFF00";
-            if (gameState.currentQuestionItem.emoji === "🟢") colorDisplay.style.color = "#00FF00";
-            if (gameState.currentQuestionItem.emoji === "🟠") colorDisplay.style.color = "#FFA500";
-            if (gameState.currentQuestionItem.emoji === "🟣") colorDisplay.style.color = "#800080";
-            updateOptions('colors', gameState.currentQuestionItem.options);
-            break;
-    }
-    
-    // Update progress bar
-    const progress = (gameState.answeredQuestions.length / elements.totalQuestions.textContent) * 100;
-    elements.progressBar.style.width = `${progress}%`;
-}
-
-// Update answer options
-function updateOptions(category, options) {
-    const optionsContainer = document.getElementById(`${category}-options`);
-    optionsContainer.innerHTML = '';
-    
-    // Shuffle options
-    const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
-    
-    shuffledOptions.forEach(option => {
-        const button = document.createElement('button');
-        button.className = "btn btn-outline-primary option-btn";
-        button.textContent = option;
-        button.addEventListener('click', () => checkAnswer(option, category));
-        optionsContainer.appendChild(button);
-    });
-}
-
-// Check answer
-function checkAnswer(selectedOption, category) {
-    if (!gameState.gameActive) return;
-    
-    const correctAnswer = gameState.currentQuestionItem.answer;
-    const feedbackEl = document.getElementById(`${category}-feedback`);
-    
-    if (selectedOption === correctAnswer) {
-        // Correct answer
-        feedbackEl.textContent = "Correct! 🎉";
-        feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-success";
-        gameState.score++;
-        elements.score.textContent = gameState.score;
-        
-        // Add bounce animation to feedback
-        feedbackEl.classList.add('bounce');
-        setTimeout(() => feedbackEl.classList.remove('bounce'), 1000);
-        
-        // Create confetti effect
-        createConfetti();
-    } else {
-        // Wrong answer
-        feedbackEl.textContent = `Wrong! The correct answer is ${correctAnswer}.`;
-        feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-danger";
-        
-        // Add shake animation to feedback
-        feedbackEl.classList.add('shake');
-        setTimeout(() => feedbackEl.classList.remove('shake'), 1000);
-    }
-    
-    // Mark question as answered
-    gameState.answeredQuestions.push({
-        category: gameState.currentCategory,
-        index: gameState.currentQuestion
-    });
-    
-    // Disable all option buttons
-    const optionButtons = document.querySelectorAll(`#${category}-options .option-btn`);
-    optionButtons.forEach(button => {
-        button.disabled = true;
-        if (button.textContent === correctAnswer) {
-            button.classList.add('btn-success');
-            button.classList.remove('btn-outline-primary');
-        } else if (button.textContent === selectedOption && selectedOption !== correctAnswer) {
-            button.classList.add('btn-danger');
-            button.classList.remove('btn-outline-primary');
-        }
-    });
-    
-    // Stop timer
-    clearInterval(gameState.timer);
-    gameState.gameActive = false;
-}
-
-// Timer functions
-function startTimer() {
-    gameState.time = 30;
-    elements.timerText.textContent = gameState.time;
-    elements.timerProgress.setAttribute('stroke-dashoffset', '0');
-    
-    gameState.timer = setInterval(() => {
-        gameState.time--;
-        elements.timerText.textContent = gameState.time;
-        
-        // Update circle progress
-        const offset = (gameState.time / 30) * 100;
-        elements.timerProgress.setAttribute('stroke-dashoffset', offset);
-        
-        if (gameState.time <= 0) {
-            clearInterval(gameState.timer);
-            timeUp();
-        }
-    }, 1000);
-}
-
-function resetTimer() {
-    clearInterval(gameState.timer);
-    gameState.gameActive = true;
-    startTimer();
-}
-
-function timeUp() {
-    if (!gameState.gameActive) return;
-    
-    gameState.gameActive = false;
-    const category = gameState.currentCategory;
-    const feedbackEl = document.getElementById(`${category}-feedback`);
-    const correctAnswer = gameState.currentQuestionItem.answer;
-    
-    feedbackEl.textContent = `Time's up! The correct answer is ${correctAnswer}.`;
-    feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-danger";
-    
-    // Mark question as answered
-    gameState.answeredQuestions.push({
-        category: gameState.currentCategory,
-        index: gameState.currentQuestion
-    });
-    
-    // Highlight correct answer
-    const optionButtons = document.querySelectorAll(`#${category}-options .option-btn`);
-    optionButtons.forEach(button => {
-        button.disabled = true;
-        if (button.textContent === correctAnswer) {
-            button.classList.add('btn-success');
-            button.classList.remove('btn-outline-primary');
-        }
-    });
-}
-
-// Word Scramble functions
-function initWordScramble() {
-    const container = document.getElementById('word-scramble-container');
-    container.style.display = 'flex';
-    
-    // Select a random word
-    const randomIndex = Math.floor(Math.random() * scrambleWords.length);
-    gameState.currentScrambleWord = scrambleWords[randomIndex];
-    gameState.scrambledLetters = scrambleWord(gameState.currentScrambleWord);
-    
-    // Display scrambled word
-    document.getElementById('scrambled-word').textContent = gameState.scrambledLetters.join(' ');
-    document.getElementById('scramble-input').value = '';
-    document.getElementById('scramble-feedback').textContent = '';
-}
-
-function scrambleWord(word) {
-    const letters = word.split('');
-    // Shuffle letters but make sure it's not the same as original
-    let scrambled;
-    do {
-        scrambled = [...letters].sort(() => Math.random() - 0.5);
-    } while (scrambled.join('') === word);
-    
-    return scrambled;
-}
-
-function checkScrambleAnswer() {
-    const userAnswer = document.getElementById('scramble-input').value.toLowerCase().trim();
-    const feedbackEl = document.getElementById('scramble-feedback');
-    
-    if (userAnswer === gameState.currentScrambleWord) {
-        // Correct answer
-        feedbackEl.textContent = "Correct! 🎉";
-        feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-success";
-        gameState.score++;
-        elements.score.textContent = gameState.score;
-        
-        // Create confetti effect
-        createConfetti();
-        
-        // Mark as answered
-        gameState.answeredQuestions.push({
-            category: 'scramble',
-            index: scrambleWords.indexOf(gameState.currentScrambleWord)
         });
         
-        // Load new word after delay
-        setTimeout(initWordScramble, 1500);
-    } else {
-        // Wrong answer
-        feedbackEl.textContent = "Try again!";
-        feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-danger";
-    }
-}
-
-// Audio functions
-function playAudio(text) {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = 0.8;
-    speechSynthesis.speak(utterance);
-}
-
-// Confetti effect
-function createConfetti() {
-    const container = document.querySelector('.question-container');
-    
-    for (let i = 0; i < 50; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.style.left = Math.random() * 100 + '%';
-        confetti.style.backgroundColor = getRandomColor();
-        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-        container.appendChild(confetti);
+        // Audio buttons
+        document.getElementById('play-letters').addEventListener('click', () => playAudio(gameState.currentQuestionItem.letter));
+        document.getElementById('play-numbers').addEventListener('click', () => playAudio(gameState.currentQuestionItem.word));
+        document.getElementById('play-colors').addEventListener('click', () => playAudio(gameState.currentQuestionItem.color));
         
-        // Animate
-        setTimeout(() => {
-            confetti.style.opacity = '1';
-            confetti.style.top = '100%';
-            confetti.style.transition = `top ${Math.random() * 2 + 1}s linear, opacity ${Math.random() * 2 + 1}s linear`;
-            
-            // Remove after animation
-            setTimeout(() => {
-                confetti.remove();
-            }, 3000);
-        }, 0);
+        // Game over buttons
+        document.getElementById('restart-btn').addEventListener('click', restartGame);
+        document.getElementById('quit-btn').addEventListener('click', () => window.location.href = 'index.html');
+        
+        // Word scramble submit
+        document.getElementById('scramble-submit').addEventListener('click', checkScrambleAnswer);
+        document.getElementById('scramble-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkScrambleAnswer();
+            }
+        });
+        
+        // Load first question
+        loadQuestion();
+        startTimer();
     }
-}
 
-function getRandomColor() {
-    const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#FFA5A5', '#88D8B0'];
-    return colors[Math.floor(Math.random() * colors.length)];
-}
-
-// End game
-function endGame() {
-    clearInterval(gameState.timer);
-    
-    // Calculate stars (1-5)
-    const totalQuestions = parseInt(elements.totalQuestions.textContent);
-    const percentage = (gameState.score / totalQuestions) * 100;
-    const stars = Math.ceil(percentage / 20);
-    
-    // Update stars display
-    const starIcons = elements.starRating.querySelectorAll('i');
-    starIcons.forEach((star, index) => {
-        if (index < stars) {
-            star.classList.remove('far');
-            star.classList.add('fas');
-        } else {
-            star.classList.remove('fas');
-            star.classList.add('far');
+    // Load question
+    function loadQuestion() {
+        // Reset game state
+        gameState.gameActive = true;
+        
+        if (gameState.currentCategory === 'scramble') {
+            return;
         }
-    });
-    
-    // Update final score
-    elements.finalScore.textContent = gameState.score;
-    elements.finalTotal.textContent = totalQuestions;
-    
-    // Show game over modal
-    elements.gameOverModal.classList.add('show');
-}
+        
+        // Reset feedback
+        const feedbackEl = document.getElementById(`${gameState.currentCategory}-feedback`);
+        feedbackEl.textContent = '';
+        feedbackEl.className = "text-center fw-bold fs-4 mb-4";
+        
+        // Get random unanswered question
+        const availableQuestions = quizData[gameState.currentCategory].filter((_, index) => 
+            !gameState.answeredQuestions.some(q => q.category === gameState.currentCategory && q.index === index)
+        );
+        
+        // If all questions answered, show game over
+        if (availableQuestions.length === 0) {
+            endGame();
+            return;
+        }
+        
+        const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+        const questionIndex = quizData[gameState.currentCategory].indexOf(availableQuestions[randomIndex]);
+        
+        gameState.currentQuestion = questionIndex;
+        gameState.currentQuestionItem = quizData[gameState.currentCategory][questionIndex];
+        
+        // Update display based on category
+        switch(gameState.currentCategory) {
+            case 'letters':
+                document.getElementById('letters-question').textContent = gameState.currentQuestionItem.question;
+                document.getElementById('letters-display').textContent = gameState.currentQuestionItem.letter;
+                updateOptions('letters', gameState.currentQuestionItem.options);
+                break;
+            case 'numbers':
+                document.getElementById('numbers-question').textContent = gameState.currentQuestionItem.question;
+                document.getElementById('numbers-display').textContent = gameState.currentQuestionItem.emoji;
+                updateOptions('numbers', gameState.currentQuestionItem.options);
+                break;
+            case 'colors':
+                document.getElementById('colors-question').textContent = gameState.currentQuestionItem.question;
+                const colorDisplay = document.getElementById('colors-display');
+                colorDisplay.textContent = gameState.currentQuestionItem.emoji;
+                // Remove any existing color class
+                colorDisplay.className = "emoji-display";
+                // Add color if it's a colored emoji
+                if (gameState.currentQuestionItem.emoji === "🔴") colorDisplay.style.color = "#FF0000";
+                if (gameState.currentQuestionItem.emoji === "🔵") colorDisplay.style.color = "#0000FF";
+                if (gameState.currentQuestionItem.emoji === "🟡") colorDisplay.style.color = "#FFFF00";
+                if (gameState.currentQuestionItem.emoji === "🟢") colorDisplay.style.color = "#00FF00";
+                if (gameState.currentQuestionItem.emoji === "🟠") colorDisplay.style.color = "#FFA500";
+                if (gameState.currentQuestionItem.emoji === "🟣") colorDisplay.style.color = "#800080";
+                updateOptions('colors', gameState.currentQuestionItem.options);
+                break;
+        }
+        
+        // Update progress bar
+        const progress = (gameState.answeredQuestions.length / elements.totalQuestions.textContent) * 100;
+        elements.progressBar.style.width = `${progress}%`;
+    }
 
-// Restart game
-function restartGame() {
-    // Reset game state
-    gameState.currentCategory = 'letters';
-    gameState.currentQuestion = 0;
-    gameState.score = 0;
-    gameState.answeredQuestions = [];
-    gameState.time = 30;
-    gameState.gameActive = true;
-    
-    // Update UI
-    elements.score.textContent = '0';
-    elements.progressBar.style.width = '0%';
-    elements.gameOverModal.classList.remove('show');
-    
-    // Load first question
-    loadQuestion();
-    resetTimer();
-}
+    // Update answer options
+    function updateOptions(category, options) {
+        const optionsContainer = document.getElementById(`${category}-options`);
+        optionsContainer.innerHTML = '';
+        
+        // Shuffle options
+        const shuffledOptions = [...options].sort(() => Math.random() - 0.5);
+        
+        shuffledOptions.forEach(option => {
+            const button = document.createElement('button');
+            button.className = "btn btn-outline-primary option-btn";
+            button.textContent = option;
+            button.addEventListener('click', () => checkAnswer(option, category));
+            optionsContainer.appendChild(button);
+        });
+    }
 
-// Initialize the game when DOM is loaded
-document.addEventListener('DOMContentLoaded', initGame);
+    // Check answer - UPDATED to enable next question
+    function checkAnswer(selectedOption, category) {
+        if (!gameState.gameActive) return;
+        
+        const correctAnswer = gameState.currentQuestionItem.answer;
+        const feedbackEl = document.getElementById(`${category}-feedback`);
+        
+        if (selectedOption === correctAnswer) {
+            // Correct answer
+            feedbackEl.textContent = "Correct! 🎉";
+            feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-success";
+            gameState.score++;
+            elements.score.textContent = gameState.score;
+            
+            // Add bounce animation to feedback
+            feedbackEl.classList.add('bounce');
+            setTimeout(() => feedbackEl.classList.remove('bounce'), 1000);
+            
+            // Create confetti effect
+            createConfetti();
+        } else {
+            // Wrong answer
+            feedbackEl.textContent = `Wrong! The correct answer is ${correctAnswer}.`;
+            feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-danger";
+            
+            // Add shake animation to feedback
+            feedbackEl.classList.add('shake');
+            setTimeout(() => feedbackEl.classList.remove('shake'), 1000);
+        }
+        
+        // Mark question as answered
+        gameState.answeredQuestions.push({
+            category: gameState.currentCategory,
+            index: gameState.currentQuestion
+        });
+        
+        // Disable all option buttons
+        const optionButtons = document.querySelectorAll(`#${category}-options .option-btn`);
+        optionButtons.forEach(button => {
+            button.disabled = true;
+            if (button.textContent === correctAnswer) {
+                button.classList.add('btn-success');
+                button.classList.remove('btn-outline-primary');
+            } else if (button.textContent === selectedOption && selectedOption !== correctAnswer) {
+                button.classList.add('btn-danger');
+                button.classList.remove('btn-outline-primary');
+            }
+        });
+        
+        // Stop timer but allow next question
+        clearInterval(gameState.timer);
+    }
 
-    </script>
+    // Timer functions
+    function startTimer() {
+        gameState.time = 30;
+        elements.timerText.textContent = gameState.time;
+        elements.timerProgress.setAttribute('stroke-dashoffset', '0');
+        
+        gameState.timer = setInterval(() => {
+            gameState.time--;
+            elements.timerText.textContent = gameState.time;
+            
+            // Update circle progress
+            const offset = (gameState.time / 30) * 100;
+            elements.timerProgress.setAttribute('stroke-dashoffset', offset);
+            
+            if (gameState.time <= 0) {
+                clearInterval(gameState.timer);
+                timeUp();
+            }
+        }, 1000);
+    }
+
+    function resetTimer() {
+        clearInterval(gameState.timer);
+        gameState.gameActive = true;
+        startTimer();
+    }
+
+    function timeUp() {
+        if (!gameState.gameActive) return;
+        
+        const category = gameState.currentCategory;
+        const feedbackEl = document.getElementById(`${category}-feedback`);
+        const correctAnswer = gameState.currentQuestionItem.answer;
+        
+        feedbackEl.textContent = `Time's up! The correct answer is ${correctAnswer}.`;
+        feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-danger";
+        
+        // Mark question as answered
+        gameState.answeredQuestions.push({
+            category: gameState.currentCategory,
+            index: gameState.currentQuestion
+        });
+        
+        // Highlight correct answer
+        const optionButtons = document.querySelectorAll(`#${category}-options .option-btn`);
+        optionButtons.forEach(button => {
+            button.disabled = true;
+            if (button.textContent === correctAnswer) {
+                button.classList.add('btn-success');
+                button.classList.remove('btn-outline-primary');
+            }
+        });
+        
+        // Allow next question
+        gameState.gameActive = true;
+    }
+
+    // Word Scramble functions
+    function initWordScramble() {
+        const container = document.getElementById('word-scramble-container');
+        container.style.display = 'flex';
+        
+        // Select a random word
+        const randomIndex = Math.floor(Math.random() * scrambleWords.length);
+        gameState.currentScrambleWord = scrambleWords[randomIndex];
+        gameState.scrambledLetters = scrambleWord(gameState.currentScrambleWord);
+        
+        // Display scrambled word
+        document.getElementById('scrambled-word').textContent = gameState.scrambledLetters.join(' ');
+        document.getElementById('scramble-input').value = '';
+        document.getElementById('scramble-feedback').textContent = '';
+    }
+
+    function scrambleWord(word) {
+        const letters = word.split('');
+        // Shuffle letters but make sure it's not the same as original
+        let scrambled;
+        do {
+            scrambled = [...letters].sort(() => Math.random() - 0.5);
+        } while (scrambled.join('') === word);
+        
+        return scrambled;
+    }
+
+    function checkScrambleAnswer() {
+        const userAnswer = document.getElementById('scramble-input').value.toLowerCase().trim();
+        const feedbackEl = document.getElementById('scramble-feedback');
+        
+        if (userAnswer === gameState.currentScrambleWord) {
+            // Correct answer
+            feedbackEl.textContent = "Correct! 🎉";
+            feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-success";
+            gameState.score++;
+            elements.score.textContent = gameState.score;
+            
+            // Create confetti effect
+            createConfetti();
+            
+            // Mark as answered
+            gameState.answeredQuestions.push({
+                category: 'scramble',
+                index: scrambleWords.indexOf(gameState.currentScrambleWord)
+            });
+            
+            // Load new word after delay
+            setTimeout(initWordScramble, 1500);
+        } else {
+            // Wrong answer
+            feedbackEl.textContent = "Try again!";
+            feedbackEl.className = "text-center fw-bold fs-4 mb-4 text-danger";
+        }
+    }
+
+    // Audio functions
+    function playAudio(text) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.8;
+        speechSynthesis.speak(utterance);
+    }
+
+    // Confetti effect
+    function createConfetti() {
+        const container = document.querySelector('.question-container');
+        
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.backgroundColor = getRandomColor();
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            container.appendChild(confetti);
+            
+            // Animate
+            setTimeout(() => {
+                confetti.style.opacity = '1';
+                confetti.style.top = '100%';
+                confetti.style.transition = `top ${Math.random() * 2 + 1}s linear, opacity ${Math.random() * 2 + 1}s linear`;
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }, 0);
+        }
+    }
+
+    function getRandomColor() {
+        const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#FFA5A5', '#88D8B0'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+
+    // End game
+    function endGame() {
+        clearInterval(gameState.timer);
+        
+        // Calculate stars (1-5)
+        const totalQuestions = parseInt(elements.totalQuestions.textContent);
+        const percentage = (gameState.score / totalQuestions) * 100;
+        const stars = Math.ceil(percentage / 20);
+        
+        // Update stars display
+        const starIcons = elements.starRating.querySelectorAll('i');
+        starIcons.forEach((star, index) => {
+            if (index < stars) {
+                star.classList.remove('far');
+                star.classList.add('fas');
+            } else {
+                star.classList.remove('fas');
+                star.classList.add('far');
+            }
+        });
+        
+        // Update final score
+        elements.finalScore.textContent = gameState.score;
+        elements.finalTotal.textContent = totalQuestions;
+        
+        // Show game over modal
+        elements.gameOverModal.classList.add('show');
+    }
+
+    // Restart game
+    function restartGame() {
+        // Reset game state
+        gameState.currentCategory = 'letters';
+        gameState.currentQuestion = 0;
+        gameState.score = 0;
+        gameState.answeredQuestions = [];
+        gameState.time = 30;
+        gameState.gameActive = true;
+        
+        // Update UI
+        elements.score.textContent = '0';
+        elements.progressBar.style.width = '0%';
+        elements.gameOverModal.classList.remove('show');
+        
+        // Load first question
+        loadQuestion();
+        resetTimer();
+    }
+
+    // Initialize the game when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initGame);
+</script>
 
 </body>
 </html>

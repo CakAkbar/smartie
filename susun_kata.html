@@ -323,291 +323,346 @@
         </div>
     </main>
 
-    <script>
-        const wordGame = {
-            words: [
-                { word: "apel", hint: "nama buah merah atau hijau yang renyah", icon: "🍎", color: "fruit-color-apel" },
-                { word: "mangga", hint: "nama buah kuning yang manis", icon: "🥭", color: "fruit-color-mangga" },
-                { word: "jeruk", hint: "nama buah bulat berwarna oranye", icon: "🍊", color: "fruit-color-jeruk" },
-                { word: "pisang", hint: "nama buah panjang berwarna kuning", icon: "🍌", color: "fruit-color-pisang" },
-                { word: "anggur", hint: "nama buah kecil-kecil bergerombol", icon: "🍇", color: "fruit-color-anggur" },
-                { word: "melon", hint: "nama buah besar dengan daging manis dan berair", icon: "🍈", color: "fruit-color-melon" },
-                { word: "nanas", hint: "nama buah dengan kulit keras dan berduri", icon: "🍍", color: "fruit-color-nanas" },
-                { word: "durian", hint: "nama buah dengan bau tajam dan duri di kulitnya", icon: "🟡", color: "fruit-color-durian" },
-                { word: "semangka", hint: "nama buah besar berwarna merah dan berair", icon: "🍉", color: "fruit-color-semangka" },
-                { word: "stroberi", hint: "nama buah kecil berwarna merah dengan biji di luar", icon: "🍓", color: "fruit-color-stroberi" },
-                { word: "kiwi", hint: "nama buah kecil berbulu dengan daging hijau", icon: "🥝", color: "fruit-color-kiwi" },
-                { word: "pear", hint: "nama buah berbentuk lonjong dengan kulit hijau atau kuning", icon: "🍐", color: "fruit-color-pear" },
-                { word: "jambu", hint: "nama buah yang memiliki rasa manis atau asam", icon: "🟣", color: "fruit-color-jambu" },
-                { word: "papaya", hint: "nama buah berwarna oranye dengan daging lembut", icon: "🟠", color: "fruit-color-papaya" },
-                { word: "kelapa", hint: "nama buah yang memiliki air dan daging yang bisa dimakan", icon: "🥥", color: "fruit-color-kelapa" },
-                { word: "mangosteen", hint: "nama buah dengan kulit keras berwarna ungu dan daging putih", icon: "🟣", color: "fruit-color-mangosteen" },
-                { word: "alpukat", hint: "nama buah dengan daging lembut dan biji besar", icon: "🥑", color: "fruit-color-alpukat" },
-                { word: "rambutan", hint: "nama buah dengan kulit berbulu merah atau kuning", icon: "🟠", color: "fruit-color-rambutan" },
-                { word: "sirsak", hint: "nama buah dengan kulit berduri dan daging asam manis", icon: "🟢", color: "fruit-color-sirsak" },
-                { word: "belimbing", hint: "nama buah berbentuk bintang dengan rasa manis dan asam", icon: "⭐", color: "fruit-color-belimbing" },
-                { word: "salak", hint: "nama buah dengan kulit bersisik dan daging manis", icon: "🟤", color: "fruit-color-salak" },
-                { word: "jambu air", hint: "nama buah berair dan segar, sering berwarna merah atau hijau", icon: "🔴", color: "fruit-color-jambu-air" },
-                { word: "paprika", hint: "nama buah berwarna merah, hijau, atau kuning dengan rasa sedikit pedas", icon: "🫑", color: "fruit-color-paprika" },
-                { word: "tomat", hint: "nama buah merah yang biasa digunakan dalam masakan", icon: "🍅", color: "fruit-color-tomat" },
-                { word: "terong", hint: "nama buah ungu yang sering digunakan dalam masakan", icon: "🍆", color: "fruit-color-terong" }
-            ],
-            currentWord: null,
-            score: 0,
-            answeredWords: [],
+<script>
+    const wordGame = {
+        words: [
+            { word: "apel", hint: "nama buah merah atau hijau yang renyah", icon: "🍎", color: "fruit-color-apel" },
+            { word: "mangga", hint: "nama buah kuning yang manis", icon: "🥭", color: "fruit-color-mangga" },
+            { word: "jeruk", hint: "nama buah bulat berwarna oranye", icon: "🍊", color: "fruit-color-jeruk" },
+            { word: "pisang", hint: "nama buah panjang berwarna kuning", icon: "🍌", color: "fruit-color-pisang" }
+        ],
+        currentWord: null,
+        score: 0,
+        answeredWords: [],
+        draggedElement: null,
+        draggedElementOrigin: null,
+        
+        init: function() {
+            document.getElementById('total-questions').textContent = this.words.length;
+            this.newWord();
             
-            init: function() {
-                document.getElementById('total-questions').textContent = this.words.length;
+            document.getElementById('new-word-btn').addEventListener('click', () => {
                 this.newWord();
-                
-                document.getElementById('new-word-btn').addEventListener('click', () => {
-                    this.newWord();
-                });
-                
-                document.getElementById('check-word-btn').addEventListener('click', () => {
-                    this.checkWord();
-                });
-                
-                this.setupDragAndDrop();
-            },
+            });
             
-            newWord: function() {
-                // Jika sudah menjawab semua kata
-                if (this.answeredWords.length === this.words.length) {
-                    document.getElementById('word-hint').innerHTML = 
-                        "<strong>Selamat! Kamu telah menyelesaikan semua kata! 🎉</strong>";
-                    document.getElementById('new-word-btn').disabled = true;
-                    document.getElementById('check-word-btn').disabled = true;
-                    
-                    // Animasi kembang api
-                    const illustration = document.getElementById('word-illustration');
-                    illustration.innerHTML = '🎉';
-                    illustration.classList.add('pulse');
-                    return;
-                }
-                
-                // Cari kata yang belum dijawab
-                let availableWords = this.words.filter(word => 
-                    !this.answeredWords.includes(word.word)
-                );
-                
-                // Jika tidak ada kata tersisa, reset
-                if (availableWords.length === 0) {
-                    availableWords = this.words;
-                    this.answeredWords = [];
-                }
-                
-                const randomIndex = Math.floor(Math.random() * availableWords.length);
-                this.currentWord = availableWords[randomIndex];
-                
-                // Acak huruf-huruf
-                const scrambledLetters = this.shuffleArray([...this.currentWord.word.replace(/\s/g, '')]);
-                
-                // Kosongkan area huruf dan jawaban
-                const letterArea = document.getElementById('letter-area');
-                letterArea.innerHTML = '';
-                
-                const answerSlots = document.getElementById('answer-slots');
-                answerSlots.innerHTML = '';
-                
-                // Buat huruf-huruf acak di area huruf
-                scrambledLetters.forEach((letter, index) => {
-                    const letterElement = document.createElement('div');
-                    letterElement.className = "letter-tile";
-                    letterElement.textContent = letter.toUpperCase();
-                    letterElement.draggable = true;
-                    letterElement.dataset.index = index;
-                    letterElement.dataset.letter = letter.toLowerCase();
-                    letterArea.appendChild(letterElement);
-                });
-                
-                // Buat slot jawaban
-                for (let i = 0; i < this.currentWord.word.length; i++) {
-                    const slot = document.createElement('div');
-                    slot.className = "answer-slot";
-                    slot.dataset.position = i;
-                    answerSlots.appendChild(slot);
-                }
-                
-                // Tampilkan petunjuk
-                document.getElementById('current-hint').textContent = this.currentWord.hint;
-                
-                // Reset feedback
-                document.getElementById('word-feedback').textContent = '';
-                document.getElementById('word-feedback').className = '';
-                
-                // Update ilustrasi
-                const illustration = document.getElementById('word-illustration');
-                illustration.innerHTML = this.currentWord.icon || '✏️';
-                illustration.classList.remove('active', 'pulse', 'bounce');
-            },
+            document.getElementById('check-word-btn').addEventListener('click', () => {
+                this.checkWord();
+            });
             
-            shuffleArray: function(array) {
-                const newArray = [...array];
-                for (let i = newArray.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-                }
-                return newArray;
-            },
+            this.setupTouchAndDrag();
+        },
+        
+        newWord: function() {
+            // Reset feedback
+            document.getElementById('word-feedback').textContent = '';
+            document.getElementById('word-feedback').className = '';
             
-            setupDragAndDrop: function() {
-                const letterArea = document.getElementById('letter-area');
-                const answerSlots = document.getElementById('answer-slots');
-                
-                // Fungsi untuk menangani drag start
-                const handleDragStart = (e) => {
-                    if (e.target.classList.contains('letter-tile')) {
-                        e.dataTransfer.setData('text/plain', e.target.dataset.index);
-                        setTimeout(() => {
-                            e.target.classList.add('dragging');
-                        }, 0);
-                    }
-                };
-                
-                // Fungsi untuk menangani drag end
-                const handleDragEnd = (e) => {
-                    if (e.target.classList.contains('letter-tile')) {
-                        e.target.classList.remove('dragging');
-                    }
-                };
-                
-                // Fungsi untuk menangani drop di slot jawaban
-                const handleDropToAnswer = (e) => {
+            // Cari kata yang belum dijawab
+            let availableWords = this.words.filter(word => 
+                !this.answeredWords.includes(word.word)
+            );
+            
+            // Jika tidak ada kata tersisa, reset
+            if (availableWords.length === 0) {
+                availableWords = this.words;
+                this.answeredWords = [];
+            }
+            
+            const randomIndex = Math.floor(Math.random() * availableWords.length);
+            this.currentWord = availableWords[randomIndex];
+            
+            // Acak huruf-huruf
+            const scrambledLetters = this.shuffleArray([...this.currentWord.word.replace(/\s/g, '')]);
+            
+            // Kosongkan area huruf dan jawaban
+            const letterArea = document.getElementById('letter-area');
+            letterArea.innerHTML = '';
+            
+            const answerSlots = document.getElementById('answer-slots');
+            answerSlots.innerHTML = '';
+            
+            // Buat huruf-huruf acak di area huruf
+            scrambledLetters.forEach((letter, index) => {
+                const letterElement = document.createElement('div');
+                letterElement.className = "letter-tile";
+                letterElement.textContent = letter.toUpperCase();
+                letterElement.dataset.index = index;
+                letterElement.dataset.letter = letter.toLowerCase();
+                letterElement.dataset.draggable = true;
+                letterArea.appendChild(letterElement);
+            });
+            
+            // Buat slot jawaban
+            for (let i = 0; i < this.currentWord.word.length; i++) {
+                const slot = document.createElement('div');
+                slot.className = "answer-slot";
+                slot.dataset.position = i;
+                answerSlots.appendChild(slot);
+            }
+            
+            // Tampilkan petunjuk
+            document.getElementById('current-hint').textContent = this.currentWord.hint;
+            
+            // Update ilustrasi
+            const illustration = document.getElementById('word-illustration');
+            illustration.innerHTML = this.currentWord.icon || '✏️';
+            illustration.className = `word-illustration ${this.currentWord.color}`;
+            illustration.classList.remove('active', 'pulse', 'bounce');
+        },
+        
+        shuffleArray: function(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        },
+        
+        setupTouchAndDrag: function() {
+            const letterArea = document.getElementById('letter-area');
+            const answerSlots = document.getElementById('answer-slots');
+            const body = document.body;
+            
+            // Fungsi untuk memulai drag/touch
+            const handleStart = (e) => {
+                let target;
+                if (e.type === 'touchstart') {
+                    target = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY);
+                } else {
+                    target = e.target;
                     e.preventDefault();
-                    if (e.target.classList.contains('answer-slot')) {
-                        e.target.classList.remove('drag-over');
-                        
-                        const letterIndex = e.dataTransfer.getData('text/plain');
-                        const letterTile = document.querySelector(`.letter-tile[data-index="${letterIndex}"]`);
-                        
-                        // Jika slot sudah berisi huruf, kembalikan ke area huruf
-                        if (e.target.hasChildNodes()) {
-                            const existingLetter = e.target.firstChild;
-                            letterArea.appendChild(existingLetter);
+                }
+                
+                if (target.classList.contains('letter-tile')) {
+                    this.draggedElement = target;
+                    this.draggedElementOrigin = target.parentElement;
+                    
+                    // Tambahkan class dragging dan clone untuk visual
+                    target.classList.add('dragging');
+                    
+                    // Untuk touch devices, kita perlu mencegah default behavior
+                    if (e.type === 'touchstart') {
+                        e.preventDefault();
+                    }
+                }
+            };
+            
+            // Fungsi untuk menggerakkan elemen
+            const handleMove = (e) => {
+                if (!this.draggedElement) return;
+                
+                e.preventDefault();
+                
+                let clientX, clientY;
+                if (e.type === 'touchmove') {
+                    clientX = e.touches[0].clientX;
+                    clientY = e.touches[0].clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                
+                // Posisikan elemen yang sedang di-drag
+                this.draggedElement.style.position = 'fixed';
+                this.draggedElement.style.left = `${clientX - this.draggedElement.offsetWidth / 2}px`;
+                this.draggedElement.style.top = `${clientY - this.draggedElement.offsetHeight / 2}px`;
+                this.draggedElement.style.zIndex = '1000';
+                this.draggedElement.style.pointerEvents = 'none';
+                
+                // Reset semua drag-over
+                document.querySelectorAll('.drag-over').forEach(el => {
+                    el.classList.remove('drag-over');
+                });
+                
+                // Deteksi drop target
+                const dropTarget = document.elementFromPoint(clientX, clientY);
+                
+                if (dropTarget) {
+                    if (dropTarget.classList.contains('answer-slot')) {
+                        dropTarget.classList.add('drag-over');
+                    } else if (dropTarget === letterArea) {
+                        letterArea.classList.add('drag-over');
+                    }
+                }
+            };
+            
+            // Fungsi untuk mengakhiri drag/touch
+            const handleEnd = (e) => {
+                if (!this.draggedElement) return;
+                
+                e.preventDefault();
+                
+                let clientX, clientY;
+                if (e.type === 'touchend') {
+                    const touch = e.changedTouches[0];
+                    clientX = touch.clientX;
+                    clientY = touch.clientY;
+                } else {
+                    clientX = e.clientX;
+                    clientY = e.clientY;
+                }
+                
+                // Reset style dragging
+                this.draggedElement.style.position = '';
+                this.draggedElement.style.left = '';
+                this.draggedElement.style.top = '';
+                this.draggedElement.style.zIndex = '';
+                this.draggedElement.style.pointerEvents = '';
+                this.draggedElement.classList.remove('dragging');
+                
+                // Reset semua drag-over
+                document.querySelectorAll('.drag-over').forEach(el => {
+                    el.classList.remove('drag-over');
+                });
+                
+                // Deteksi drop target
+                const dropTarget = document.elementFromPoint(clientX, clientY);
+                
+                if (dropTarget) {
+                    // Jika di-drop ke slot jawaban
+                    if (dropTarget.classList.contains('answer-slot')) {
+                        // Jika slot sudah berisi huruf, kembalikan ke asal
+                        if (dropTarget.hasChildNodes()) {
+                            const existingLetter = dropTarget.firstChild;
+                            this.draggedElementOrigin.appendChild(existingLetter);
                         }
                         
                         // Pindahkan huruf ke slot jawaban
-                        e.target.appendChild(letterTile);
-                        e.target.classList.add('filled');
-                    }
-                };
-                
-                // Fungsi untuk menangani drop di area huruf
-                const handleDropToLetterArea = (e) => {
-                    e.preventDefault();
-                    if (e.target === letterArea || e.target.classList.contains('letter-tile')) {
-                        const letterIndex = e.dataTransfer.getData('text/plain');
-                        const letterTile = document.querySelector(`.letter-tile[data-index="${letterIndex}"]`);
-                        
+                        dropTarget.appendChild(this.draggedElement);
+                        dropTarget.classList.add('filled');
+                    } 
+                    // Jika di-drop ke area huruf
+                    else if (dropTarget === letterArea || dropTarget.classList.contains('letter-tile')) {
                         // Jika huruf diambil dari slot jawaban
-                        if (letterTile.parentElement.classList.contains('answer-slot')) {
-                            letterTile.parentElement.classList.remove('filled');
-                            letterArea.appendChild(letterTile);
+                        if (this.draggedElementOrigin.classList.contains('answer-slot')) {
+                            this.draggedElementOrigin.classList.remove('filled');
+                        }
+                        letterArea.appendChild(this.draggedElement);
+                    }
+                    // Jika di-drop di tempat lain, kembalikan ke asal
+                    else {
+                        this.draggedElementOrigin.appendChild(this.draggedElement);
+                        if (this.draggedElementOrigin.classList.contains('answer-slot')) {
+                            this.draggedElementOrigin.classList.remove('filled');
                         }
                     }
-                };
-                
-                // Event listener untuk area huruf
-                letterArea.addEventListener('dragstart', handleDragStart);
-                letterArea.addEventListener('dragend', handleDragEnd);
-                letterArea.addEventListener('dragover', (e) => e.preventDefault());
-                letterArea.addEventListener('drop', handleDropToLetterArea);
-                
-                // Event listener untuk slot jawaban
-                answerSlots.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    if (e.target.classList.contains('answer-slot')) {
-                        e.target.classList.add('drag-over');
+                } else {
+                    // Jika tidak ada target, kembalikan ke asal
+                    this.draggedElementOrigin.appendChild(this.draggedElement);
+                    if (this.draggedElementOrigin.classList.contains('answer-slot')) {
+                        this.draggedElementOrigin.classList.remove('filled');
                     }
-                });
+                }
                 
-                answerSlots.addEventListener('dragleave', (e) => {
-                    if (e.target.classList.contains('answer-slot')) {
-                        e.target.classList.remove('drag-over');
-                    }
-                });
-                
-                answerSlots.addEventListener('drop', handleDropToAnswer);
-            },
+                this.draggedElement = null;
+                this.draggedElementOrigin = null;
+            };
             
-            checkWord: function() {
-                const answerSlots = document.getElementById('answer-slots');
-                const slots = answerSlots.querySelectorAll('.answer-slot');
-                let userAnswer = '';
-                let allSlotsFilled = true;
+            // Event listeners untuk mouse
+            letterArea.addEventListener('mousedown', handleStart.bind(this));
+            body.addEventListener('mousemove', handleMove.bind(this));
+            body.addEventListener('mouseup', handleEnd.bind(this));
+            
+            // Event listeners untuk touch
+            letterArea.addEventListener('touchstart', handleStart.bind(this), { passive: false });
+            body.addEventListener('touchmove', handleMove.bind(this), { passive: false });
+            body.addEventListener('touchend', handleEnd.bind(this));
+            
+            // Mencegah scroll saat dragging di mobile
+            body.addEventListener('touchmove', (e) => {
+                if (this.draggedElement) {
+                    e.preventDefault();
+                }
+            }, { passive: false });
+        },
+        
+        checkWord: function() {
+            const answerSlots = document.getElementById('answer-slots');
+            const slots = answerSlots.querySelectorAll('.answer-slot');
+            let userAnswer = '';
+            let allSlotsFilled = true;
+            
+            // Periksa apakah semua slot terisi
+            slots.forEach(slot => {
+                if (slot.firstChild) {
+                    userAnswer += slot.firstChild.textContent.toLowerCase();
+                } else {
+                    allSlotsFilled = false;
+                }
+            });
+            
+            const feedback = document.getElementById('word-feedback');
+            
+            if (!allSlotsFilled) {
+                feedback.textContent = "Isi semua kotak terlebih dahulu!";
+                feedback.className = "feedback-wrong fw-bold";
+                answerSlots.classList.add('shake');
+                setTimeout(() => {
+                    answerSlots.classList.remove('shake');
+                }, 500);
+                return;
+            }
+            
+            if (userAnswer === this.currentWord.word.replace(/\s/g, '')) {
+                this.score++;
+                document.getElementById('score').textContent = this.score;
                 
-                // Periksa apakah semua slot terisi
+                const progress = (this.score / this.words.length) * 100;
+                document.getElementById('progress-bar').style.width = `${progress}%`;
+                
+                feedback.textContent = "Hore! Kamu benar! 🎉";
+                feedback.className = "feedback-correct fw-bold";
+                
+                // Animasi ilustrasi
+                const illustration = document.getElementById('word-illustration');
+                illustration.classList.add('bounce');
+                
+                // Tambahkan warna buah yang benar ke semua huruf di slot jawaban
                 slots.forEach(slot => {
                     if (slot.firstChild) {
-                        userAnswer += slot.firstChild.textContent.toLowerCase();
-                    } else {
-                        allSlotsFilled = false;
+                        slot.firstChild.classList.add(this.currentWord.color);
+                        slot.firstChild.classList.add('bounce');
+                        setTimeout(() => {
+                            slot.firstChild.classList.remove('bounce');
+                        }, 1000);
                     }
                 });
                 
-                const feedback = document.getElementById('word-feedback');
-                
-                if (!allSlotsFilled) {
-                    feedback.textContent = "Isi semua kotak terlebih dahulu!";
-                    feedback.className = "feedback-wrong fw-bold";
-                    answerSlots.classList.add('shake');
-                    setTimeout(() => {
-                        answerSlots.classList.remove('shake');
-                    }, 500);
-                    return;
+                // Tandai kata ini sudah dijawab
+                if (!this.answeredWords.includes(this.currentWord.word)) {
+                    this.answeredWords.push(this.currentWord.word);
                 }
                 
-                if (userAnswer === this.currentWord.word.replace(/\s/g, '')) {
-                    this.score++;
-                    document.getElementById('score').textContent = this.score;
-                    
-                    const progress = (this.score / this.words.length) * 100;
-                    document.getElementById('progress-bar').style.width = `${progress}%`;
-                    
-                    feedback.textContent = "Hore! Kamu benar! 🎉";
-                    feedback.className = "feedback-correct fw-bold";
-                    
-                    // Animasi ilustrasi
-                    const illustration = document.getElementById('word-illustration');
-                    illustration.classList.add('bounce');
-                    
-                    // Tambahkan warna buah yang benar ke semua huruf di slot jawaban
-                    slots.forEach(slot => {
-                        if (slot.firstChild) {
-                            slot.firstChild.classList.add(this.currentWord.color);
-                            slot.firstChild.classList.add('bounce');
-                            setTimeout(() => {
-                                slot.firstChild.classList.remove('bounce');
-                            }, 1000);
-                        }
-                    });
-                    
-                    // Tandai kata ini sudah dijawab
-                    if (!this.answeredWords.includes(this.currentWord.word)) {
-                        this.answeredWords.push(this.currentWord.word);
+                setTimeout(() => {
+                    illustration.classList.remove('bounce');
+                    this.newWord();
+                }, 1500);
+            } else {
+                feedback.textContent = "Belum tepat, coba lagi ya!";
+                feedback.className = "feedback-wrong fw-bold";
+                
+                // Animasi shake untuk feedback salah
+                answerSlots.classList.add('shake');
+                setTimeout(() => {
+                    answerSlots.classList.remove('shake');
+                }, 500);
+                
+                // Kembalikan semua huruf ke area huruf
+                const letterArea = document.getElementById('letter-area');
+                slots.forEach(slot => {
+                    if (slot.firstChild) {
+                        letterArea.appendChild(slot.firstChild);
+                        slot.classList.remove('filled');
                     }
-                    
-                    setTimeout(() => {
-                        illustration.classList.remove('bounce');
-                        this.newWord();
-                    }, 1500);
-                } else {
-                    feedback.textContent = "Belum tepat, coba lagi ya!";
-                    feedback.className = "feedback-wrong fw-bold";
-                    
-                    // Animasi shake untuk feedback salah
-                    answerSlots.classList.add('shake');
-                    setTimeout(() => {
-                        answerSlots.classList.remove('shake');
-                    }, 500);
-                }
+                });
             }
-        };
+        }
+    };
 
-        window.addEventListener('DOMContentLoaded', () => {
-            wordGame.init();
-        });
-    </script>
+    window.addEventListener('DOMContentLoaded', () => {
+        wordGame.init();
+    });
+</script>
 </body>
 </html>
